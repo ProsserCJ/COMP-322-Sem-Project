@@ -35,6 +35,7 @@ public:
 	virtual void move(int x, int y) = 0;	
 	virtual void attack(Position& p) = 0;
 	virtual void attack(int x, int y) = 0;
+	virtual void takeTurn() = 0;
 
 private:
 	int health, atk;
