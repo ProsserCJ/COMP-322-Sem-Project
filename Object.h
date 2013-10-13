@@ -12,6 +12,8 @@ struct Position{
 class Object{
 public:
 
+	Object(int x, int y) { pos.x = x; pos.y = y; }
+	Object() {}
 	int getX() { return pos.x; }
 	int getY() { return pos.y; }
 	Position getPos() { return pos; }
