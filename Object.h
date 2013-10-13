@@ -50,6 +50,8 @@ private:
 class Carriable: public Object{
 
 	int getWeight() { return weight; }
+	Carriable(bool multiple) {multipleCarriers = multiple;}
+	bool getMultipleCarriers() {return multipleCarriers;}
 
 private:
 	//determines if more than one lifeform can hold it at once
