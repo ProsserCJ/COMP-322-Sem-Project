@@ -52,5 +52,7 @@ class Carriable: public Object{
 	int getWeight() { return weight; }
 
 private:
+	//determines if more than one lifeform can hold it at once
+	bool multipleCarriers;
 	int weight;
 };
