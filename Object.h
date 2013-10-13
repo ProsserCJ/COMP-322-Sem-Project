@@ -27,6 +27,7 @@ private:
 class Lifeform: public Object{
 public:
 
+	int getAttackStrength() {return atk;}
 	int getHealth() { return health; }
 	void setHealth(int h) { health = h; }
 	void subHealth(int diff) { health -= diff; }
