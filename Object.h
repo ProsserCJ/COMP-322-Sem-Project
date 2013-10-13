@@ -48,7 +48,7 @@ private:
 };
 
 class Carriable: public Object{
-
+public:
 	int getWeight() { return weight; }
 	Carriable(bool multiple) {multipleCarriers = multiple;}
 	bool getMultipleCarriers() {return multipleCarriers;}
