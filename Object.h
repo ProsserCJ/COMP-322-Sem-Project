@@ -39,6 +39,8 @@ public:
 
 private:
 	int health, atk;
+	bool holdingObject;
+	Object* heldObject;
 };
 
 class Carriable: public Object{
