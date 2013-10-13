@@ -30,6 +30,10 @@ public:
 	int getHealth() { return health; }
 	void setHealth(int h) { health = h; }
 	void subHealth(int diff) { health -= diff; }
+	bool getHolding() {return holdingObject;}
+	void setHeldObject(Object* item) {heldObject = item;}
+	Object* getHeldObject() {return heldObject;}
+	void setHolding(bool holding) {holdingObject = holding;}
 
 	virtual void move(Position& p) = 0;	
 	virtual void move(int x, int y) = 0;	
