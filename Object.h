@@ -24,6 +24,8 @@ public:
 
 private:
 	Position pos;
+	//currently a char, but would be replaced with whatever graphic option is best
+	char image;
 };
 
 class Lifeform: public Object{
