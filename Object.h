@@ -4,6 +4,9 @@
 	Object.h defines several abstract base classes
 */
 
+#ifndef __OBJECT_H
+#define __OBJECT_H
+
 struct Position{
 	int x, y;
 	Position(int X=0, int Y=0){ x = X; y = Y; }
@@ -63,3 +66,5 @@ private:
 	bool multipleCarriers;
 	int weight;
 };
+
+#endif
