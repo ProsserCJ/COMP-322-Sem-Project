@@ -1,8 +1,13 @@
-/*
-	Chris Prosser
-	COMP 322 - Semester Project
-	carriable.h defines several carriable objects
-*/
+/* 
+ Group #: 3 
+ Members: Chris Prosser, Jacob Gearhart, Kory Kappel, Andrew Miller 
+ Course: COMP 322, Advanced Programming 
+ Date: 28 October 2013 
+ Description: This file defines the Carriable class a derivative of Mover.
+ Carriables are any object that can be picked up by a Nimkip. Current
+ carriables are Coin and Food.  This file also defines an uncarriable
+ Obstacle object.
+*/ 
 
 #ifndef __CARRIABLE_H
 #define __CARRIABLE_H
@@ -12,23 +17,36 @@
 class Carriable: public Mover{
 public:	
 	int getWeight() { return weight; }
+	Carriable(bool multiple) {multipleCarriers = multiple; carrierStrength = 0;}
+	Carriable() {multipleCarriers = false;}
+	bool getMultipleCarriers() {return multipleCarriers;}
+	void changeCarrierStrength(int strength) { carrierStrength+=strength; }
+	int getCarrierStrength() { return carrierStrength; }
 
-private:
+protected:
 	int weight;
+	bool multipleCarriers;
+	int carrierStrength;
 };
 
 class Coin: public Carriable{
 public:
-	
+	Coin() {this->setImage(C);}
+private:
+	int points;
 };
 
 class Food: public Carriable{
 public:
+	Food() {this->setImage(F);}
 	virtual void addMove(){return;};
+private:
+	int points;
 };
 
-class Obstacle: public Mover{
+class Obstacle: public Object{
 public:
+	Obstacle() {this->setImage(O);}
 	virtual void addMove(){return;};
 };
 

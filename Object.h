@@ -1,70 +1,38 @@
-/*
-	Chris Prosser
-	COMP 322 - Semester Project
-	Object.h defines several abstract base classes
-*/
+/* 
+ Group #: 3 
+ Members: Chris Prosser, Jacob Gearhart, Kory Kappel, Andrew Miller 
+ Course: COMP 322, Advanced Programming 
+ Date: 28 October 2013 
+ Description: This file defines the Object class, an abstract
+ base class for all objects used in our Nimkip simulation.  Object
+ derives from Kelly's Entity class, which handles all graphical
+ display functionality through DirectX
+*/ 
 
 #ifndef __OBJECT_H
 #define __OBJECT_H
 
-struct Position{
-	int x, y;
-	Position(int X=0, int Y=0){ x = X; y = Y; }
-};
+#include "entity.h"
+#include "importantTypes.h"
 
-class Object{
+//for nimkips of every color, broblub, coin, food, object, and gap respectively
+enum textureType {RN,BN,YN,B,C,F,O,G,BS};
+
+class Object: public Entity{
 public:
+	Object(): Entity(){pos.x = getX()/GRID_SIZE; pos.y = getY()/GRID_SIZE;}
+	int getXCoord() { return pos.x; }
+	int getYCoord() { return pos.y; }
+	GridLoc getGridLoc() { return pos; }	
+	void setGridLoc(int x, int y) {setX(x*GRID_SIZE); setY(y*GRID_SIZE); pos = GridLoc(x,y);}
+	void setGridLoc(GridLoc& p) { setX(pos.x*GRID_SIZE); setY(pos.y*GRID_SIZE); pos = GridLoc(p.x,p.y);}
+	void setPosRaw(int x, int y) {pos = GridLoc(x,y);}
+	textureType getImage() {return image;}
+	void setImage(textureType i){image = i;}
 
-	Object(int x, int y) { pos.x = x; pos.y = y; }
-	Object() {}
-	int getX() { return pos.x; }
-	int getY() { return pos.y; }
-	Position getPos() { return pos; }
-	void setX(int x) { pos.x = x; }
-	void setY(int y) { pos.y = y; }
-	void setPos(int x, int y){ pos.x = x; pos.y = y; }
-	void setPos(Position& p) { pos.x = p.x; pos.y = p.y; }
-
-private:
-	Position pos;
-	//currently a char, but would be replaced with whatever graphic option is best
-	char image;
-};
-
-class Lifeform: public Object{
-public:
-
-	int getAttackStrength() {return atk;}
-	int getHealth() { return health; }
-	void setHealth(int h) { health = h; }
-	void subHealth(int diff) { health -= diff; }
-	bool getHolding() {return holdingObject;}
-	void setHeldObject(Object* item) {heldObject = item;}
-	Object* getHeldObject() {return heldObject;}
-	void setHolding(bool holding) {holdingObject = holding;}
-
-	virtual void move(Position& p) = 0;	
-	virtual void move(int x, int y) = 0;	
-	virtual void attack(Position& p) = 0;
-	virtual void attack(int x, int y) = 0;
-	virtual position takeTurn() = 0;
-
-private:
-	int health, atk;
-	bool holdingObject;
-	Object* heldObject;
-};
-
-class Carriable: public Object{
-public:
-	int getWeight() { return weight; }
-	Carriable(bool multiple) {multipleCarriers = multiple;}
-	bool getMultipleCarriers() {return multipleCarriers;}
-
-private:
-	//determines if more than one lifeform can hold it at once
-	bool multipleCarriers;
-	int weight;
+protected:
+	GridLoc pos;
+	textureType image;
 };
 
 #endif
