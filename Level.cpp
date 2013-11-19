@@ -32,8 +32,8 @@ level::level()
 	rgen = Random(0,9);
 	this->numEnemies = 5;
 	this->startKips = 10;
-	this->mapSizeX = 10;
-	this->mapSizeY = 10;
+	this->mapSizeX = 50;
+	this->mapSizeY = 50;
 	this->maxKips = 20;
 	frameCount = 0;
 	turns = 0;
@@ -85,21 +85,21 @@ void level::initialize(HWND hwnd)
     if (!hudTexture.initialize(graphics,HUD_IMAGE))
         throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing hud texture"));
 
-    // grid 
-	if(!grid.initialize(this, mapSizeX, mapSizeY, 1, &gridTexture))
-		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing grid"));
-
-	fillLevel();
 
 	// background image
-    if (!background.initialize(graphics,0,0,0,&backgroundTexture))
+    if (!background.initialize(graphics,mapSizeX*GRID_SIZE,mapSizeY*GRID_SIZE,0,&backgroundTexture))
         throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing background"));  	
 
 	// HUD
 	if (!hud.initialize(this, HUD_WIDTH, GAME_HEIGHT, 2, &hudTexture))
         throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing hud"));
+
+	// grid 
+	if(!grid.initialize(this, mapSizeX, mapSizeY, 1, &gridTexture, &background))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing grid"));
+
 	
-	
+	fillLevel();	
 	//lifeForms
 	for(int i = 0; i < lifeForms.size(); i++)
 	{
@@ -199,7 +199,9 @@ void level::update()
 
 	for(int i=0; i<lifeForms.size(); i++)
 		lifeForms[i]->move(frameTime);
-	
+
+	grid.scroll(frameTime);	
+	grid.zoom(frameTime);
 	
 	frameCount++;
 }
@@ -229,7 +231,7 @@ void level::render()
 
        background.draw();
        grid.draw();
-       hud.draw();  
+     
        for(int i = 0; i < lifeForms.size(); i++)
        {
              if (lifeForms[i]->getActive()) lifeForms[i]->draw();
@@ -238,7 +240,7 @@ void level::render()
        {
              objects[i]->draw();
        }
-       
+        hud.draw();  
        ss.str(std::string());
        ss << "Turn  " << turns << "\nScore " << score;
        gameFont->print(ss.str(), 830, 410);
@@ -281,7 +283,6 @@ void level::resetAll()
 //makes all lifeforms take their turn and uses their new positions to update its map
 void level::runTimeStep()
 {
-	drawMap();
 	grid.clearSelected();
 	for(int i = 0; i < lifeForms.size(); i++)
 	{
@@ -342,7 +343,7 @@ void level::fillLevel()
 	//create BASE 
        Base* b = new Base();
        //int xLoc, yLoc;
-       b->setGridLoc(0,0);
+       b->setGridLoc(0,0);	  
        grid.setType(0,0,BASE);
        objects.push_back(reinterpret_cast<Object*>(b));
 
@@ -520,6 +521,8 @@ void level::fillLevel()
        grid.setType(8,6,OBSTACLE);
        objects.push_back(reinterpret_cast<Object*>(o7));
 
+	   for (auto it = objects.begin(); it != objects.end(); ++it) grid.setObject(*it);
+	   for (auto it = lifeForms.begin(); it != lifeForms.end(); ++it) grid.setObject(*it);
 }
 
 Surroundings level::getSurroundings(GridLoc currentLocation)
@@ -609,43 +612,6 @@ NimkipInfo level::getNimkipInfo(GridLoc pos)
 	return nimkip->getInfo();
 }
 
-//temp for testing
-void level::drawMap()
-{
-	debug << grid.getTile(GridLoc(3,4)).getType() << std::endl;
-	for(int i = 0; i < mapSizeY; i++)
-	{
-		for(int j = 0; j < mapSizeX; j++)
-		{
-			switch(grid.getTile(GridLoc(j,i)).getType())
-			{
-			case EMPTY:
-				debug << "   |";
-				break;
-			case NIMKIP:
-				debug << " N |";
-				break;
-			case BROBLUB:
-				debug << " B |";
-				break;
-			case COIN:
-				debug << " C |";
-				break;
-			case FOOD:
-				debug << " F |";
-				break;
-			case OBSTACLE:
-				debug << " O |";
-				break;
-			case GAP:
-				debug << " G |";
-				break;
-			}
-		}
-		debug << "\n----------------------------------------\n";
-	}
-	debug << "\n\n\n\n";
-}
 
 void level::getUserInput()
 {

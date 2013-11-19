@@ -95,7 +95,6 @@ public:
 	void gameOver();	
 	void runTimeStep();	
 	static bool transferObject(Lifeform* receiver, GridLoc item);
-	void drawMap();	
 	static void runAttack(Lifeform* attacker, GridLoc target);	
 	static Surroundings getSurroundings(GridLoc currentLocation);
 	static void getUserInput();

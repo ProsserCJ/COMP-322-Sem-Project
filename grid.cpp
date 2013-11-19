@@ -15,6 +15,7 @@ Tile::Tile(int x=0, int y=0, Space s=EMPTY){
 	setY(y*GRID_SIZE);
 	pos = GridLoc(x,y);
 	selected = false;
+	object = 0;
 }
 
 void Tile::toggle(){
