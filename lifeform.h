@@ -15,41 +15,59 @@
 #include "mover.h"
 #include "constants.h"
 #include "carriable.h"
+#include "textDX.h"
+
+class level;
 
 class Lifeform: public Mover{
 public:
+
+	//Init
 	Lifeform() {holdingObject = false; heldObject = 0;scored = false;}
-	int getAttackStrength() {return atk;}
-	void setAttackStrength(int a) { atk = a; }
-	int getStrength() {return strength;}
-	void setStrength(int s) {strength = s;}
-	int getHealth() { return health; }
-	void setHealth(int h) { health = h; }
-    void subHealth(int diff) { health -= diff; }
-    bool getHolding() {return holdingObject;}
-    void setHeldObject(Carriable* item) {heldObject = item;}
-    Carriable* getHeldObject() {return heldObject;}
-    void setHolding(bool holding) {holdingObject = holding;}
+	bool initialize(Game *gamePtr, int width, int height, int ncols, TextureManager *textureM, TextDX* font)
+		{gameFont = font; return Mover::initialize(gamePtr, width, height, ncols, textureM);}
+	
+	//Getters
+	int getAttackStrength()					{return atk;}	
+	int getStrength()						{return strength;}	
+	int getHealth()							{return health;}
+	bool getHolding()						{return holdingObject;}
+	Carriable* getHeldObject()				{return heldObject;}
+	bool getScored()						{return scored;}
+	int getScoredPoints()					{return scorePoints;}
+
+	//Setters
+	void setAttackStrength(int a)			{atk = a;}
+	void setHealth(int h)					{health = h;}
+    void subHealth(int diff)				{health -= diff; lostHealth = diff; fontDisplayFrameCount = 0;}
+	void setStrength(int s)					{strength = s;}    
+    void setHeldObject(Carriable* item)		{heldObject = item;}   
+    void setHolding(bool holding)			{holdingObject = holding;}
+	void setScored(bool s)					{scored = s;}
+	void setScorePoints(int p)				{scorePoints = p;}
+
+	//Polymorphic functions
 	virtual void die() {}
 	virtual void setNormal()=0;
 	virtual void setHurt()=0;
 	virtual void setAtk()=0;
 	virtual bool isNormal()=0;
 	virtual bool isAtk()=0;
-
-    virtual GridLoc takeTurn() = 0;
-	bool getScored() {return scored;}
-	int getScoredPoints() {return scorePoints;}
-	void setScored(bool s) {scored = s;}
-	void setScorePoints(int p) {scorePoints = p;}
+	virtual GridLoc takeTurn() = 0;
+	virtual void draw();
+	
+	
 
 private:
-    int health, atk, strength;
+    int health, atk, strength, lostHealth;
     bool holdingObject;
     Carriable* heldObject;
-	//used to communicate with the level that they scored
 	bool scored;
 	int scorePoints;
+
+	//Damage font display
+	TextDX* gameFont;
+	int fontDisplayFrameCount;
 };
 
 #endif

@@ -103,7 +103,7 @@ void level::initialize(HWND hwnd)
 	//lifeForms
 	for(int i = 0; i < lifeForms.size(); i++)
 	{
-		if (!lifeForms[i]->initialize(this, GRID_SIZE, GRID_SIZE, 3, &gameTextures))
+		if (!lifeForms[i]->initialize(this, GRID_SIZE, GRID_SIZE, 3, &gameTextures, gameFont))
 				throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing lifeform"));
 		
 		switch(lifeForms[i]->getImage())
@@ -240,10 +240,11 @@ void level::render()
        {
              objects[i]->draw();
        }
-        hud.draw();  
-       ss.str(std::string());
-       ss << "Turn  " << turns << "\nScore " << score;
-       gameFont->print(ss.str(), 830, 410);
+        hud.draw();
+		gameFont->setFontColor(SETCOLOR_ARGB(255,0,0,0));
+		ss.str(std::string());
+		ss << "Turn  " << turns << "\nScore " << score;
+		gameFont->print(ss.str(), 830, 410);
 
     graphics->spriteEnd();                  // end drawing sprites
 }

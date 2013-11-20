@@ -102,6 +102,7 @@ public:
 	bool isRunning(){return !paused;}
 	void pause(){paused = true;}
 	void unpause(){paused = false;}
+	TextDX* getFont() {return gameFont;}
 };
 
 #endif
