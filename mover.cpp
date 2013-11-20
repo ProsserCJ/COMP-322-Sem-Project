@@ -47,7 +47,7 @@ void Mover::setDir(moverNS::DIR d){
 	}
 
 	dir = d;
-	distToMove = GRID_SIZE;
+	distToMove = GRID_SIZE*getScale();
 }
 
 void Mover::move(float frameTime){	

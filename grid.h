@@ -62,7 +62,7 @@ private:
 	bool nimkipSelected;
 	bool goalSelected;
 	VECTOR2 center;
-	Image* background; //pointer to background image, to update on scroll
+	Image* background; //pointer to the background image to update on scroll and zoom
 
 public:
 	//Constructors
@@ -294,7 +294,7 @@ public:
 			background->setScale(background->getScale()*mult);
 			background->setX(background->getX() * mult);
 			background->setY(background->getY() * mult);
-			center /= mult;
+			//center *= mult;
 	}
 };
 
