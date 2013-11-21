@@ -16,12 +16,16 @@
 
 class Carriable: public Mover{
 public:	
-	int getWeight() { return weight; }
-	Carriable(bool multiple) {multipleCarriers = multiple; carrierStrength = 0;}
-	Carriable() {multipleCarriers = false;}
-	bool getMultipleCarriers() {return multipleCarriers;}
-	void changeCarrierStrength(int strength) { carrierStrength+=strength; }
-	int getCarrierStrength() { return carrierStrength; }
+	Carriable(bool multiple)				 {multipleCarriers = multiple; carrierStrength = 0;}
+	Carriable()								 {multipleCarriers = false;}
+	
+	//Getters
+	bool getMultipleCarriers()				 {return multipleCarriers;}	
+	int getCarrierStrength()				 {return carrierStrength;}
+	int getWeight()							 {return weight;}
+
+	//Other
+	void changeCarrierStrength(int strength) {carrierStrength+=strength;}
 
 protected:
 	int weight;

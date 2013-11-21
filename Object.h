@@ -20,15 +20,19 @@ enum textureType {RN,BN,YN,B,C,F,O,G,BS};
 
 class Object: public Entity{
 public:
-	Object(): Entity(){pos.x = getX()/GRID_SIZE; pos.y = getY()/GRID_SIZE;}
-	int getXCoord() { return pos.x; }
-	int getYCoord() { return pos.y; }
-	GridLoc getGridLoc() { return pos; }	
-	void setGridLoc(int x, int y) {setX(x*GRID_SIZE); setY(y*GRID_SIZE); pos = GridLoc(x,y);}
-	void setGridLoc(GridLoc& p) { setX(pos.x*GRID_SIZE); setY(pos.y*GRID_SIZE); pos = GridLoc(p.x,p.y);}
-	void setPosRaw(int x, int y) {pos = GridLoc(x,y);}
-	textureType getImage() {return image;}
-	void setImage(textureType i){image = i;}
+	Object(): Entity()				{pos.x = getX()/GRID_SIZE; pos.y = getY()/GRID_SIZE;}
+
+	//Getters
+	int getXCoord()					{return pos.x;}
+	int getYCoord()					{return pos.y;}
+	GridLoc getGridLoc()			{return pos;}
+	textureType getImage()			{return image;}
+
+	//Setters
+	void setGridLoc(int x, int y)	{setX(x*GRID_SIZE); setY(y*GRID_SIZE); pos = GridLoc(x,y);}
+	void setGridLoc(GridLoc& p)		{setX(pos.x*GRID_SIZE); setY(pos.y*GRID_SIZE); pos = GridLoc(p.x,p.y);}
+	void setPosRaw(int x, int y)	{pos = GridLoc(x,y);}	
+	void setImage(textureType i)	{image = i;}
 
 protected:
 	GridLoc pos;

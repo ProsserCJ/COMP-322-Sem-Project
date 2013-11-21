@@ -17,29 +17,32 @@
 class Nimkip : public Lifeform
 {
 public:
-	Nimkip() { target = GridLoc(); task = IDLE; homeBase = GridLoc(0,1);}
-	GridLoc takeTurn();
-	virtual void move(GridLoc& p) {}	
-	virtual void move(int x, int y) {}	
-	void attack(GridLoc& p);
-	void checkSurroundings();
+	Nimkip(): target(GridLoc()), task(IDLE), homeBase(GridLoc(0,1)){}
+
+	//Getters
 	//returns a struct of their status info like needing help and their destination and task
 	NimkipInfo getInfo();
-	//has the nimkip try to complete their task
+
+	//Setters
+	void setPTask(Task t)			{task = t;}
+	void setSTask(Task t)			{secondaryTask = t;}
+	void setDestination(GridLoc g)	{destination = g;}
+
+	//Polymorphic functions
+	virtual void move(GridLoc& p)	{}	
+	virtual void move(int x, int y) {}	
+
+	//Other Actions
+	void attack(GridLoc& p);
+	void checkSurroundings();
+	GridLoc takeTurn();
 	GridLoc goTowardsGoal();
-	void setPTask(Task t) {task = t;}
-	void setSTask(Task t) {secondaryTask = t;}
-	void setDestination(GridLoc g) {destination = g;}
 
 private:
-	//checks its surroundings to see if there is a nimkip around it
-	void checkOthers();
-	//sets its goals and destination to a nimkip that needs help
-	//returns true if they find one that needs help
-	bool helpNimkip(GridLoc nimkip);
-	//gets input from user if they do not have a task
-	void die();
 
+	void checkOthers();	
+	bool helpNimkip(GridLoc nimkip);	
+	void die();
 	void getUserInput();
 
 protected:
@@ -60,8 +63,12 @@ class RedKip : public Nimkip
 {
 public:
 	RedKip() : Nimkip() {image = RN; this->setHealth(15);this->setAttackStrength(10); this->setStrength(5);}
+
+	//Actions
+	void move(int x, int y)			{move(GridLoc(x,y));}
 	void move(GridLoc& p);
-	void move(int x, int y) {move(GridLoc(x,y));}
+	
+	//Polymorphic functions
 	virtual void setNormal();
 	virtual void setHurt();
 	virtual void setAtk();
@@ -73,8 +80,12 @@ class YellowKip : public Nimkip
 {
 public:
 	YellowKip() : Nimkip() {image = YN; this->setHealth(10);this->setAttackStrength(5);this->setStrength(5);}
+	
+	//Actions
+	void move(int x, int y)			{move(GridLoc(x,y));}
 	void move(GridLoc& p);
-	void move(int x, int y) {move(GridLoc(x,y));}
+	
+	//Polymorphic functions
 	virtual void setNormal();
 	virtual void setHurt();
 	virtual void setAtk();
@@ -86,8 +97,12 @@ class BlueKip : public Nimkip
 {
 public:
 	BlueKip() : Nimkip() {image = BN; this->setHealth(10); this->setAttackStrength(5); this->setStrength(10);}
+	
+	//Actions
+	void move(int x, int y)			{move(GridLoc(x,y));}
 	void move(GridLoc& p);
-	void move(int x, int y) {move(GridLoc(x,y));}
+	
+	//Polymorphic functions
 	virtual void setNormal();
 	virtual void setHurt();
 	virtual void setAtk();

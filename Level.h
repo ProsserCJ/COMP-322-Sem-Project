@@ -41,6 +41,35 @@ using std::vector;
 //=============================================================================
 class level : public Game
 {
+public:
+    // Constructor
+    level();
+	level(int numEnemies, int numKips, int maxKips, int sizeX, int sizeY);
+
+    // Destructor
+    virtual ~level();
+
+    // Initialize the game
+    void initialize(HWND hwnd);
+    void update();      // must override pure virtual from Game
+    void ai();          // "
+    void collisions();  // "
+    void render();      // "
+    void releaseAll();
+    void resetAll();
+	void restart();
+	void gameOver();	
+	void runTimeStep();	
+	static bool transferObject(Lifeform* receiver, GridLoc item);
+	static void runAttack(Lifeform* attacker, GridLoc target);	
+	static Surroundings getSurroundings(GridLoc currentLocation);
+	static void getUserInput();
+
+	bool isRunning(){return !paused;}
+	void pause(){paused = true;}
+	void unpause(){paused = false;}
+	TextDX* getFont() {return gameFont;}
+
 private:
     // game items
     TextureManager gridTexture;   // grid texture
@@ -75,34 +104,6 @@ private:
 
 	static NimkipInfo getNimkipInfo(GridLoc nimkip);
 
-public:
-    // Constructor
-    level();
-	level(int numEnemies, int numKips, int maxKips, int sizeX, int sizeY);
-
-    // Destructor
-    virtual ~level();
-
-    // Initialize the game
-    void initialize(HWND hwnd);
-    void update();      // must override pure virtual from Game
-    void ai();          // "
-    void collisions();  // "
-    void render();      // "
-    void releaseAll();
-    void resetAll();
-	void restart();
-	void gameOver();	
-	void runTimeStep();	
-	static bool transferObject(Lifeform* receiver, GridLoc item);
-	static void runAttack(Lifeform* attacker, GridLoc target);	
-	static Surroundings getSurroundings(GridLoc currentLocation);
-	static void getUserInput();
-
-	bool isRunning(){return !paused;}
-	void pause(){paused = true;}
-	void unpause(){paused = false;}
-	TextDX* getFont() {return gameFont;}
 };
 
 #endif

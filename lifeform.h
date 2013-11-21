@@ -54,9 +54,7 @@ public:
 	virtual bool isNormal()=0;
 	virtual bool isAtk()=0;
 	virtual GridLoc takeTurn() = 0;
-	virtual void draw();
-	
-	
+	virtual void draw();	
 
 private:
     int health, atk, strength, lostHealth;

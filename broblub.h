@@ -16,7 +16,9 @@
 
 class Broblub: public Lifeform{
 public:
-	Broblub() {image = B;setHealth(30);setAttackStrength(2);}
+	Broblub() {image = B;setHealth(30);setAttackStrength(2);}	
+
+	//Polymorphic functions
 	virtual void move(GridLoc& p);	
 	virtual void move(int x, int y);
 	virtual void attack(GridLoc& p);
@@ -28,7 +30,9 @@ public:
 	virtual bool isNormal();
 	virtual bool isAtk();
 
+	//Other Actions
 	void moveRandom(Surroundings temp);
+
 private:
 	void die();
 };

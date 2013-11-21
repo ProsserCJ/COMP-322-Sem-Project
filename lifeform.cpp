@@ -1,3 +1,11 @@
+/* 
+ Group #: 3 
+ Members: Chris Prosser, Jacob Gearhart, Kory Kappel, Andrew Miller 
+ Course: COMP 322, Advanced Programming 
+ Date: 28 October 2013 
+ Description: This file implements parts of the Lifeform class
+*/ 
+
 #include "lifeform.h"
 #include <string>
 #include <stdio.h>

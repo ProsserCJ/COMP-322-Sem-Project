@@ -38,13 +38,18 @@ namespace moverNS
 class Mover : public Object           // inherits from Entity class
 {
 public:
-    // constructor
     Mover();
-	void move(float frameTime);
+
+	//Getters
+	moverNS::DIR getDir()			{return dir;}
+	double getDistToMove()			{return distToMove;}
+
+	//Setters
 	void setDir(moverNS::DIR d);
-	double getDistToMove(){return distToMove;}
-	void setDistToMove(double d) {distToMove = d; }
-	moverNS::DIR getDir(){ return dir; }
+	void setDistToMove(double d)	{distToMove = d; }
+
+	//Other Actions
+	void move(float frameTime);	
 	
 protected:	
 	moverNS::DIR dir;

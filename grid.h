@@ -30,14 +30,20 @@ class Tile: public Image{
 public:
 	Tile() {}
 	Tile(int x, int y, Space s);
-	void toggle();
+
+	//Getters
+	Object* getObject()			{return object;}
 	Space getType()				{return type;}
-	void setType(Space t)		{type = t;}
 	GridLoc getGridLoc()		{return pos;}
 	bool isSelected()			{return selected;}
-	void setObject(Object* o)	{object = o;}
-	Object* getObject()			{return object;}
+
+	//Setters
+	void setType(Space t)		{type = t;}	
+	void setObject(Object* o)	{object = o;}	
+	
+	//Other Actions
 	void scroll(VECTOR2& center);
+	void toggle();
 
 private:
 	bool selected;
@@ -49,21 +55,6 @@ private:
 //wrapper for a 2D array
 template<class T>
 class Grid{
-private:
-	int numKips;
-	vector<T*> temp;
-	vector<GridLoc> nimkipLocations;
-	Task primaryTask;
-	Task secondaryTask;
-	GridLoc destination;
-	T** grid;
-	Input* input;
-	int width, height;
-	bool nimkipSelected;
-	bool goalSelected;
-	VECTOR2 center;
-	Image* background; //pointer to the background image to update on scroll and zoom
-
 public:
 	//Constructors
 	Grid()
@@ -296,6 +287,26 @@ public:
 			background->setY(background->getY() * mult);
 			//center *= mult;
 	}
+	
+private:
+	T** grid;
+	int width, height;
+	int numKips;
+	vector<T*> temp;
+	vector<GridLoc> nimkipLocations;
+	
+	//Tasks
+	Task primaryTask;
+	Task secondaryTask;
+	GridLoc destination;
+	bool goalSelected;
+	
+	//Scroll, zoom, and selection
+	Input* input;
+	Image* background; //pointer to the background image to update on scroll and zoom
+	VECTOR2 center;
+	bool nimkipSelected;	
+	
 };
 
 #endif
