@@ -164,71 +164,19 @@ GridLoc Nimkip::goTowardsGoal()
 void Nimkip::checkOthers()
 {
 	GridLoc loc;
-	if(surroundings.E == NIMKIP)
+	for(int i = 0; i < visibleTiles.size(); i++)
 	{
-		loc.x = pos.x+1;
-		loc.y = pos.y;
-		if(helpNimkip(loc))
-			return;
-	}
-
-	if(surroundings.NE == NIMKIP)
-	{
-		loc.x = pos.x+1;
-		loc.y = pos.y-1;
-		if(helpNimkip(loc))
-			return;
-	}
-
-	if(surroundings.N == NIMKIP)
-	{
-		loc.x = pos.x;
-		loc.y = pos.y-1;
-		if(helpNimkip(loc))
-			return;
-	}
-	
-	if(surroundings.NW == NIMKIP)
-	{
-		loc.x = pos.x-1;
-		loc.y = pos.y-1;
-		if(helpNimkip(loc))
-			return;
-	}
-	
-	if(surroundings.W == NIMKIP)
-	{
-		loc.x = pos.x-1;
-		loc.y = pos.y;
-		if(helpNimkip(loc))
-			return;
-	}
-	
-	if(surroundings.SW == NIMKIP)
-	{
-		loc.x = pos.x-1;
-		loc.y = pos.y+1;
-		if(helpNimkip(loc))
-			return;
-	}
-	
-	if(surroundings.S == NIMKIP)
-	{
-		loc.x = pos.x;
-		loc.y = pos.y+1;
-		if(helpNimkip(loc))
-			return;
-	}
-	
-	if(surroundings.SE == NIMKIP)
-	{
-		loc.x = pos.x+1;
-		loc.y = pos.y+1;
-		if(helpNimkip(loc))
-			return;
+		if(visibleTiles[i].type  == NIMKIP)
+		{
+			//if that one needs help then stop checking others
+			if(helpNimkip(visibleTiles[i]))
+				return;
+		}
 	}
 }
 
+//not sure why this is commented out
+//look into this later
 bool Nimkip::helpNimkip(GridLoc nimkip)
 {
 	/*NimkipInfo info = level::getNimkipInfo(nimkip);
