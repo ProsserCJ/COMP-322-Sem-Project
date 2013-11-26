@@ -45,62 +45,20 @@ char getSurroundingChar(Space value)
 
 void Nimkip::checkSurroundings()
 {
+	//visibleTiles = level::getSurroundings(getGridLoc(),getSightRadius());
+
+	//used for outdated method
 	surroundings = level::getSurroundings(getGridLoc());
-	if(surroundings.N==BROBLUB)
+
+	for(int i = 0; i < visibleTiles.size(); i++)
 	{
-		attackTask = task;
-		task = ATTACK;
-		target = GridLoc(pos.x,pos.y-1);
-		return;
-	}
-	if(surroundings.S==BROBLUB)
-	{
-		attackTask = task;
-		task = ATTACK;
-		target = GridLoc(pos.x,pos.y+1);
-		return;
-	}
-	if(surroundings.E==BROBLUB)
-	{
-		attackTask = task;
-		task = ATTACK;
-		target = GridLoc(pos.x+1,pos.y);
-		return;
-	}
-	if(surroundings.W==BROBLUB)
-	{
-		attackTask = task;
-		task = ATTACK;
-		target = GridLoc(pos.x-1,pos.y);
-		return;
-	}
-	if(surroundings.NE==BROBLUB)
-	{
-		attackTask = task;
-		task = ATTACK;
-		target = GridLoc(pos.x+1,pos.y-1);
-		return;
-	}
-	if(surroundings.NW==BROBLUB)
-	{
-		attackTask = task;
-		task = ATTACK;
-		target = GridLoc(pos.x-1,pos.y-1);
-		return;
-	}
-	if(surroundings.SE==BROBLUB)
-	{
-		attackTask = task;
-		task = ATTACK;
-		target = GridLoc(pos.x+1,pos.y+1);
-		return;
-	}
-	if(surroundings.SW==BROBLUB)
-	{
-		attackTask = task;
-		task = ATTACK;
-		target = GridLoc(pos.x-1,pos.y+1);
-		return;
+		if(visibleTiles[i].type == BROBLUB)
+		{
+			attackTask = task;
+			task = ATTACK;
+			target = visibleTiles[i];
+			return;
+		}
 	}
 }
 

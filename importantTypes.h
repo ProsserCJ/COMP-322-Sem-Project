@@ -13,7 +13,8 @@ enum Space {NIMKIP,BROBLUB,COIN,FOOD,OBSTACLE,GAP,EMPTY,OVER,BASE};
 
 struct GridLoc{
 	int x, y;
-	GridLoc(int X=0, int Y=0){ x = X; y = Y; }
+	Space type;
+	GridLoc(int X=0, int Y=0, Space t = EMPTY){ x = X; y = Y; type = t;}
 };
 
 struct Surroundings

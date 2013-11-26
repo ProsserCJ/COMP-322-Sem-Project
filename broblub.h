@@ -13,10 +13,12 @@
 
 #include "Lifeform.h"
 #include "level.h"
+#include <vector>
+using std::vector;
 
 class Broblub: public Lifeform{
 public:
-	Broblub() {image = B;setHealth(30);setAttackStrength(2);}	
+	Broblub() {image = B;setHealth(30);setAttackStrength(2);setSightRadius(1);}	
 
 	//Polymorphic functions
 	virtual void move(GridLoc& p);	
@@ -31,7 +33,7 @@ public:
 	virtual bool isAtk();
 
 	//Other Actions
-	void moveRandom(Surroundings temp);
+	void moveRandom(vector<GridLoc> temp);
 
 private:
 	void die();

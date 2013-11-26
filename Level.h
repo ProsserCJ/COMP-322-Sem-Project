@@ -62,6 +62,7 @@ public:
 	void runTimeStep();	
 	static bool transferObject(Lifeform* receiver, GridLoc item);
 	static void runAttack(Lifeform* attacker, GridLoc target);	
+	static vector<GridLoc> getSurroundings(GridLoc currentLocation, int sightRadius);
 	static Surroundings getSurroundings(GridLoc currentLocation);
 	static void getUserInput();
 

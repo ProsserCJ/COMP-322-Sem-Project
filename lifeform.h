@@ -23,7 +23,7 @@ class Lifeform: public Mover{
 public:
 
 	//Init
-	Lifeform() {holdingObject = false; heldObject = 0;scored = false;}
+	Lifeform() {holdingObject = false; heldObject = 0;scored = false; sightRadius = 1;}
 	bool initialize(Game *gamePtr, int width, int height, int ncols, TextureManager *textureM, TextDX* font)
 		{gameFont = font; return Mover::initialize(gamePtr, width, height, ncols, textureM);}
 	
@@ -35,6 +35,7 @@ public:
 	Carriable* getHeldObject()				{return heldObject;}
 	bool getScored()						{return scored;}
 	int getScoredPoints()					{return scorePoints;}
+	int getSightRadius()					{return sightRadius;}
 
 	//Setters
 	void setAttackStrength(int a)			{atk = a;}
@@ -45,6 +46,7 @@ public:
     void setHolding(bool holding)			{holdingObject = holding;}
 	void setScored(bool s)					{scored = s;}
 	void setScorePoints(int p)				{scorePoints = p;}
+	void setSightRadius(int sight)			{sightRadius = sight;}
 
 	//Polymorphic functions
 	virtual void die() {}
@@ -58,6 +60,7 @@ public:
 
 private:
     int health, atk, strength, lostHealth;
+	int sightRadius;
     bool holdingObject;
     Carriable* heldObject;
 	bool scored;

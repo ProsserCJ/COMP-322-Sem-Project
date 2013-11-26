@@ -28,58 +28,25 @@ void Broblub::move(GridLoc& pos){
 
 void Broblub::move(int x, int y){
 	this->setGridLoc(x,y);
-
 }
+
 GridLoc Broblub::takeTurn(){
 	//check surroundings
 	//if there's a nimkip, attack
 	if(this->getHealth()>0)
 	{
-		Surroundings temp;
-		GridLoc loc;
-		temp = level::getSurroundings(pos);
+		auto temp = level::getSurroundings(pos,getSightRadius());
 	
-		if(temp.E == NIMKIP) {
-			loc.x = getGridLoc().x + 1;
-			loc.y = getGridLoc().y;
-			level::runAttack(this, loc);
+		for(int i = 0; i < temp.size(); i++)
+		{
+			if(temp[i].type==NIMKIP)
+			{
+				level::runAttack(this,temp[i]);
+				return pos;
+			}
 		}
-		else if(temp.NE == NIMKIP) {
-			loc.x = getGridLoc().x + 1;
-			loc.y = getGridLoc().y - 1;
-			level::runAttack(this, loc);
-		}
-		else if(temp.N == NIMKIP) {
-			loc.x = getGridLoc().x;
-			loc.y = getGridLoc().y - 1;
-			level::runAttack(this, loc);
-		}
-		else if(temp.NW == NIMKIP) {
-			loc.x = getGridLoc().x - 1;
-			loc.y = getGridLoc().y - 1;
-			level::runAttack(this, loc);
-		}
-		else if(temp.W == NIMKIP) {
-			loc.x = getGridLoc().x - 1;
-			loc.y = getGridLoc().y;
-			level::runAttack(this, loc);
-		}
-		else if(temp.SW == NIMKIP) {
-			loc.x = getGridLoc().x - 1;
-			loc.y = getGridLoc().y + 1;
-			level::runAttack(this, loc);
-		}
-		else if(temp.S == NIMKIP) {
-			loc.x = getGridLoc().x;
-			loc.y = getGridLoc().y + 1;
-			level::runAttack(this, loc);
-		}
-		else if(temp.SE == NIMKIP) {
-			loc.x = getGridLoc().x + 1;
-			loc.y = getGridLoc().y + 1;
-			level::runAttack(this, loc);
-		}
-		else moveRandom(temp);
+		
+		moveRandom(temp);
 	}
 	else
 	{
@@ -89,59 +56,61 @@ GridLoc Broblub::takeTurn(){
 	return pos;
 }
 
-void Broblub::moveRandom(Surroundings temp) 
+//specific to the sight radius of 1
+//if other enemies were made with a larger radius the movement would have to be altered
+void Broblub::moveRandom(vector<GridLoc> temp) 
 {
 	int r;
 	GridLoc loc;
-	r = rand()%8;  //rgen?
+	r = rand()%temp.size();  //rgen?
 
-	if(r == 1 && temp.N == EMPTY) {
-			/*loc.x = getGridLoc().x;
-			loc.y = getGridLoc().y - 1;
-			move(loc);*/
-			setDir(UP);
-	}
-	else if(r == 2 && temp.NW == EMPTY) {
-			/*loc.x = getGridLoc().x - 1;
-			loc.y = getGridLoc().y - 1;
-			move(loc); */
-			setDir(UP_LEFT);
-	}
-	else if(r == 3 && temp.NE == EMPTY) {
-			/*loc.x = getGridLoc().x + 1;
-			loc.y = getGridLoc().y - 1;
-			move(loc); */ 
-			setDir(UP_RIGHT);
-	}
-	else if(r == 4 && temp.W == EMPTY) {
-			/*loc.x = getGridLoc().x - 1;
-			loc.y = getGridLoc().y;
-			move(loc);*/
-			setDir(LEFT);
-	}
-	else if(r == 5 && temp.E == EMPTY) {
-			/*loc.x = getGridLoc().x + 1;
-			loc.y = getGridLoc().y;
-			move(loc);  */
-			setDir(RIGHT);
-	}
-	else if(r == 6 && temp.S == EMPTY) {
-		/*	loc.x = getGridLoc().x;
-			loc.y = getGridLoc().y + 1;
-			move(loc);  */
-			setDir(DOWN);
-	}
-	else if(r == 7 && temp.SW == EMPTY) {
-			/*loc.x = getGridLoc().x - 1;
-			loc.y = getGridLoc().y + 1;
-			move(loc); */ 
-			setDir(DOWN_LEFT);
-	}
-	else if(r == 0 && temp.SE == EMPTY) {
-		/*	loc.x = getGridLoc().x + 1;
-			loc.y = getGridLoc().y + 1;
-			move(loc);  */
-			setDir(DOWN_RIGHT);
+	//choosing the direction is specific to the sightRadius of 1
+	//this makes them automattically move to a space
+	//should be modified so that the choice merely chooses where to go and then they have a move function to get to it
+	//similar to the nimkip's movement
+	if(temp[r].type==EMPTY)
+	{
+		if(temp[r].x > loc.x)
+		{
+			if(temp[r].y > loc.y)
+			{
+				setDir(DOWN_RIGHT);
+			}
+			else if(temp[r].y < loc.y)
+			{
+				setDir(UP_RIGHT);
+			}
+			else
+			{
+				setDir(RIGHT);
+			}
+		}
+		else if(temp[r].x < loc.x)
+		{
+			if(temp[r].y > loc.y)
+			{
+				setDir(DOWN_LEFT);
+			}
+			else if(temp[r].y < loc.y)
+			{
+				setDir(UP_LEFT);
+			}
+			else
+			{
+				setDir(LEFT);
+			}
+		}
+		else
+		{
+			if(temp[r].y > loc.y)
+			{
+				setDir(DOWN);
+			}
+			else if(temp[r].y < loc.y)
+			{
+				setDir(UP);
+			}
+		}
 	}
 }
 

@@ -526,6 +526,27 @@ void level::fillLevel()
 	   for (auto it = lifeForms.begin(); it != lifeForms.end(); ++it) grid.setObject(*it);
 }
 
+//takes the location of the lifeform and the value for how far they can see
+//will not return values for tiles that do not exist, the OVER space value is no longer necessary
+vector<GridLoc> level::getSurroundings(GridLoc currentLocation, int sightRadius)
+{
+	vector<GridLoc> surroundings;
+	//goes through and fills the surroundings vector with every visible tile
+	for(int i = sightRadius*-1; i <= sightRadius; i++)
+	{
+		for(int j = sightRadius*-1; j <= sightRadius; j++)
+		{
+			if(i!=0 || j!=0)
+			{
+				if(currentLocation.x+i>=0 && currentLocation.x+i<grid.getWidth() && currentLocation.y+j>=0 && currentLocation.y+j<grid.getHeight())
+					surroundings.push_back(grid.getTile(GridLoc(currentLocation.x+i,currentLocation.y+j)).getGridLoc());
+			}
+		}
+	}
+
+	return surroundings;
+}
+
 Surroundings level::getSurroundings(GridLoc currentLocation)
 {
 	Surroundings box;
@@ -535,7 +556,7 @@ Surroundings level::getSurroundings(GridLoc currentLocation)
 		box.N = grid.getTile(GridLoc(currentLocation.x,currentLocation.y-1)).getType();
 	else
 		box.N = OVER;
-
+	
 	if(currentLocation.y<grid.getHeight()-1 && currentLocation.x>=0 && currentLocation.x < grid.getWidth())//they are at the bottem
 		//box.S = levelMap[currentLocation.x][currentLocation.y+1];
 		box.S = grid.getTile(GridLoc(currentLocation.x,currentLocation.y+1)).getType();

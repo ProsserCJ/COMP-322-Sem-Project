@@ -13,6 +13,8 @@
 
 #include "Lifeform.h"
 #include "level.h"
+#include <vector>
+using std::vector;
 
 class Nimkip : public Lifeform
 {
@@ -46,6 +48,7 @@ private:
 	void getUserInput();
 
 protected:
+	vector<GridLoc> visibleTiles;
 	Surroundings surroundings;
 	bool needHelp;//determines if they need help with something
 	Task task;

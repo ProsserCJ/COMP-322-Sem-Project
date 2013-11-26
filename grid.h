@@ -33,12 +33,12 @@ public:
 
 	//Getters
 	Object* getObject()			{return object;}
-	Space getType()				{return type;}
+	Space getType()				{return pos.type;}
 	GridLoc getGridLoc()		{return pos;}
 	bool isSelected()			{return selected;}
 
 	//Setters
-	void setType(Space t)		{type = t;}	
+	void setType(Space t)		{pos.type = t;}	
 	void setObject(Object* o)	{object = o;}	
 	
 	//Other Actions
@@ -47,7 +47,6 @@ public:
 
 private:
 	bool selected;
-	Space type;
 	GridLoc pos;
 	Object* object;
 };

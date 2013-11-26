@@ -19,7 +19,7 @@ Tile::Tile(int x=0, int y=0, Space s=EMPTY){
 }
 
 void Tile::toggle(){
-	if (type == OBSTACLE) return;
+	if (pos.type == OBSTACLE) return;
 	selected = !selected;
 	if (getCurrentFrame() == 0) setCurrentFrame(1);
 	else setCurrentFrame(0);
