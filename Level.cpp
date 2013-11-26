@@ -189,6 +189,7 @@ void level::update()
 			input->setMouseLButton(false);
 			unpause();
 			hud.setCurrentFrame(1);	
+			this->getUserInput();
 		} 		
 		grid.update();
 	}
