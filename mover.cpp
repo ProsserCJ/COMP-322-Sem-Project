@@ -30,6 +30,51 @@ Mover::Mover() : Object()
 	distToMove = 0;
 }
 
+void Mover::chooseDir(GridLoc start, GridLoc end)
+{
+	if(end.x > start.x)
+		{
+			if(end.y > start.y)
+			{
+				setDir(DOWN_RIGHT);
+			}
+			else if(end.y < start.y)
+			{
+				setDir(UP_RIGHT);
+			}
+			else
+			{
+				setDir(RIGHT);
+			}
+		}
+		else if(end.x < start.x)
+		{
+			if(end.y > start.y)
+			{
+				setDir(DOWN_LEFT);
+			}
+			else if(end.y < start.y)
+			{
+				setDir(UP_LEFT);
+			}
+			else
+			{
+				setDir(LEFT);
+			}
+		}
+		else
+		{
+			if(end.y > start.y)
+			{
+				setDir(DOWN);
+			}
+			else if(end.y < start.y)
+			{
+				setDir(UP);
+			}
+		}
+}
+
 void Mover::setDir(moverNS::DIR d){
 	if (distToMove > 0) return;
 	GridLoc temp = getGridLoc();

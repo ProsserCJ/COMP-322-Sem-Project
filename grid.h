@@ -116,12 +116,22 @@ public:
 					 if(!grid[x][y].isSelected())
 					 {
 						nimkipSelected = true;
+						nimkipLocations.push_back(GridLoc(x,y));//adds the nimkip's location to the vector of nimkip locations
 						numKips++;
 						grid[x][y].toggle();
 					 }
 					 else
 					 {
 						 numKips--;
+						 //need to remove that space from the vector of nimkip locations
+						 for(auto i = nimkipLocations.begin(); i < nimkipLocations.end(); i++)
+						 {
+							 if(i->x==x && i->y==y)
+							 {
+								 nimkipLocations.erase(i);
+								 break;
+							 }
+						 }
 						 if(numKips==0)
 						 {
 							nimkipSelected = false;
@@ -136,7 +146,7 @@ public:
 				 case COIN:
 				 case EMPTY:
 					 grid[x][y].toggle();
-					 if(nimkipSelected && !goalSelected)//if the use selected an nimkip then let them click elsewhere
+					 if(nimkipSelected && !goalSelected)//if the user selected a nimkip then let them click elsewhere
 					 {	 
 						 primaryTask = WALK;
 						 secondaryTask = IDLE;
@@ -150,7 +160,7 @@ public:
 					 break;
 				 case FOOD:
 					 grid[x][y].toggle();
-					 if(nimkipSelected && !goalSelected)//if the use selected an nimkip then let them click elsewhere
+					 if(nimkipSelected && !goalSelected)//if the user selected a nimkip then let them click elsewhere
 					 {	 
 						 primaryTask = WALK;
 						 secondaryTask = LIFT;
@@ -204,6 +214,15 @@ public:
 		auto Ts = getSelectedTiles();
 		for (auto it = Ts.begin(); it != Ts.end(); ++it)
 			(*it)->toggle();	
+	}
+
+	void clearInput()
+	{
+		primaryTask = IDLE;
+		secondaryTask = IDLE;
+		goalSelected = false;
+		nimkipLocations.clear();
+		nimkipSelected = false;
 	}
 
 	void setType(GridLoc& g, textureType t){ 

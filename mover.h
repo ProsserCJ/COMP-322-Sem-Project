@@ -51,6 +51,9 @@ public:
 	//Other Actions
 	void move(float frameTime);	
 	
+	//set direction of move based off of start and end locations
+	void chooseDir(GridLoc start, GridLoc end);
+
 protected:	
 	moverNS::DIR dir;
 	double distToMove;

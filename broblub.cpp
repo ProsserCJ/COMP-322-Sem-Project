@@ -61,7 +61,7 @@ GridLoc Broblub::takeTurn(){
 void Broblub::moveRandom(vector<GridLoc> temp) 
 {
 	int r;
-	GridLoc loc;
+	GridLoc loc = pos;
 	r = rand()%temp.size();  //rgen?
 
 	//choosing the direction is specific to the sightRadius of 1
@@ -70,47 +70,7 @@ void Broblub::moveRandom(vector<GridLoc> temp)
 	//similar to the nimkip's movement
 	if(temp[r].type==EMPTY)
 	{
-		if(temp[r].x > loc.x)
-		{
-			if(temp[r].y > loc.y)
-			{
-				setDir(DOWN_RIGHT);
-			}
-			else if(temp[r].y < loc.y)
-			{
-				setDir(UP_RIGHT);
-			}
-			else
-			{
-				setDir(RIGHT);
-			}
-		}
-		else if(temp[r].x < loc.x)
-		{
-			if(temp[r].y > loc.y)
-			{
-				setDir(DOWN_LEFT);
-			}
-			else if(temp[r].y < loc.y)
-			{
-				setDir(UP_LEFT);
-			}
-			else
-			{
-				setDir(LEFT);
-			}
-		}
-		else
-		{
-			if(temp[r].y > loc.y)
-			{
-				setDir(DOWN);
-			}
-			else if(temp[r].y < loc.y)
-			{
-				setDir(UP);
-			}
-		}
+		this->chooseDir(loc,temp[r]);
 	}
 }
 

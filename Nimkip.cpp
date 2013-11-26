@@ -45,7 +45,7 @@ char getSurroundingChar(Space value)
 
 void Nimkip::checkSurroundings()
 {
-	//visibleTiles = level::getSurroundings(getGridLoc(),getSightRadius());
+	visibleTiles = level::getSurroundings(getGridLoc(),getSightRadius());
 
 	//used for outdated method
 	surroundings = level::getSurroundings(getGridLoc());
@@ -140,23 +140,23 @@ GridLoc Nimkip::goTowardsGoal()
 		else
 		{
 			move(destination);
+			//if they make it home
+			if(this->pos.x ==destination.x && pos.y == destination.y)
+			{
+				task = IDLE;
+				//perhaps hoard disband
+				//dont do it again if it is already done
+				if(this->getHeldObject()->getActive())
+				{
+					this->getHeldObject()->setVisible(false);
+					this->getHeldObject()->setActive(false);
+					//used to update the level score
+					setScored(true);
+					setScorePoints(50);
+				}
+			}
 		}
 		break;
-	}
-	//if they make it home
-	if(this->pos.x ==destination.x && pos.y == destination.y)
-	{
-		task = IDLE;
-		//perhaps hoard disband
-		//dont do it again if it is already done
-		if(this->getHeldObject()->getActive())
-		{
-			this->getHeldObject()->setVisible(false);
-			this->getHeldObject()->setActive(false);
-			//used to update the level score
-			setScored(true);
-			setScorePoints(50);
-		}
 	}
 	return GridLoc();
 }
@@ -253,54 +253,57 @@ void Nimkip::die()
 
 void Nimkip::getUserInput()
 {
-		//will set values for the nimkips
-       level::getUserInput();
-       //if they have a secondary task make it so they stop before they get there
-       if(secondaryTask!=IDLE)
-       {
-              target = destination;
-              Surroundings temp = level::getSurroundings(destination);
-              if(temp.N==EMPTY)
-              {
-                     destination = GridLoc(destination.x,destination.y-1);
-                     return;
-              }
-              if(temp.S==EMPTY)
-              {
-                     destination = GridLoc(destination.x,destination.y+1);
-                     return;
-              }
-              if(temp.E==EMPTY)
-              {
-                     destination = GridLoc(destination.x+1,destination.y);
-                     return;
-              }
-              if(temp.W==EMPTY)
-              {
-                     destination = GridLoc(destination.x-1,destination.y);
-                     return;
-              }
-              if(temp.NE==EMPTY)
-              {
-                     destination = GridLoc(destination.x+1,destination.y-1);
-                     return;
-              }
-              if(temp.NW==EMPTY)
-              {
-                     destination = GridLoc(destination.x-1,destination.y-1);
-                     return;
-              }
-              if(temp.SE==EMPTY)
-              {
-                     destination = GridLoc(destination.x+1,destination.y+1);
-                     return;
-              }
-              if(temp.SW==EMPTY)
-              {
-                     destination = GridLoc(destination.x-1,destination.y+1);
-                     return;
-              }
-       }
+	//will set values for the nimkips
+    level::getUserInput();
+    //if they have a secondary task make it so they stop before they get there
+    if(secondaryTask!=IDLE)
+    {
+        target = destination;
+		if(destination.type!=EMPTY)
+		{
+			Surroundings temp = level::getSurroundings(destination);
+			if(temp.N==EMPTY)
+			{
+					destination = GridLoc(destination.x,destination.y-1);
+					return;
+			}
+			if(temp.S==EMPTY)
+			{
+					destination = GridLoc(destination.x,destination.y+1);
+					return;
+			}
+			if(temp.E==EMPTY)
+			{
+					destination = GridLoc(destination.x+1,destination.y);
+					return;
+			}
+			if(temp.W==EMPTY)
+			{
+					destination = GridLoc(destination.x-1,destination.y);
+					return;
+			}
+			if(temp.NE==EMPTY)
+			{
+					destination = GridLoc(destination.x+1,destination.y-1);
+					return;
+			}
+			if(temp.NW==EMPTY)
+			{
+					destination = GridLoc(destination.x-1,destination.y-1);
+					return;
+			}
+			if(temp.SE==EMPTY)
+			{
+					destination = GridLoc(destination.x+1,destination.y+1);
+					return;
+			}
+			if(temp.SW==EMPTY)
+			{
+					destination = GridLoc(destination.x-1,destination.y+1);
+					return;
+			}
+		}
+    }
 }
 
 void Nimkip::attack(GridLoc& p)
