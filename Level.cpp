@@ -1,6 +1,6 @@
 /* 
  Group #: Team 3 
- Members: Chris Prosser, Jacob Gearhart, Kory Kappel, 
+ Members: Chris Prosser, Jacob Gearhart, Kory Kappel, Andy Miller
  Course: COMP 322, Advanced Programming 
  Date: 28 October 2013 
  Description: This file, heavily based on the skeleton 
@@ -19,8 +19,6 @@
 #include "level.h"
 
 #define SQR(n) ((n)*(n))
-
-//need to map x and y values of the Levelmap data to the x and y values of the center of each grid square
 
 //=============================================================================
 // Constructors
@@ -340,7 +338,6 @@ void level::runAttack(Lifeform* attacker, GridLoc target)
 }
 
 //fills level with all necessary starting objects
-//x and y positions need to be mapped to screen x and y positions
 void level::fillLevel()
 {
 	//create BASE 
@@ -602,6 +599,11 @@ Surroundings level::getSurroundings(GridLoc currentLocation)
 	return box;
 }
 
+Space level::getTileType(GridLoc tile)
+{
+	return grid.getTile(tile).getType();
+}
+
 //this finds a lifeForm pointer based off of its location
 //meant only to be used by the level object
 Lifeform* level::identifyLifeForm(GridLoc pos)
@@ -618,7 +620,7 @@ Lifeform* level::identifyLifeForm(GridLoc pos)
 
 Object* level::identifyObject(GridLoc pos)
 {
-	for(int i = 0; i < lifeForms.size(); i++)
+	for(int i = 0; i < objects.size(); i++)
 	{
 		if(objects[i]->getGridLoc().x == pos.x && objects[i]->getGridLoc().y == pos.y)
 		{
@@ -637,6 +639,19 @@ NimkipInfo level::getNimkipInfo(GridLoc pos)
 
 void level::getUserInput()
 {
+	//if they are to pick something up make them stop before actually getting to it
+	if(grid.getSTask()==LIFT)
+	{
+		auto location = getSurroundings(grid.getDestination(),1);
+		for(int i = 0; i < location.size(); i++)
+		{
+			if(location[i].type==EMPTY)
+			{
+				grid.setDestination(location[i]);
+				break;
+			}
+		}
+	}
 	for(int i = 0; i < grid.getNimkips().size(); i++)
 	{
 		Lifeform* l = identifyLifeForm(grid.getNimkips()[i]);
@@ -647,5 +662,14 @@ void level::getUserInput()
 			n->setSTask(grid.getSTask());
 			n->setDestination(grid.getDestination());
 		}
+	}
+}
+
+void level::collectCoin(GridLoc coinLocation)
+{
+	auto stuff = identifyObject(coinLocation);
+	if(grid.getTile(coinLocation).getType()==COIN)
+	{
+		identifyObject(coinLocation)->setVisible(false);
 	}
 }

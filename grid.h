@@ -70,6 +70,7 @@ public:
 	//Setters
 	void setType(int x, int y, Space t)	{grid[x][y].setType(t);}
 	void setType(GridLoc& g, Space t)	{grid[g.x][g.y].setType(t);}
+	void setDestination(GridLoc g)		{destination = g;}
 	
 	//Getters
 	int getWidth()				 {return width;}

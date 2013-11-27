@@ -13,6 +13,8 @@
 // Charles Kelly
 // Chapter 6 level.h v1.0
 
+//currently when the nimkip tries to go to lifting mode everything dies
+
 #ifndef _LEVEL_H             // Prevent multiple definitions if this 
 #define _LEVEL_H             // file is included in more than one place
 #define WIN32_LEAN_AND_MEAN
@@ -63,6 +65,8 @@ public:
 	static bool transferObject(Lifeform* receiver, GridLoc item);
 	static void runAttack(Lifeform* attacker, GridLoc target);	
 	static vector<GridLoc> getSurroundings(GridLoc currentLocation, int sightRadius);
+	static Space getTileType(GridLoc tile);
+	static void collectCoin(GridLoc coinLocation);
 	static Surroundings getSurroundings(GridLoc currentLocation);
 	static void getUserInput();
 

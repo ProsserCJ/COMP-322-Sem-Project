@@ -23,7 +23,7 @@ class Lifeform: public Mover{
 public:
 
 	//Init
-	Lifeform() {holdingObject = false; heldObject = 0;scored = false; sightRadius = 1;}
+	Lifeform() {holdingObject = false; heldObject = 0;scored = false; sightRadius = 1;scorePoints = 50;}
 	bool initialize(Game *gamePtr, int width, int height, int ncols, TextureManager *textureM, TextDX* font)
 		{gameFont = font; return Mover::initialize(gamePtr, width, height, ncols, textureM);}
 	

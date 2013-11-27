@@ -48,7 +48,7 @@ void Nimkip::checkSurroundings()
 {
 	visibleTiles = level::getSurroundings(getGridLoc(),getSightRadius());
 
-	//used for outdated method
+	//used for outdated methods
 	surroundings = level::getSurroundings(getGridLoc());
 
 	for(int i = 0; i < visibleTiles.size(); i++)
@@ -118,6 +118,7 @@ GridLoc Nimkip::goTowardsGoal()
 		else
 		{//if they can't pick it up then they need help
 			needHelp = true;
+			this->setAtk();
 		}
 		//if the combined strength is enough to pick it up say they don't need help and set them to carry it
 		if(getHeldObject()->getWeight() <= getHeldObject()->getCarrierStrength())
@@ -125,6 +126,7 @@ GridLoc Nimkip::goTowardsGoal()
 			needHelp = false;
 			task = CARRY;
 			destination = homeBase;
+			this->setAtk();
 		}
 		break;
 	case ATTACK:
@@ -471,7 +473,7 @@ void YellowKip::move(GridLoc& p) {
 }
 
 //working on new movement method
-//currently onle works when choosing points directly parallel to it
+//doesn't work with obstacle correction
 //shows UI is working though
 //also currently cannot click tiles outside of original view, that is bad
 void RedKip::move(GridLoc& p) {  
@@ -488,22 +490,32 @@ void RedKip::move(GridLoc& p) {
 		//go south if possible
 		if(dirVec.y>0)
 		{
-			for(int i = 0; i < visibleTiles.size(); i++)
+			if(level::getTileType(GridLoc(curPos.x,curPos.y+1)) == EMPTY)
 			{
-				if(visibleTiles[i].y>curPos.y && visibleTiles[i].x==curPos.x && visibleTiles[i].type==EMPTY)
-				{
-					setDir(DOWN);
-				}
+				setDir(DOWN);
+				return;
+			}
+			if(level::getTileType(GridLoc(curPos.x,curPos.y+1)) == COIN)
+			{
+				level::collectCoin(GridLoc(curPos.x,curPos.y+1));
+				setScored(true);
+				setDir(DOWN);
+				return;
 			}
 		}
 		else if(dirVec.y<0)//go north if possible
 		{
-			for(int i = 0; i < visibleTiles.size(); i++)
+			if(level::getTileType(GridLoc(curPos.x,curPos.y-1)) == EMPTY)
 			{
-				if(visibleTiles[i].y>curPos.y && visibleTiles[i].x==curPos.x && visibleTiles[i].type==EMPTY)
-				{
-					setDir(UP);
-				}
+				setDir(UP);
+				return;
+			}
+			if(level::getTileType(GridLoc(curPos.x,curPos.y-1)) == COIN)
+			{
+				level::collectCoin(GridLoc(curPos.x,curPos.y-1));
+				setScored(true);
+				setDir(UP);
+				return;
 			}
 		}
 	}
@@ -511,35 +523,47 @@ void RedKip::move(GridLoc& p) {
 	{
 		if(dirVec.y>0)//go south east if possible
 		{
-			for(int i = 0; i < visibleTiles.size(); i++)
+			if(level::getTileType(GridLoc(curPos.x+1,curPos.y+1)) == EMPTY)
 			{
-				if(visibleTiles[i].y>curPos.y && visibleTiles[i].x>curPos.x && visibleTiles[i].type==EMPTY)
-				{
-					setDir(DOWN_RIGHT);
-					break;
-				}
+				setDir(DOWN_RIGHT);
+				return;
+			}
+			if(level::getTileType(GridLoc(curPos.x+1,curPos.y+1)) == COIN)
+			{
+				level::collectCoin(GridLoc(curPos.x+1,curPos.y+1));
+				setScored(true);
+				setDir(DOWN_RIGHT);
+				return;
 			}
 		}
 		else if(dirVec.y<0)//go north east if possible
 		{
-			for(int i = 0; i < visibleTiles.size(); i++)
+			if(level::getTileType(GridLoc(curPos.x+1,curPos.y-1)) == EMPTY)
 			{
-				if(visibleTiles[i].y>curPos.y && visibleTiles[i].x>curPos.x && visibleTiles[i].type==EMPTY)
-				{
-					setDir(UP_RIGHT);
-					break;
-				}
+				setDir(UP_RIGHT);
+				return;
+			}
+			if(level::getTileType(GridLoc(curPos.x+1,curPos.y-1)) == COIN)
+			{
+				level::collectCoin(GridLoc(curPos.x+1,curPos.y-1));
+				setScored(true);
+				setDir(UP_RIGHT);
+				return;
 			}
 		}
 		else if(dirVec.y==0)//go east
 		{
-			for(int i = 0; i < visibleTiles.size(); i++)
+			if(level::getTileType(GridLoc(curPos.x+1,curPos.y)) == EMPTY)
 			{
-				if(visibleTiles[i].y==curPos.y && visibleTiles[i].x>curPos.x && visibleTiles[i].type==EMPTY)
-				{
-					setDir(RIGHT);
-					break;
-				}
+				setDir(RIGHT);
+				return;
+			}
+			if(level::getTileType(GridLoc(curPos.x+1,curPos.y)) == COIN)
+			{
+				level::collectCoin(GridLoc(curPos.x+1,curPos.y));
+				setScored(true);
+				setDir(RIGHT);
+				return;
 			}
 		}
 	}
@@ -547,35 +571,47 @@ void RedKip::move(GridLoc& p) {
 	{
 		if(dirVec.y>0)//go south west if possible
 		{
-			for(int i = 0; i < visibleTiles.size(); i++)
+			if(level::getTileType(GridLoc(curPos.x-1,curPos.y+1)) == EMPTY)
 			{
-				if(visibleTiles[i].y>curPos.y && visibleTiles[i].x<curPos.x && visibleTiles[i].type==EMPTY)
-				{
-					setDir(DOWN_LEFT);
-					break;
-				}
+				setDir(DOWN_LEFT);
+				return;
+			}
+			if(level::getTileType(GridLoc(curPos.x-1,curPos.y+1)) == COIN)
+			{
+				level::collectCoin(GridLoc(curPos.x-1,curPos.y+1));
+				setScored(true);
+				setDir(DOWN_LEFT);
+				return;
 			}
 		}
 		else if(dirVec.y<0)//go north west if possible
 		{
-			for(int i = 0; i < visibleTiles.size(); i++)
+			if(level::getTileType(GridLoc(curPos.x-1,curPos.y-1)) == EMPTY)
 			{
-				if(visibleTiles[i].y>curPos.y && visibleTiles[i].x<curPos.x && visibleTiles[i].type==EMPTY)
-				{
-					setDir(UP_LEFT);
-					break;
-				}
+				setDir(UP_LEFT);
+				return;
+			}
+			if(level::getTileType(GridLoc(curPos.x-1,curPos.y-1)) == COIN)
+			{
+				level::collectCoin(GridLoc(curPos.x-1,curPos.y-1));
+				setScored(true);
+				setDir(UP_LEFT);
+				return;
 			}
 		}
 		else if(dirVec.y==0)//go west
 		{
-			for(int i = 0; i < visibleTiles.size(); i++)
+			if(level::getTileType(GridLoc(curPos.x-1,curPos.y)) == EMPTY)
 			{
-				if(visibleTiles[i].y==curPos.y && visibleTiles[i].x<curPos.x && visibleTiles[i].type==EMPTY)
-				{
-					setDir(LEFT);
-					break;
-				}
+				setDir(LEFT);
+				return;
+			}
+			if(level::getTileType(GridLoc(curPos.x-1,curPos.y)) == COIN)
+			{
+				level::collectCoin(GridLoc(curPos.x-1,curPos.y));
+				setScored(true);
+				setDir(LEFT);
+				return;
 			}
 		}
 	}
