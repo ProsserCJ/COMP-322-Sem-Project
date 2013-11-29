@@ -71,7 +71,7 @@ public:
 	static void getUserInput();
 
 	bool isRunning(){return !paused;}
-	void pause(){paused = true;}
+	void pause(){paused = true; hud.setCurrentFrame(0); grid.clearInput();}
 	void unpause(){paused = false;}
 	TextDX* getFont() {return gameFont;}
 

@@ -20,8 +20,10 @@ void Lifeform::draw()
 		{
 			char buffer[5];
 			sprintf(buffer,"-%i",lostHealth);
+			float X = getX() + (getWidth()*getScale())/2-6*getScale();
+			float Y = getY() - .125*fontDisplayFrameCount;
 			gameFont->setFontColor(SETCOLOR_ARGB(255 - 3*fontDisplayFrameCount,255,0,0));
-			gameFont->print(buffer, getX()+getWidth()/2-5, getY() - .125*fontDisplayFrameCount);		
+			gameFont->print(buffer, X, Y);		
 		}
 		else{
 			fontDisplayFrameCount = 0;

@@ -177,11 +177,7 @@ void level::update()
 	}
 	
 	if(input->getMouseLButton()){
-		if(isRunning()){
-			pause();
-			hud.setCurrentFrame(0);
-			grid.clearInput();
-		}		
+		if(isRunning()) pause();		
 		if(hud.wasClicked()){ 
 			grid.clearSelected();			
 			input->setMouseLButton(false);
@@ -200,8 +196,10 @@ void level::update()
 	for(int i=0; i<lifeForms.size(); i++)
 		lifeForms[i]->move(frameTime);
 
-	grid.scroll(frameTime);	
-	grid.zoom(frameTime);
+	//call zoom and scroll, and pause the action is either is taking place.
+	grid.scroll(frameTime);
+	if(grid.zoom(frameTime)) pause();
+
 	
 	frameCount++;
 }

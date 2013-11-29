@@ -108,18 +108,19 @@ public:
 				grid[i][j].draw(); 
 	}
 
-	void update(){	
-		int x = input->getMouseX()/GRID_SIZE;
-		int y = input->getMouseY()/GRID_SIZE;
+	void update(){
+		VECTOR2 diff = VECTOR2((GAME_WIDTH-HUD_WIDTH)/2.f, GAME_HEIGHT/2.f) * background->getScale();		
+		int x = (input->getMouseX() + (center.x - diff.x))/(GRID_SIZE*background->getScale());
+		int y = (input->getMouseY() + (center.y - diff.y))/(GRID_SIZE*background->getScale());
 		if (x < width && y < height){	
 			switch(grid[x][y].getType()){
 				 case NIMKIP: 
-					 if(!grid[x][y].isSelected())
+					 grid[x][y].toggle();
+					 if(grid[x][y].isSelected())
 					 {
 						nimkipSelected = true;
 						nimkipLocations.push_back(GridLoc(x,y));//adds the nimkip's location to the vector of nimkip locations
-						numKips++;
-						grid[x][y].toggle();
+						numKips++;						
 					 }
 					 else
 					 {
@@ -139,8 +140,7 @@ public:
 							goalSelected = false;
 							clearSelected();
 						 }
-						 else
-							 grid[x][y].toggle();
+					
 					 }
 					 break;
 				 case BROBLUB:
@@ -244,20 +244,21 @@ public:
 		getTile(o->getGridLoc()).setObject(o);
 	}
 
-	void scroll(float frameTime)
+	bool scroll(float frameTime)
 	{	
 		float X = input->getMouseX(), Y = input->getMouseY();
 		VECTOR2 diff = VECTOR2(0,0);
-		if (X < SCROLL_DETECT_OFFSET && center.x > (GAME_WIDTH-HUD_WIDTH)/2) 
+		float scale = background->getScale();
+		if (X < SCROLL_DETECT_OFFSET*scale && center.x/scale > (GAME_WIDTH-HUD_WIDTH)/2) 
 			diff.x += SCROLL_SPEED*frameTime;
-		if (X > GAME_WIDTH - HUD_WIDTH - SCROLL_DETECT_OFFSET && X < GAME_WIDTH - HUD_WIDTH && center.x < ((width+width%2)*GRID_SIZE)/2) 
+		if (X > GAME_WIDTH - HUD_WIDTH - SCROLL_DETECT_OFFSET*scale && X < GAME_WIDTH - HUD_WIDTH && center.x/scale < ((width+width%2)*GRID_SIZE)/2) 
 			diff.x -= SCROLL_SPEED*frameTime;
-		if (Y < SCROLL_DETECT_OFFSET && center.y > GAME_HEIGHT/2) 
+		if (Y < SCROLL_DETECT_OFFSET*scale && center.y/scale > GAME_HEIGHT/2) 
 			diff.y += SCROLL_SPEED*frameTime;
-		if (Y > GAME_HEIGHT - SCROLL_DETECT_OFFSET && center.y < ((height+height%2)*GRID_SIZE)/2) 
+		if (Y > GAME_HEIGHT - SCROLL_DETECT_OFFSET*scale && center.y/scale < ((height+height%2)*GRID_SIZE)/2) 
 			diff.y -= SCROLL_SPEED*frameTime;
 		
-		if (diff == VECTOR2(0,0)) return;
+		if (diff == VECTOR2(0,0)) return false;
 
 		for (int i=0; i<width; i++)
 			for (int j=0; j<height; j++)
@@ -273,17 +274,18 @@ public:
 				}
 			}
 
-			background->setX(background->getX() + diff.x);
-			background->setY(background->getY() + diff.y);
-			center -= diff;
+		background->setX(background->getX() + diff.x);
+		background->setY(background->getY() + diff.y);
+		center -= diff;
+		return true;
 	}
 
-	void zoom(float frameTime)
+	bool zoom(float frameTime)
 	{
 		float mult;
 		if (input->wasKeyPressed('W')) mult = 1.01;
 		else if (input->wasKeyPressed('S')) mult = .99;
-		else return;
+		else return false;
 
 		for (int i=0; i<width; i++)
 			for (int j=0; j<height; j++)
@@ -301,10 +303,11 @@ public:
 				}
 			}
 
-			background->setScale(background->getScale()*mult);
-			background->setX(background->getX() * mult);
-			background->setY(background->getY() * mult);
-			//center *= mult;
+		background->setScale(background->getScale()*mult);
+		background->setX(background->getX() * mult);
+		background->setY(background->getY() * mult);
+		center *= mult;
+		return true;
 	}
 	
 private:
