@@ -25,7 +25,7 @@ struct Surroundings
 //lift is when they are trying but failing to pick up something
 //carry is when they are moving something from one place to another
 //idle is if they are without a task
-enum Task {WALK,LIFT,ATTACK,CARRY,IDLE};
+enum Task {WALK,LIFT,ATTACK,CARRY,IDLE, PATTERNMOVEMENT};
 
 struct NimkipInfo
 {

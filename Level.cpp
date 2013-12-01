@@ -353,58 +353,58 @@ void level::fillLevel()
        lifeForms.push_back(reinterpret_cast<Lifeform*>(r1));
        r1=0;
 
-       //RedKip* r2 = new RedKip();
-       //r2->setGridLoc(0, 2);             
-       //grid.setType(0,2,NIMKIP);
-       //lifeForms.push_back(reinterpret_cast<Lifeform*>(r2));
-       //r2=0;
+       RedKip* r2 = new RedKip();
+       r2->setGridLoc(0, 2);             
+       grid.setType(0,2,NIMKIP);
+       lifeForms.push_back(reinterpret_cast<Lifeform*>(r2));
+       r2=0;
 
-       //RedKip* r3 = new RedKip();
-       //r3->setGridLoc(4, 0);             
-       //grid.setType(4,0,NIMKIP);
-       //lifeForms.push_back(reinterpret_cast<Lifeform*>(r3));
-       //r3=0;
+       RedKip* r3 = new RedKip();
+       r3->setGridLoc(4, 0);             
+       grid.setType(4,0,NIMKIP);
+       lifeForms.push_back(reinterpret_cast<Lifeform*>(r3));
+       r3=0;
 
-       ////blue nimkips
-       //BlueKip* b1 = new BlueKip();
-       //b1->setGridLoc(1, 1);             
-       //grid.setType(1,1,NIMKIP);
-       //lifeForms.push_back(reinterpret_cast<Lifeform*>(b1));
-       //b1=0;
+       //blue nimkips
+       BlueKip* b1 = new BlueKip();
+       b1->setGridLoc(1, 1);             
+       grid.setType(1,1,NIMKIP);
+       lifeForms.push_back(reinterpret_cast<Lifeform*>(b1));
+       b1=0;
 
-       //BlueKip* b2 = new BlueKip();
-       //b2->setGridLoc(2, 2);             
-       //grid.setType(2,2,NIMKIP);
-       //lifeForms.push_back(reinterpret_cast<Lifeform*>(b2));
-       //b2=0;
+       BlueKip* b2 = new BlueKip();
+       b2->setGridLoc(2, 2);             
+       grid.setType(2,2,NIMKIP);
+       lifeForms.push_back(reinterpret_cast<Lifeform*>(b2));
+       b2=0;
 
-       //BlueKip* b3 = new BlueKip();
-       //b3->setGridLoc(3, 1);             
-       //grid.setType(3,1,NIMKIP);
-       //lifeForms.push_back(reinterpret_cast<Lifeform*>(b3));
-       //b3=0;
+       BlueKip* b3 = new BlueKip();
+       b3->setGridLoc(3, 1);             
+       grid.setType(3,1,NIMKIP);
+       lifeForms.push_back(reinterpret_cast<Lifeform*>(b3));
+       b3=0;
 
-       ////yellow nimkips
-       //YellowKip* y1 = new YellowKip();
-       //y1->setGridLoc(2, 0);             
-       //grid.setType(2,0,NIMKIP);
-       //lifeForms.push_back(reinterpret_cast<Lifeform*>(y1));
-       //y1=0;
+       //yellow nimkips
+       YellowKip* y1 = new YellowKip();
+       y1->setGridLoc(2, 0);             
+       grid.setType(2,0,NIMKIP);
+       lifeForms.push_back(reinterpret_cast<Lifeform*>(y1));
+       y1=0;
 
-       //YellowKip* y2 = new YellowKip();
-       //y2->setGridLoc(0, 1);             
-       //grid.setType(0,1,NIMKIP);
-       //lifeForms.push_back(reinterpret_cast<Lifeform*>(y2));
-       //y2=0;
+       YellowKip* y2 = new YellowKip();
+       y2->setGridLoc(0, 1);             
+       grid.setType(0,1,NIMKIP);
+       lifeForms.push_back(reinterpret_cast<Lifeform*>(y2));
+       y2=0;
 
-       //YellowKip* y3 = new YellowKip();
-       //y3->setGridLoc(2, 3);             
-       //grid.setType(2,3,NIMKIP);
-       //lifeForms.push_back(reinterpret_cast<Lifeform*>(y3));
-       //y3=0;
+       YellowKip* y3 = new YellowKip();
+       y3->setGridLoc(2, 3);             
+       grid.setType(2,3,NIMKIP);
+       lifeForms.push_back(reinterpret_cast<Lifeform*>(y3));
+       y3=0;
 
        //create enemies
-       /*Broblub* br1 = new Broblub();
+       Broblub* br1 = new Broblub();
        br1->setGridLoc(1,5);
        grid.setType(1,5,BROBLUB);
        lifeForms.push_back(reinterpret_cast<Lifeform*>(br1));
@@ -422,7 +422,7 @@ void level::fillLevel()
        Broblub* br4 = new Broblub();
        br4->setGridLoc(7,1);
        grid.setType(7,1,BROBLUB);
-       lifeForms.push_back(reinterpret_cast<Lifeform*>(br4));*/
+       lifeForms.push_back(reinterpret_cast<Lifeform*>(br4));
 
        Broblub* br5 = new Broblub();
        br5->setGridLoc(7,7);

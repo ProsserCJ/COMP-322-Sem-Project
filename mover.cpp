@@ -47,7 +47,7 @@ void Mover::chooseDir(GridLoc start, GridLoc end)
 				setDir(RIGHT);
 			}
 		}
-		else if(end.x < start.x)
+	else if(end.x < start.x)
 		{
 			if(end.y > start.y)
 			{
@@ -62,7 +62,7 @@ void Mover::chooseDir(GridLoc start, GridLoc end)
 				setDir(LEFT);
 			}
 		}
-		else
+	else
 		{
 			if(end.y > start.y)
 			{

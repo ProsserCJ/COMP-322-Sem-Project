@@ -18,7 +18,7 @@ using std::vector;
 
 class Broblub: public Lifeform{
 public:
-	Broblub() {image = B;setHealth(30);setAttackStrength(2);setSightRadius(1);}	
+	Broblub() {image = B;setHealth(30);setAttackStrength(2);setSightRadius(1);task=WALK;}	
 
 	//Polymorphic functions
 	virtual void move(GridLoc& p);	
@@ -34,9 +34,26 @@ public:
 
 	//Other Actions
 	void moveRandom(vector<GridLoc> temp);
+	//bool checkImmediateSurroundings();
+	void chooseAction();
+	GridLoc goTowardsGoal();
+	
+
+	//void Broblub::setSpotted(){ setCurrentFrame(BRO_SPOTTED); }
+
+	enum PatternDirection {UP, LEFT, RIGHT, DOWN};
 
 private:
 	void die();
+
+protected:
+	vector<GridLoc> visibleTiles;
+	vector<GridLoc> surroundings;
+	//Surroundings surroundings;
+	GridLoc target;
+	GridLoc destination;
+	Task task;
+	PatternDirection direction;
 };
 
 #endif
