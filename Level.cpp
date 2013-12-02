@@ -328,6 +328,8 @@ void level::runTimeStep()
 		{			
 			//changes the levelMap based off of the new location of the lifeForm
 			lifeForms[i]->setNormal();
+			if(lifeForms[i]->getHurtBoolean())
+				lifeForms[i]->setHurt();
 			grid.setType(lifeForms[i]->getGridLoc(),EMPTY);			
 			GridLoc newGridLoc = lifeForms[i]->takeTurn();
 			grid.setType(newGridLoc, lifeForms[i]->getImage());
@@ -372,7 +374,10 @@ void level::runAttack(Lifeform* attacker, GridLoc target)
 	Lifeform* targetLifeForm = identifyLifeForm(target);
 	if (attacker->isNormal()) attacker->setAtk(); 	
 	targetLifeForm->subHealth(attacker->getAttackStrength());
-	if (targetLifeForm->getHealth() < 10) targetLifeForm->setHurt();
+	if (!targetLifeForm->getHurtBoolean() && targetLifeForm->getHealth() < targetLifeForm->getMaxHealth()*0.1){
+		targetLifeForm->setHurt();
+		targetLifeForm->setHurtBoolean(true);
+	}
 }
 
 //fills level with all necessary starting objects

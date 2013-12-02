@@ -59,7 +59,7 @@ protected:
 class RedBroblub : public Broblub
 {
 public:
-	RedBroblub() : Broblub() {image = RB; setHealth(30);setAttackStrength(2);setSightRadius(2);}
+	RedBroblub() : Broblub() {image = RB; setHealth(30); setMaxHealth(30); setAttackStrength(2);setSightRadius(2);}
 
 	//Actions
 	void moveRandom(vector<GridLoc> temp);
@@ -81,7 +81,7 @@ class BlackBroblub : public Broblub
 public:
 	enum PatternDirection {UP, LEFT, RIGHT, DOWN};
 
-	BlackBroblub() : Broblub() {image = BB; setHealth(40);setAttackStrength(3);setSightRadius(2);}
+	BlackBroblub() : Broblub() {image = BB; setHealth(40);setMaxHealth(40);setAttackStrength(3);setSightRadius(2);}
 
 	//Actions
 	void chooseAction();

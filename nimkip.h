@@ -70,7 +70,7 @@ protected:
 class RedKip : public Nimkip
 {
 public:
-	RedKip() : Nimkip() {image = RN; this->setHealth(15);this->setAttackStrength(10); this->setStrength(5);}
+	RedKip() : Nimkip() {image = RN; this->setHealth(15);setMaxHealth(15);this->setAttackStrength(10); this->setStrength(5);}
 
 	//Actions
 	void move(int x, int y)			{move(GridLoc(x,y));}
@@ -87,7 +87,7 @@ public:
 class YellowKip : public Nimkip
 {
 public:
-	YellowKip() : Nimkip() {image = YN; this->setHealth(10);this->setAttackStrength(5);this->setStrength(5);}
+	YellowKip() : Nimkip() {image = YN; this->setHealth(10);setMaxHealth(15);this->setAttackStrength(5);this->setStrength(5);}
 	
 	//Actions
 	void move(int x, int y)			{move(GridLoc(x,y));}
@@ -104,7 +104,7 @@ public:
 class BlueKip : public Nimkip
 {
 public:
-	BlueKip() : Nimkip() {image = BN; this->setHealth(10); this->setAttackStrength(5); this->setStrength(10);}
+	BlueKip() : Nimkip() {image = BN; this->setHealth(10);setMaxHealth(15); this->setAttackStrength(5); this->setStrength(10);}
 	
 	//Actions
 	void move(int x, int y)			{move(GridLoc(x,y));}
