@@ -125,8 +125,6 @@ GridLoc Broblub::takeTurn(){
 		
 		chooseAction(); //either sets to attack nimkip, set to move toward a close nimkip, or set to move in pattern
 				
-		//moveRandom(temp);
-
 		goTowardsGoal(); //attack or move toward a nimkip or in a pattern
 			
 	}
@@ -138,13 +136,13 @@ GridLoc Broblub::takeTurn(){
 	return pos;
 }
 
-GridLoc Broblub::goTowardsGoal()
+void BlackBroblub::goTowardsGoal()
 {
 	switch(this->task)
 	{
 		//right now, the pattern is a counter-clockwise circle, which breaks as soon as a nimkip is in their range of vision
 		//I will try to implement different patterns that can be set in the constructor
-	case PATTERNMOVEMENT: 
+	case MOVE: 
 		if(pos.x==destination.x && pos.y==destination.y)
 		{
 			if(direction==UP) {
@@ -177,10 +175,32 @@ GridLoc Broblub::goTowardsGoal()
 		attack(target);
 		break;
 	}
-	return GridLoc();
+	//return GridLoc();
 }
 
-void Broblub::chooseAction()
+void RedBroblub::goTowardsGoal()
+{
+	switch(this->task)
+	{
+	case MOVE: 
+		moveRandom(surroundings);
+		move(destination); //requires working move function
+	case WALK:
+		if(pos.x==destination.x && pos.y==destination.y)
+		{
+			//I don't think this should ever matter
+		}
+		else
+			move(destination);
+		break;
+	case ATTACK:
+		attack(target);
+		break;
+	}
+	//return GridLoc();
+}
+
+void BlackBroblub::chooseAction()
 {
 	visibleTiles = level::getSurroundings(pos,getSightRadius());
 
@@ -205,24 +225,62 @@ void Broblub::chooseAction()
 		{
 			task = WALK;
 			destination = visibleTiles[i];
-			//setSpotted();
+			setSpotted();
 			return;
 		}
 	}
 	
 	//if no nimkips in view and not already moving in a pattern, set task as pattern
-	if(task != PATTERNMOVEMENT) 
+	if(task != MOVE) 
 	{
-		task = PATTERNMOVEMENT;
+		task = MOVE;
 		direction = UP;
 		destination = GridLoc(pos.x,pos.y-2);
 		setNormal();
 	}
 }
 
+void RedBroblub::chooseAction()
+{
+	visibleTiles = level::getSurroundings(pos,getSightRadius());
+
+	//here?
+	surroundings = level::getSurroundings(pos,1);
+	//^^^^^^^
+	int stuff=9;
+	for(int i = 0; i < surroundings.size(); i++)
+	{
+		if(surroundings[i].type==NIMKIP)
+		{
+			task = ATTACK;
+			target = surroundings[i];
+			return;
+		}
+	}
+
+	//if nimkip in view, set it as destination
+	for(int i = 0; i < visibleTiles.size(); i++)
+	{
+		if(visibleTiles[i].type==NIMKIP)
+		{
+			task = WALK;
+			destination = visibleTiles[i];
+			setSpotted();
+			return;
+		}
+	}
+	
+	//if no nimkips in view and not already moving in a pattern, set task as pattern
+	if(task != MOVE) 
+	{
+		task = MOVE;
+		setNormal();
+	}
+}
+
 //specific to the sight radius of 1
 //if other enemies were made with a larger radius the movement would have to be altered
-void Broblub::moveRandom(vector<GridLoc> temp) 
+void RedBroblub::moveRandom(vector<GridLoc> temp) 
 {
 	int r;
 	GridLoc loc = pos;
@@ -234,7 +292,8 @@ void Broblub::moveRandom(vector<GridLoc> temp)
 	//similar to the nimkip's movement
 	if(temp[r].type==EMPTY)
 	{
-		this->chooseDir(loc,temp[r]);
+		//this->chooseDir(loc,temp[r]);
+		destination = temp[r];
 	}
 }
 
@@ -244,10 +303,20 @@ void Broblub::die()
 	setVisible(false);
 }
 
-void Broblub::setAtk(){ setCurrentFrame(BRO_ATK); } 
-void Broblub::setNormal(){ setCurrentFrame(BRO); }
-void Broblub::setHurt(){ setCurrentFrame(BRO_HURT); }
-//void Broblub::setSpotted(){ setCurrentFrame(BRO_SPOT); }
 
-bool Broblub::isNormal(){return (getCurrentFrame()==BRO);}
-bool Broblub::isAtk(){return (getCurrentFrame()==BRO_ATK);}
+//Update these as well
+void RedBroblub::setAtk(){ setCurrentFrame(RBRO_ATK); } 
+void RedBroblub::setNormal(){ setCurrentFrame(RBRO); }
+void RedBroblub::setHurt(){ setCurrentFrame(RBRO_HURT); }
+void RedBroblub::setSpotted(){ setCurrentFrame(RBRO_SPOT); }
+
+bool RedBroblub::isNormal(){return (getCurrentFrame()==RBRO);}
+bool RedBroblub::isAtk(){return (getCurrentFrame()==RBRO_ATK);}
+
+void BlackBroblub::setAtk(){ setCurrentFrame(BBRO_ATK); } 
+void BlackBroblub::setNormal(){ setCurrentFrame(BBRO); }
+void BlackBroblub::setHurt(){ setCurrentFrame(BBRO_HURT); }
+void BlackBroblub::setSpotted(){ setCurrentFrame(BBRO_SPOT); }
+
+bool BlackBroblub::isNormal(){return (getCurrentFrame()==BBRO);}
+bool BlackBroblub::isAtk(){return (getCurrentFrame()==BBRO_ATK);}

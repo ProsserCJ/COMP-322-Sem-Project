@@ -18,7 +18,7 @@ using std::vector;
 
 class Broblub: public Lifeform{
 public:
-	Broblub() {image = B;setHealth(30);setAttackStrength(2);setSightRadius(1);task=WALK;}	
+	Broblub() {task=WALK;}	
 
 	//Polymorphic functions
 	virtual void move(GridLoc& p);	
@@ -26,22 +26,22 @@ public:
 	virtual void attack(GridLoc& p);
 	virtual void attack(int x, int y);	
 	virtual GridLoc takeTurn();
-	virtual void setNormal();
-	virtual void setHurt();
-	virtual void setAtk();
-	virtual bool isNormal();
-	virtual bool isAtk();
+	//virtual void setNormal();
+	//virtual void setHurt();
+	//virtual void setAtk();
+	//virtual bool isNormal();
+	//virtual bool isAtk();
 
 	//Other Actions
-	void moveRandom(vector<GridLoc> temp);
+	
 	//bool checkImmediateSurroundings();
-	void chooseAction();
-	GridLoc goTowardsGoal();
+	virtual void chooseAction() {}
+	virtual void goTowardsGoal() {}
 	
 
 	//void Broblub::setSpotted(){ setCurrentFrame(BRO_SPOTTED); }
 
-	enum PatternDirection {UP, LEFT, RIGHT, DOWN};
+	
 
 private:
 	void die();
@@ -53,6 +53,49 @@ protected:
 	GridLoc target;
 	GridLoc destination;
 	Task task;
+	
+};
+
+class RedBroblub : public Broblub
+{
+public:
+	RedBroblub() : Broblub() {image = RB; setHealth(30);setAttackStrength(2);setSightRadius(2);}
+
+	//Actions
+	void moveRandom(vector<GridLoc> temp);
+	void chooseAction();
+	void goTowardsGoal();
+	
+	//Polymorphic functions
+	virtual void setNormal();
+	virtual void setHurt();
+	virtual void setAtk();
+	virtual void setSpotted();
+	virtual bool isNormal();
+	virtual bool isAtk();
+
+};
+
+class BlackBroblub : public Broblub
+{
+public:
+	enum PatternDirection {UP, LEFT, RIGHT, DOWN};
+
+	BlackBroblub() : Broblub() {image = BB; setHealth(40);setAttackStrength(3);setSightRadius(2);}
+
+	//Actions
+	void chooseAction();
+	void goTowardsGoal();
+	
+	//Polymorphic functions
+	virtual void setNormal();
+	virtual void setHurt();
+	virtual void setAtk();
+	virtual void setSpotted();
+	virtual bool isNormal();
+	virtual bool isAtk();
+
+protected:
 	PatternDirection direction;
 };
 

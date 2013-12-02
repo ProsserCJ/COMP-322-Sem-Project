@@ -231,7 +231,8 @@ public:
 		case RN: 
 		case BN:
 		case YN: grid[g.x][g.y].setType(NIMKIP); break;
-		case B:  grid[g.x][g.y].setType(BROBLUB); break;
+		case RB:
+		case BB:  grid[g.x][g.y].setType(BROBLUB); break;
 		case F:  grid[g.x][g.y].setType(FOOD); break;
 		case O:  grid[g.x][g.y].setType(OBSTACLE); break;
 		case G:  grid[g.x][g.y].setType(GAP); break;

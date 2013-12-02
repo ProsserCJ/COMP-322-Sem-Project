@@ -56,10 +56,10 @@ const int NUM_ENEMIES = 10;
 
 // graphic images
 
-const char BACKGROUND_IMAGE[] = "source\\pictures\\background.png";
-const char TEXTURES_IMAGE[] = "source\\pictures\\textures.png";  // game textures. Bulborp image curtesy of Michael Peterson
-const char GRID_IMAGE[] = "source\\pictures\\grid.png"; //game grid
-const char HUD_IMAGE[] = "source\\pictures\\hud.png";
+const char BACKGROUND_IMAGE[] = "pictures\\background.png";
+const char TEXTURES_IMAGE[] = "pictures\\textures.png";  // game textures. Bulborp image curtesy of Michael Peterson
+const char GRID_IMAGE[] = "pictures\\grid.png"; //game grid
+const char HUD_IMAGE[] = "pictures\\hud.png";
 
 
 // key mappings
@@ -73,8 +73,12 @@ const enum {
 	BNIM=0, BNIM_HURT=1, BNIM_ATK=2,
 	YNIM=3, YNIM_HURT=4, YNIM_ATK=5,
 	RNIM=6, RNIM_HURT=7, RNIM_ATK=8,
-	BRO=9, BRO_HURT=10, BRO_ATK=11,
-	MONEY=12, CHICKEN=13, HOLE=14, ROCK=15, NIMBASE=16, NIMCARRY = 17
+	RBRO=9, RBRO_HURT=10, RBRO_ATK=11,
+	MONEY=12, CHICKEN=13, HOLE=14, ROCK=15, 
+	NIMBASE=16, NIMCARRY=17, BNIN_SCORE=18,
+	RNIM_SCORE=19, YNIM_SCORE=20, BBRO=21, 
+	BBRO_HURT=22, BBRO_ATK=23, RBRO_SPOT=24, 
+	BBRO_SPOT=25
 };
 
 #endif
