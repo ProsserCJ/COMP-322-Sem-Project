@@ -40,6 +40,7 @@ public:
 	void checkSurroundings();
 	GridLoc takeTurn();
 	GridLoc goTowardsGoal();
+	void setCarry()					{setCurrentFrame(NIMCARRY);}
 
 private:
 

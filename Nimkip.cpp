@@ -126,8 +126,10 @@ GridLoc Nimkip::goTowardsGoal()
 		//if the combined strength is enough to pick it up say they don't need help and set them to carry it
 		if(getHeldObject()->getWeight() <= getHeldObject()->getCarrierStrength())
 		{
+			this->setCarry();
 			needHelp = false;
 			task = CARRY;
+			getHeldObject()->setVisible(false);
 			destination = homeBase;
 			auto baseSurroundings = level::getSurroundings(destination,1);
 			//sets the destination to an empty tile near their base
@@ -139,7 +141,6 @@ GridLoc Nimkip::goTowardsGoal()
 					break;
 				}
 			}
-			this->setAtk();
 		}
 		break;
 	case ATTACK:
@@ -147,11 +148,13 @@ GridLoc Nimkip::goTowardsGoal()
 		task = attackTask;//puts their task back to normal
 		break;
 	case CARRY:
+		this->setCarry();
 		//if the object becomes too heavy, ie another nimkip dies then they have to stop moving
 		if(getHeldObject()->getCarrierStrength()<getHeldObject()->getWeight())
 		{
 			task = LIFT;
 			needHelp = true;
+			this->setNormal();
 		}
 		else
 		{
@@ -168,8 +171,6 @@ GridLoc Nimkip::goTowardsGoal()
 					setScorePoints(getHeldObject()->getPoints());
 					this->getHeldObject()->setVisible(false);
 					this->getHeldObject()->setActive(false);
-					//used to update the level score
-					
 				}
 			}
 		}
@@ -613,7 +614,7 @@ void RedKip::move(GridLoc& p) {
 			}
 		}
 	}
-	else if(dirVec.x<0)//go west, norht west, or south west
+	else if(dirVec.x<0)//go west, north west, or south west
 	{
 		if(dirVec.y>0)//go south west if possible
 		{
