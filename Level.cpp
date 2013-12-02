@@ -388,11 +388,11 @@ void level::fillLevel()
        lifeForms.push_back(reinterpret_cast<Lifeform*>(r1));
        r1=0;
 
-       //RedKip* r2 = new RedKip();
-       //r2->setGridLoc(0, 2);             
-       //grid.setType(0,2,NIMKIP);
-       //lifeForms.push_back(reinterpret_cast<Lifeform*>(r2));
-       //r2=0;
+       RedKip* r2 = new RedKip();
+       r2->setGridLoc(0, 2);             
+       grid.setType(0,2,NIMKIP);
+       lifeForms.push_back(reinterpret_cast<Lifeform*>(r2));
+       r2=0;
 
        //RedKip* r3 = new RedKip();
        //r3->setGridLoc(4, 0);             
@@ -439,7 +439,7 @@ void level::fillLevel()
        //y3=0;
 
        //create enemies
-       /*Broblub* br1 = new Broblub();
+       Broblub* br1 = new Broblub();
        br1->setGridLoc(1,5);
        grid.setType(1,5,BROBLUB);
        lifeForms.push_back(reinterpret_cast<Lifeform*>(br1));
@@ -462,7 +462,7 @@ void level::fillLevel()
        Broblub* br5 = new Broblub();
        br5->setGridLoc(7,7);
        grid.setType(7,7,BROBLUB);
-       lifeForms.push_back(reinterpret_cast<Lifeform*>(br5));*/
+       lifeForms.push_back(reinterpret_cast<Lifeform*>(br5));
 
        //create coins
        Coin* c1 = new Coin();

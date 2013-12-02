@@ -23,8 +23,10 @@ public:
 	bool getMultipleCarriers()				 {return multipleCarriers;}	
 	int getCarrierStrength()				 {return carrierStrength;}
 	int getWeight()							 {return weight;}
+	int getPoints()							 {return points;}
 
 	//setters
+	void setPoints(int p) {points = p;}
 	void setWeight(int w) {weight = w;}
 	void setMultipleCarriers(bool t) {multipleCarriers = t;}
 
@@ -32,6 +34,7 @@ public:
 	void changeCarrierStrength(int strength) {carrierStrength+=strength;}
 
 protected:
+	int points;
 	int weight;
 	bool multipleCarriers;
 	int carrierStrength;
@@ -39,17 +42,15 @@ protected:
 
 class Coin: public Carriable{
 public:
-	Coin() {this->setImage(C);}
+	Coin() {this->setImage(C);setPoints(50);}
 private:
-	int points;
 };
 
 class Food: public Carriable{
 public:
-	Food() {this->setImage(F);setWeight(10);setMultipleCarriers(true);}
+	Food() : Carriable(true) {this->setImage(F);setWeight(10);setMultipleCarriers(true);setPoints(200);}
 	virtual void addMove(){return;};
 private:
-	int points;
 };
 
 class Obstacle: public Object{

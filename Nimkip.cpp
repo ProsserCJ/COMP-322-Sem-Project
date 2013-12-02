@@ -129,6 +129,16 @@ GridLoc Nimkip::goTowardsGoal()
 			needHelp = false;
 			task = CARRY;
 			destination = homeBase;
+			auto baseSurroundings = level::getSurroundings(destination,1);
+			//sets the destination to an empty tile near their base
+			for(int i = 0; i < baseSurroundings.size(); i++)
+			{
+				if(baseSurroundings[i].type==EMPTY)
+				{
+					destination = baseSurroundings[i];
+					break;
+				}
+			}
 			this->setAtk();
 		}
 		break;
@@ -147,18 +157,19 @@ GridLoc Nimkip::goTowardsGoal()
 		{
 			move(destination);
 			//if they make it home
-			if(this->pos.x ==destination.x && pos.y == destination.y)
+			if(this->pos.x == destination.x && pos.y == destination.y)
 			{
 				task = IDLE;
 				//perhaps hoard disband
 				//dont do it again if it is already done
 				if(this->getHeldObject()->getActive())
 				{
+					setScored(true);
+					setScorePoints(getHeldObject()->getPoints());
 					this->getHeldObject()->setVisible(false);
 					this->getHeldObject()->setActive(false);
 					//used to update the level score
-					setScored(true);
-					setScorePoints(50);
+					
 				}
 			}
 		}
@@ -486,6 +497,9 @@ void RedKip::move(GridLoc& p) {
 
 	visibleTiles = level::getSurroundings(curPos,getSightRadius());
 
+	//used to get the direction chosen and move the nimkip and objects they hold
+	moverNS::DIR chosenDirection;
+
 	//go north or south
 	if(dirVec.x==0)
 	{
@@ -494,14 +508,20 @@ void RedKip::move(GridLoc& p) {
 		{
 			if(level::getTileType(GridLoc(curPos.x,curPos.y+1)) == EMPTY)
 			{
-				setDir(DOWN);
+				chosenDirection=DOWN;
+				setDir(chosenDirection);
+				if(getHeldObject())
+					getHeldObject()->setDir(chosenDirection);
 				return;
 			}
 			if(level::getTileType(GridLoc(curPos.x,curPos.y+1)) == COIN)
 			{
 				level::collectCoin(GridLoc(curPos.x,curPos.y+1));
 				setScored(true);
-				setDir(DOWN);
+				chosenDirection=DOWN;
+				setDir(chosenDirection);
+				if(getHeldObject())
+					getHeldObject()->setDir(chosenDirection);
 				return;
 			}
 		}
@@ -509,14 +529,20 @@ void RedKip::move(GridLoc& p) {
 		{
 			if(level::getTileType(GridLoc(curPos.x,curPos.y-1)) == EMPTY)
 			{
-				setDir(UP);
+				chosenDirection=UP;
+				setDir(chosenDirection);
+				if(getHeldObject())
+					getHeldObject()->setDir(chosenDirection);
 				return;
 			}
 			if(level::getTileType(GridLoc(curPos.x,curPos.y-1)) == COIN)
 			{
 				level::collectCoin(GridLoc(curPos.x,curPos.y-1));
 				setScored(true);
-				setDir(UP);
+				chosenDirection=UP;
+				setDir(chosenDirection);
+				if(getHeldObject())
+					getHeldObject()->setDir(chosenDirection);
 				return;
 			}
 		}
@@ -527,14 +553,20 @@ void RedKip::move(GridLoc& p) {
 		{
 			if(level::getTileType(GridLoc(curPos.x+1,curPos.y+1)) == EMPTY)
 			{
-				setDir(DOWN_RIGHT);
+				chosenDirection=DOWN_RIGHT;
+				setDir(chosenDirection);
+				if(getHeldObject())
+					getHeldObject()->setDir(chosenDirection);
 				return;
 			}
 			if(level::getTileType(GridLoc(curPos.x+1,curPos.y+1)) == COIN)
 			{
 				level::collectCoin(GridLoc(curPos.x+1,curPos.y+1));
 				setScored(true);
-				setDir(DOWN_RIGHT);
+				chosenDirection=DOWN_RIGHT;
+				setDir(chosenDirection);
+				if(getHeldObject())
+					getHeldObject()->setDir(chosenDirection);
 				return;
 			}
 		}
@@ -542,14 +574,20 @@ void RedKip::move(GridLoc& p) {
 		{
 			if(level::getTileType(GridLoc(curPos.x+1,curPos.y-1)) == EMPTY)
 			{
-				setDir(UP_RIGHT);
+				chosenDirection=UP_RIGHT;
+				setDir(chosenDirection);
+				if(getHeldObject())
+					getHeldObject()->setDir(chosenDirection);
 				return;
 			}
 			if(level::getTileType(GridLoc(curPos.x+1,curPos.y-1)) == COIN)
 			{
 				level::collectCoin(GridLoc(curPos.x+1,curPos.y-1));
 				setScored(true);
-				setDir(UP_RIGHT);
+				chosenDirection=UP_RIGHT;
+				setDir(chosenDirection);
+				if(getHeldObject())
+					getHeldObject()->setDir(chosenDirection);
 				return;
 			}
 		}
@@ -557,14 +595,20 @@ void RedKip::move(GridLoc& p) {
 		{
 			if(level::getTileType(GridLoc(curPos.x+1,curPos.y)) == EMPTY)
 			{
-				setDir(RIGHT);
+				chosenDirection=RIGHT;
+				setDir(chosenDirection);
+				if(getHeldObject())
+					getHeldObject()->setDir(chosenDirection);
 				return;
 			}
 			if(level::getTileType(GridLoc(curPos.x+1,curPos.y)) == COIN)
 			{
 				level::collectCoin(GridLoc(curPos.x+1,curPos.y));
 				setScored(true);
-				setDir(RIGHT);
+				chosenDirection=RIGHT;
+				setDir(chosenDirection);
+				if(getHeldObject())
+					getHeldObject()->setDir(chosenDirection);
 				return;
 			}
 		}
@@ -575,14 +619,20 @@ void RedKip::move(GridLoc& p) {
 		{
 			if(level::getTileType(GridLoc(curPos.x-1,curPos.y+1)) == EMPTY)
 			{
-				setDir(DOWN_LEFT);
+				chosenDirection=DOWN_LEFT;
+				setDir(chosenDirection);
+				if(getHeldObject())
+					getHeldObject()->setDir(chosenDirection);
 				return;
 			}
 			if(level::getTileType(GridLoc(curPos.x-1,curPos.y+1)) == COIN)
 			{
 				level::collectCoin(GridLoc(curPos.x-1,curPos.y+1));
 				setScored(true);
-				setDir(DOWN_LEFT);
+				chosenDirection=DOWN_LEFT;
+				setDir(chosenDirection);
+				if(getHeldObject())
+					getHeldObject()->setDir(chosenDirection);
 				return;
 			}
 		}
@@ -590,14 +640,20 @@ void RedKip::move(GridLoc& p) {
 		{
 			if(level::getTileType(GridLoc(curPos.x-1,curPos.y-1)) == EMPTY)
 			{
-				setDir(UP_LEFT);
+				chosenDirection=UP_LEFT;
+				setDir(chosenDirection);
+				if(getHeldObject())
+					getHeldObject()->setDir(chosenDirection);
 				return;
 			}
 			if(level::getTileType(GridLoc(curPos.x-1,curPos.y-1)) == COIN)
 			{
 				level::collectCoin(GridLoc(curPos.x-1,curPos.y-1));
 				setScored(true);
-				setDir(UP_LEFT);
+				chosenDirection=UP_LEFT;
+				setDir(chosenDirection);
+				if(getHeldObject())
+					getHeldObject()->setDir(chosenDirection);
 				return;
 			}
 		}
@@ -605,109 +661,24 @@ void RedKip::move(GridLoc& p) {
 		{
 			if(level::getTileType(GridLoc(curPos.x-1,curPos.y)) == EMPTY)
 			{
-				setDir(LEFT);
+				chosenDirection=LEFT;
+				setDir(chosenDirection);
+				if(getHeldObject())
+					getHeldObject()->setDir(chosenDirection);
 				return;
 			}
 			if(level::getTileType(GridLoc(curPos.x-1,curPos.y)) == COIN)
 			{
 				level::collectCoin(GridLoc(curPos.x-1,curPos.y));
 				setScored(true);
-				setDir(LEFT);
+				chosenDirection=LEFT;
+				setDir(chosenDirection);
+				if(getHeldObject())
+					getHeldObject()->setDir(chosenDirection);
 				return;
 			}
 		}
 	}
-
-       //if((abs(dirVec.x) > abs(dirVec.y)) && (dirVec.x > 0)  && (dirVec.y > 0)) {//1st quadrant movement
-       //       if(surroundings.E == 6) {
-       //              setDir(RIGHT);					
-       //       } else if(surroundings.S == 6) {
-       //              setDir(DOWN);
-       //       } else if(surroundings.N == 6) {
-       //              setDir(UP);
-       //       } else if(surroundings.W == 6) {
-       //              setDir(LEFT);
-       //       }
-       //       return;
-       //} else if((abs(dirVec.x) < abs(dirVec.y)) && (dirVec.x > 0)  && (dirVec.y > 0)) {
-       //       if(surroundings.S == 6) {
-       //              setDir(DOWN);
-       //       } else if(surroundings.E == 6) {
-       //              setDir(RIGHT);
-       //       } else if(surroundings.W == 6) {
-       //              setDir(LEFT);
-       //       } else if(surroundings.N == 6) {
-       //              setDir(UP);
-       //       }
-       //       return;
-       //} else if((abs(dirVec.x) > abs(dirVec.y)) && (dirVec.x < 0)  && (dirVec.y > 0)) {//2nd quadrant movement
-       //       if(surroundings.W == 6) {
-       //              setDir(LEFT);
-       //       } else if(surroundings.S == 6) {
-       //              setDir(DOWN);
-       //       } else if(surroundings.N == 6) {
-       //              setDir(UP);
-       //       } else if(surroundings.E == 6) {
-       //              setDir(RIGHT);
-       //       }
-       //       return;
-       //} else if((abs(dirVec.x) < abs(dirVec.y)) && (dirVec.x < 0)  && (dirVec.y > 0)) {
-       //       if(surroundings.S == 6) {
-       //              setDir(DOWN);
-       //       } else if(surroundings.W == 6) {
-       //              setDir(LEFT);
-       //       } else if(surroundings.E == 6) {
-       //              setDir(RIGHT);
-       //       } else if(surroundings.N == 6) {
-       //              setDir(UP);
-       //       }
-       //       return;
-       //} else if((abs(dirVec.x) > abs(dirVec.y)) && (dirVec.x < 0) && (dirVec.y < 0)) {//3rd quadrant movement
-       //       if(surroundings.W == 6) {
-       //              setDir(LEFT);
-       //       } else if(surroundings.N == 6) {
-       //              setDir(UP);
-       //       } else if(surroundings.S == 6) {
-       //              setDir(DOWN);
-       //       } else if(surroundings.E == 6) {
-       //              setDir(RIGHT);
-       //       }
-       //       return;
-       //} else if((abs(dirVec.x) < abs(dirVec.y)) && (dirVec.x < 0) && (dirVec.y < 0)) {
-       //       if(surroundings.N == 6) {
-       //              setDir(UP);
-       //       } else if(surroundings.W == 6) {
-       //              setDir(LEFT);
-       //       } else if(surroundings.E == 6) {
-       //              setDir(RIGHT);
-       //       } else if(surroundings.S == 6) {
-       //              setDir(DOWN);
-       //       }
-       //       return;
-       //} else if((abs(dirVec.x) > abs(dirVec.y)) && (dirVec.x > 0) && (dirVec.y < 0)) {//4th quadrant movement
-       //       if(surroundings.E == 6) {
-       //              setDir(RIGHT);
-       //       } else if(surroundings.N == 6) {
-       //              setDir(UP);
-       //       } else if(surroundings.S == 6) {
-       //              setDir(DOWN);
-       //       } else if(surroundings.W == 6) {
-       //              setDir(LEFT);
-       //       }
-       //       return;
-       //} else if((abs(dirVec.x) < abs(dirVec.y)) && (dirVec.x > 0) && (dirVec.y < 0)) {
-       //       if(surroundings.N == 6) {
-       //              setDir(UP);
-       //       } else if(surroundings.E == 6) {
-       //              setDir(RIGHT);
-       //       } else if(surroundings.W == 6) {
-       //              setDir(LEFT);
-       //       } else if(surroundings.S == 6) {
-       //              setDir(DOWN);
-       //       }
-       //       return;
-       //}
-
 }
 
 void BlueKip::move(GridLoc& p) {  

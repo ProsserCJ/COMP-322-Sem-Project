@@ -19,7 +19,7 @@ using std::vector;
 class Nimkip : public Lifeform
 {
 public:
-	Nimkip(): target(GridLoc()), task(IDLE), homeBase(GridLoc(0,1)){}
+	Nimkip(): target(GridLoc()), task(IDLE), homeBase(GridLoc(0,0)){}
 
 	//Getters
 	//returns a struct of their status info like needing help and their destination and task
@@ -66,7 +66,7 @@ protected:
 class RedKip : public Nimkip
 {
 public:
-	RedKip() : Nimkip() {image = RN; this->setHealth(15);this->setAttackStrength(10); this->setStrength(5);}
+	RedKip() : Nimkip() {image = RN; this->setHealth(15);this->setAttackStrength(10); this->setStrength(50);}
 
 	//Actions
 	void move(int x, int y)			{move(GridLoc(x,y));}
