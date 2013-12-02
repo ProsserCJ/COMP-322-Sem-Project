@@ -29,6 +29,7 @@ public:
 	void setPTask(Task t)			{task = t;}
 	void setSTask(Task t)			{secondaryTask = t;}
 	void setDestination(GridLoc g)	{destination = g;}
+	void setTarget(GridLoc t)		{target = t;}
 
 	//Polymorphic functions
 	virtual void move(GridLoc& p)	{}	
