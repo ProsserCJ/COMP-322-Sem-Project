@@ -67,7 +67,7 @@ protected:
 class RedKip : public Nimkip
 {
 public:
-	RedKip() : Nimkip() {image = RN; this->setHealth(15);this->setAttackStrength(10); this->setStrength(50);}
+	RedKip() : Nimkip() {image = RN; this->setHealth(15);this->setAttackStrength(10); this->setStrength(5);}
 
 	//Actions
 	void move(int x, int y)			{move(GridLoc(x,y));}
