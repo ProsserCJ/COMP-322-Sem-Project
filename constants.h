@@ -54,6 +54,16 @@ const float GRID_SIZE = 80.0f;
 const float HUD_WIDTH = 100.0f;
 const int NUM_ENEMIES = 10;
 
+const int RNIMKIP_COUNT = 5;
+const int YNIMKIP_COUNT = 5;
+const int BNIMKIP_COUNT = 5;
+const int RBROBLUB_COUNT = 20;
+const int BBROBLUB_COUNT = 20;
+const int COIN_COUNT = 60;
+const int FOOD_COUNT = 40;
+const int OBSTACLE_COUNT = 70;
+
+
 // graphic images
 
 const char BACKGROUND_IMAGE[] = "pictures\\background.png";

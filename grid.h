@@ -29,7 +29,7 @@ const int SCROLL_DETECT_OFFSET = 75;
 class Tile: public Image{
 public:
 	Tile() {}
-	Tile(int x, int y, Space s);
+	Tile(int x, int y, Space s);	
 
 	//Getters
 	Object* getObject()			{return object;}
@@ -67,19 +67,22 @@ public:
 	}
 	~Grid(){for(int i = 0; i < width; i++) delete [] grid[i]; }	
 
+	//Getters
+	int getWidth()					{return width;}
+	int getHeight()					{return height;}
+	T& getTile(GridLoc location)	{return grid[location.x][location.y];}
+	Object* getObject(int x, int y) {return grid[x][y].getObject();}	
+	vector<GridLoc> getNimkips()	{return nimkipLocations;}
+	Task getPTask()					{return primaryTask;}
+	Task getSTask()					{return secondaryTask;}
+	GridLoc getDestination()		{return destination;}
+	float getScale()				{return background->getScale();}
+	
 	//Setters
 	void setType(int x, int y, Space t)	{grid[x][y].setType(t);}
 	void setType(GridLoc& g, Space t)	{grid[g.x][g.y].setType(t);}
 	void setDestination(GridLoc g)		{destination = g;}
-	
-	//Getters
-	int getWidth()				 {return width;}
-	int getHeight()				 {return height;}
-	T& getTile(GridLoc location) {return grid[location.x][location.y];}
-	vector<GridLoc> getNimkips() {return nimkipLocations;}
-	Task getPTask()				 {return primaryTask;}
-	Task getSTask()				 {return secondaryTask;}
-	GridLoc getDestination()	 {return destination;}
+
 
 	//More complex functions
 	bool initialize(Game* game, int w, int h, int ncols, TextureManager *t, Image* bg){

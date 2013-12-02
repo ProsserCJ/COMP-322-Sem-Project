@@ -223,7 +223,7 @@ void level::update()
 		grid.update();
 	}
 
-	if (isRunning() && (frameCount%250 == 0) && (lifeForms[0]->getDistToMove()==0))
+	if (isRunning() && (frameCount%(int(250*grid.getScale())) == 0) && (lifeForms[0]->getDistToMove()==0))
 		//^sloppy.  should get a better check for if lifeforms are moving
 		runTimeStep();
 	
@@ -378,189 +378,275 @@ void level::runAttack(Lifeform* attacker, GridLoc target)
 //fills level with all necessary starting objects
 void level::fillLevel()
 {
-	//create BASE 
-       Base* b = new Base();
-       //int xLoc, yLoc;
+       Base* b = new Base();      
        b->setGridLoc(0,0);	  
        grid.setType(0,0,BASE);
        unCarriables.push_back(reinterpret_cast<Object*>(b));
+	   grid.setObject(b);
+
+	   Random X(0, RNIMKIP_COUNT);
+	   Random Y(0, RNIMKIP_COUNT);
+
+	   for(int i=0; i< RNIMKIP_COUNT; i++){
+		   RedKip* temp = new RedKip();		   
+		   int x = X.next(), y = Y.next();
+		   while(grid.getObject(x,y)){x = X.next(); y = Y.next();}
+		   temp->setGridLoc(x,y);
+		   grid.setType(x,y,NIMKIP);
+		   lifeForms.push_back(reinterpret_cast<Lifeform*>(temp));
+		   grid.setObject(temp);
+	   }
+
+	   for(int i=0; i< BNIMKIP_COUNT; i++){
+		   BlueKip* temp = new BlueKip();
+		    int x = X.next(), y = Y.next();
+		   while(grid.getObject(x,y)){x = X.next(); y = Y.next();}
+		   temp->setGridLoc(x,y);
+		   grid.setType(x,y,NIMKIP);
+		   lifeForms.push_back(reinterpret_cast<Lifeform*>(temp));
+		   grid.setObject(temp);
+	   }
+
+	   for(int i=0; i< YNIMKIP_COUNT; i++){
+		   YellowKip* temp = new YellowKip();
+		   int x = X.next(), y = Y.next();
+		   while(grid.getObject(x,y)){x = X.next(); y = Y.next();}
+		   temp->setGridLoc(x,y);
+		   grid.setType(x,y,NIMKIP);
+		   lifeForms.push_back(reinterpret_cast<Lifeform*>(temp));
+		   grid.setObject(temp);
+	   }
+
+	   X.range(RNIMKIP_COUNT, mapSizeX-1);
+	   Y.range(RNIMKIP_COUNT, mapSizeY-1);
+
+	   for(int i=0; i<RBROBLUB_COUNT; i++){
+		   Broblub* temp = new RedBroblub();
+		   int x = X.next(), y = Y.next();
+		   while(grid.getObject(x,y)){x = X.next(); y = Y.next();}
+		   temp->setGridLoc(x,y);
+		   grid.setType(x,y,BROBLUB);
+		   lifeForms.push_back(reinterpret_cast<Lifeform*>(temp));
+		   grid.setObject(temp);
+	   }
+
+	   for(int i=0; i<BBROBLUB_COUNT; i++){
+		   Broblub* temp = new BlackBroblub();
+		   int x = X.next(), y = Y.next();
+		   while(grid.getObject(x,y)){x = X.next(); y = Y.next();}
+		   temp->setGridLoc(x,y);
+		   grid.setType(x,y,BROBLUB);
+		   lifeForms.push_back(reinterpret_cast<Lifeform*>(temp));
+		   grid.setObject(temp);
+	   }
+
+	   for(int i=0; i<COIN_COUNT; i++){
+		   Coin* temp = new Coin();
+		   int x = X.next(), y = Y.next();
+		   while(grid.getObject(x,y)){x = X.next(); y = Y.next();}
+		   temp->setGridLoc(x, y);             
+		   grid.setType(x,y,COIN);
+		   carriableItems.push_back(reinterpret_cast<Carriable*>(temp));
+		   grid.setObject(temp);
+	   }
+
+	   for(int i=0; i<FOOD_COUNT; i++){
+		   Food* temp = new Food();
+		   int x = X.next(), y = Y.next();
+		   while(grid.getObject(x,y)){x = X.next(); y = Y.next();}
+		   temp->setGridLoc(x,y);
+		   grid.setType(x,y,FOOD);
+		   carriableItems.push_back(reinterpret_cast<Carriable*>(temp));
+		   grid.setObject(temp);
+	   }
+
+	   for(int i=0; i<OBSTACLE_COUNT; i++){
+		   Obstacle* temp = new Obstacle();
+		   int x = X.next(), y = Y.next();
+		   while(grid.getObject(x,y)){x = X.next(); y = Y.next();}
+		   temp->setGridLoc(x,y);
+		   grid.setType(x,y,OBSTACLE);
+		   unCarriables.push_back(reinterpret_cast<Object*>(temp));
+		   grid.setObject(temp);
+	   }
 
 
-       //red nimkips
-       RedKip* r1 = new RedKip();
-       r1->setGridLoc(1, 0);             
-       grid.setType(1,0,NIMKIP);
-       lifeForms.push_back(reinterpret_cast<Lifeform*>(r1));
-       r1=0;
 
-       RedKip* r2 = new RedKip();
-       r2->setGridLoc(0, 2);             
-       grid.setType(0,2,NIMKIP);
-       lifeForms.push_back(reinterpret_cast<Lifeform*>(r2));
-       r2=0;
+       ////red nimkips
+       //RedKip* temp = new RedKip();
+       //temp->setGridLoc(1, 0);             
+       //grid.setType(1,0,NIMKIP);
+       //lifeForms.push_back(reinterpret_cast<Lifeform*>(temp));
+       //temp=0;
 
-       //RedKip* r3 = new RedKip();
-       //r3->setGridLoc(4, 0);             
-       //grid.setType(4,0,NIMKIP);
-       //lifeForms.push_back(reinterpret_cast<Lifeform*>(r3));
-       //r3=0;
+       //RedKip* r2 = new RedKip();
+       //r2->setGridLoc(0, 2);             
+       //grid.setType(0,2,NIMKIP);
+       //lifeForms.push_back(reinterpret_cast<Lifeform*>(r2));
+       //r2=0;
 
-       ////blue nimkips
-       //BlueKip* b1 = new BlueKip();
-       //b1->setGridLoc(1, 1);             
-       //grid.setType(1,1,NIMKIP);
-       //lifeForms.push_back(reinterpret_cast<Lifeform*>(b1));
-       //b1=0;
+       ////RedKip* r3 = new RedKip();
+       ////r3->setGridLoc(4, 0);             
+       ////grid.setType(4,0,NIMKIP);
+       ////lifeForms.push_back(reinterpret_cast<Lifeform*>(r3));
+       ////r3=0;
 
-       //BlueKip* b2 = new BlueKip();
-       //b2->setGridLoc(2, 2);             
-       //grid.setType(2,2,NIMKIP);
-       //lifeForms.push_back(reinterpret_cast<Lifeform*>(b2));
-       //b2=0;
+       //////blue nimkips
+       ////BlueKip* b1 = new BlueKip();
+       ////b1->setGridLoc(1, 1);             
+       ////grid.setType(1,1,NIMKIP);
+       ////lifeForms.push_back(reinterpret_cast<Lifeform*>(b1));
+       ////b1=0;
 
-       //BlueKip* b3 = new BlueKip();
-       //b3->setGridLoc(3, 1);             
-       //grid.setType(3,1,NIMKIP);
-       //lifeForms.push_back(reinterpret_cast<Lifeform*>(b3));
-       //b3=0;
+       ////BlueKip* b2 = new BlueKip();
+       ////b2->setGridLoc(2, 2);             
+       ////grid.setType(2,2,NIMKIP);
+       ////lifeForms.push_back(reinterpret_cast<Lifeform*>(b2));
+       ////b2=0;
 
-       ////yellow nimkips
-       //YellowKip* y1 = new YellowKip();
-       //y1->setGridLoc(2, 0);             
-       //grid.setType(2,0,NIMKIP);
-       //lifeForms.push_back(reinterpret_cast<Lifeform*>(y1));
-       //y1=0;
+       ////BlueKip* b3 = new BlueKip();
+       ////b3->setGridLoc(3, 1);             
+       ////grid.setType(3,1,NIMKIP);
+       ////lifeForms.push_back(reinterpret_cast<Lifeform*>(b3));
+       ////b3=0;
 
-       //YellowKip* y2 = new YellowKip();
-       //y2->setGridLoc(0, 1);             
-       //grid.setType(0,1,NIMKIP);
-       //lifeForms.push_back(reinterpret_cast<Lifeform*>(y2));
-       //y2=0;
+       //////yellow nimkips
+       ////YellowKip* y1 = new YellowKip();
+       ////y1->setGridLoc(2, 0);             
+       ////grid.setType(2,0,NIMKIP);
+       ////lifeForms.push_back(reinterpret_cast<Lifeform*>(y1));
+       ////y1=0;
 
-       //YellowKip* y3 = new YellowKip();
-       //y3->setGridLoc(2, 3);             
-       //grid.setType(2,3,NIMKIP);
-       //lifeForms.push_back(reinterpret_cast<Lifeform*>(y3));
-       //y3=0;
+       ////YellowKip* y2 = new YellowKip();
+       ////y2->setGridLoc(0, 1);             
+       ////grid.setType(0,1,NIMKIP);
+       ////lifeForms.push_back(reinterpret_cast<Lifeform*>(y2));
+       ////y2=0;
 
-       //create enemies
-       Broblub* br1 = new RedBroblub();
-       br1->setGridLoc(1,5);
-       grid.setType(1,5,BROBLUB);
-       lifeForms.push_back(reinterpret_cast<Lifeform*>(br1));
+       ////YellowKip* y3 = new YellowKip();
+       ////y3->setGridLoc(2, 3);             
+       ////grid.setType(2,3,NIMKIP);
+       ////lifeForms.push_back(reinterpret_cast<Lifeform*>(y3));
+       ////y3=0;
 
-       Broblub* br2 = new BlackBroblub();
-       br2->setGridLoc(2,8);
-       grid.setType(2,8,BROBLUB);
-       lifeForms.push_back(reinterpret_cast<Lifeform*>(br2));
+       ////create enemies
+       //Broblub* temp = new RedBroblub();
+       //temp->setGridLoc(1,5);
+       //grid.setType(1,5,BROBLUB);
+       //lifeForms.push_back(reinterpret_cast<Lifeform*>(temp));
 
-       Broblub* br3 = new RedBroblub();
-       br3->setGridLoc(5,4);
-       grid.setType(5,4,BROBLUB);
-       lifeForms.push_back(reinterpret_cast<Lifeform*>(br3));
+       //Broblub* br2 = new BlackBroblub();
+       //br2->setGridLoc(2,8);
+       //grid.setType(2,8,BROBLUB);
+       //lifeForms.push_back(reinterpret_cast<Lifeform*>(br2));
 
-       Broblub* br4 = new RedBroblub();
-       br4->setGridLoc(7,1);
-       grid.setType(7,1,BROBLUB);
-       lifeForms.push_back(reinterpret_cast<Lifeform*>(br4));
+       //Broblub* br3 = new RedBroblub();
+       //br3->setGridLoc(5,4);
+       //grid.setType(5,4,BROBLUB);
+       //lifeForms.push_back(reinterpret_cast<Lifeform*>(br3));
 
-       Broblub* br5 = new BlackBroblub();
-       br5->setGridLoc(7,7);
-       grid.setType(7,7,BROBLUB);
-       lifeForms.push_back(reinterpret_cast<Lifeform*>(br5));
+       //Broblub* br4 = new RedBroblub();
+       //br4->setGridLoc(7,1);
+       //grid.setType(7,1,BROBLUB);
+       //lifeForms.push_back(reinterpret_cast<Lifeform*>(br4));
 
-       //create coins
-       Coin* c1 = new Coin();
-       c1->setGridLoc(3, 5);             
-       grid.setType(3,5,COIN);
-       carriableItems.push_back(reinterpret_cast<Carriable*>(c1));
+       //Broblub* br5 = new BlackBroblub();
+       //br5->setGridLoc(7,7);
+       //grid.setType(7,7,BROBLUB);
+       //lifeForms.push_back(reinterpret_cast<Lifeform*>(br5));
 
-       Coin* c2 = new Coin();
-       c2->setGridLoc(5, 9);             
-       grid.setType(5,9,COIN);
-       carriableItems.push_back(reinterpret_cast<Carriable*>(c2));
+       ////create coins
+       //Coin* temp = new Coin();
+       //temp->setGridLoc(3, 5);             
+       //grid.setType(3,5,COIN);
+       //carriableItems.push_back(reinterpret_cast<Carriable*>(temp));
 
-       Coin* c3 = new Coin();
-       c3->setGridLoc(6, 6);             
-       grid.setType(6,6,COIN);
-       carriableItems.push_back(reinterpret_cast<Carriable*>(c3));
+       //Coin* c2 = new Coin();
+       //c2->setGridLoc(5, 9);             
+       //grid.setType(5,9,COIN);
+       //carriableItems.push_back(reinterpret_cast<Carriable*>(c2));
 
-       Coin* c4 = new Coin();
-       c4->setGridLoc(7, 0);             
-       grid.setType(7,0,COIN);
-       carriableItems.push_back(reinterpret_cast<Carriable*>(c4));
+       //Coin* c3 = new Coin();
+       //c3->setGridLoc(6, 6);             
+       //grid.setType(6,6,COIN);
+       //carriableItems.push_back(reinterpret_cast<Carriable*>(c3));
 
-       Coin* c5 = new Coin();
-       c5->setGridLoc(8, 4);             
-       grid.setType(8,4,COIN);
-       carriableItems.push_back(reinterpret_cast<Carriable*>(c5));
+       //Coin* c4 = new Coin();
+       //c4->setGridLoc(7, 0);             
+       //grid.setType(7,0,COIN);
+       //carriableItems.push_back(reinterpret_cast<Carriable*>(c4));
 
-       Coin* c6 = new Coin();
-       c6->setGridLoc(9, 7);             
-       grid.setType(9,7,COIN);
-       carriableItems.push_back(reinterpret_cast<Carriable*>(c6));
+       //Coin* c5 = new Coin();
+       //c5->setGridLoc(8, 4);             
+       //grid.setType(8,4,COIN);
+       //carriableItems.push_back(reinterpret_cast<Carriable*>(c5));
 
-       //create food
-       Food* f1 = new Food();
-       f1->setGridLoc(1,7);
-       grid.setType(1,7,FOOD);
-       carriableItems.push_back(reinterpret_cast<Carriable*>(f1));
+       //Coin* c6 = new Coin();
+       //c6->setGridLoc(9, 7);             
+       //grid.setType(9,7,COIN);
+       //carriableItems.push_back(reinterpret_cast<Carriable*>(c6));
 
-       Food* f2 = new Food();
-       f2->setGridLoc(4,6);
-       grid.setType(4,6,FOOD);
-       carriableItems.push_back(reinterpret_cast<Carriable*>(f2));
+       ////create food
+       //Food* temp = new Food();
+       //temp->setGridLoc(1,7);
+       //grid.setType(1,7,FOOD);
+       //carriableItems.push_back(reinterpret_cast<Carriable*>(temp));
 
-       Food* f3 = new Food();
-       f3->setGridLoc(5,2);
-       grid.setType(5,2,FOOD);
-       carriableItems.push_back(reinterpret_cast<Carriable*>(f3));
+       //Food* f2 = new Food();
+       //f2->setGridLoc(4,6);
+       //grid.setType(4,6,FOOD);
+       //carriableItems.push_back(reinterpret_cast<Carriable*>(f2));
 
-       Food* f4 = new Food();
-       f4->setGridLoc(9,1);
-       grid.setType(9,1,FOOD);
-       carriableItems.push_back(reinterpret_cast<Carriable*>(f4));
+       //Food* f3 = new Food();
+       //f3->setGridLoc(5,2);
+       //grid.setType(5,2,FOOD);
+       //carriableItems.push_back(reinterpret_cast<Carriable*>(f3));
+
+       //Food* f4 = new Food();
+       //f4->setGridLoc(9,1);
+       //grid.setType(9,1,FOOD);
+       //carriableItems.push_back(reinterpret_cast<Carriable*>(f4));
 
 
-       //create obstacles (rocks)
-       Obstacle* o1 = new Obstacle();
-       o1->setGridLoc(3,4);
-       grid.setType(3,4,OBSTACLE);
-       unCarriables.push_back(reinterpret_cast<Object*>(o1));
+       ////create obstacles (rocks)
+       //Obstacle* o1 = new Obstacle();
+       //o1->setGridLoc(3,4);
+       //grid.setType(3,4,OBSTACLE);
+       //unCarriables.push_back(reinterpret_cast<Object*>(o1));
 
-       Obstacle* o2 = new Obstacle();
-       o2->setGridLoc(4,8);
-       grid.setType(4,8,OBSTACLE);
-       unCarriables.push_back(reinterpret_cast<Object*>(o2));
+       //Obstacle* o2 = new Obstacle();
+       //o2->setGridLoc(4,8);
+       //grid.setType(4,8,OBSTACLE);
+       //unCarriables.push_back(reinterpret_cast<Object*>(o2));
 
-       Obstacle* o3 = new Obstacle();
-       o3->setGridLoc(6,1);
-       grid.setType(6,1,OBSTACLE);
-       unCarriables.push_back(reinterpret_cast<Object*>(o3));
+       //Obstacle* o3 = new Obstacle();
+       //o3->setGridLoc(6,1);
+       //grid.setType(6,1,OBSTACLE);
+       //unCarriables.push_back(reinterpret_cast<Object*>(o3));
 
-       Obstacle* o4 = new Obstacle();
-       o4->setGridLoc(6,5);
-       grid.setType(6,5,OBSTACLE);
-       unCarriables.push_back(reinterpret_cast<Object*>(o4));
+       //Obstacle* o4 = new Obstacle();
+       //o4->setGridLoc(6,5);
+       //grid.setType(6,5,OBSTACLE);
+       //unCarriables.push_back(reinterpret_cast<Object*>(o4));
 
-       Obstacle* o5 = new Obstacle();
-       o5->setGridLoc(6,8);
-       grid.setType(6,8,OBSTACLE);
-       unCarriables.push_back(reinterpret_cast<Object*>(o5));
+       //Obstacle* o5 = new Obstacle();
+       //o5->setGridLoc(6,8);
+       //grid.setType(6,8,OBSTACLE);
+       //unCarriables.push_back(reinterpret_cast<Object*>(o5));
 
-       Obstacle* o6 = new Obstacle();
-       o6->setGridLoc(7,3);
-       grid.setType(7,3,OBSTACLE);
-       unCarriables.push_back(reinterpret_cast<Object*>(o6));
+       //Obstacle* o6 = new Obstacle();
+       //o6->setGridLoc(7,3);
+       //grid.setType(7,3,OBSTACLE);
+       //unCarriables.push_back(reinterpret_cast<Object*>(o6));
 
-       Obstacle* o7 = new Obstacle();
-       o7->setGridLoc(8,6);
-       grid.setType(8,6,OBSTACLE);
-       unCarriables.push_back(reinterpret_cast<Object*>(o7));
+       //Obstacle* temp = new Obstacle();
+       //temp->setGridLoc(8,6);
+       //grid.setType(8,6,OBSTACLE);
+       //unCarriables.push_back(reinterpret_cast<Object*>(temp));	
 
-	   for (auto it = carriableItems.begin(); it != carriableItems.end(); ++it) grid.setObject(*it);
+	   /*for (auto it = carriableItems.begin(); it != carriableItems.end(); ++it) grid.setObject(*it);
 	   for (auto it = unCarriables.begin(); it != unCarriables.end(); ++it) grid.setObject(*it);
-	   for (auto it = lifeForms.begin(); it != lifeForms.end(); ++it) grid.setObject(*it);
+	   for (auto it = lifeForms.begin(); it != lifeForms.end(); ++it) grid.setObject(*it);*/
 }
 
 //takes the location of the lifeform and the value for how far they can see
