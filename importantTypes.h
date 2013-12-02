@@ -31,6 +31,7 @@ struct NimkipInfo
 {
 	bool needHelp;
 	GridLoc location;
+	GridLoc target;
 	Task task;
 	GridLoc goal;
 };

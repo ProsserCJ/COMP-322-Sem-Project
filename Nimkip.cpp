@@ -94,6 +94,7 @@ NimkipInfo Nimkip::getInfo()
 	info.needHelp = this->needHelp;
 	info.location = this->pos;
 	info.goal = this->destination;
+	info.target = this->target;
 	info.task = this->task;
 	return info;
 }
@@ -190,12 +191,13 @@ GridLoc Nimkip::goTowardsGoal()
 void Nimkip::checkOthers()
 {
 	GridLoc loc;
-	for(int i = 0; i < visibleTiles.size(); i++)
+	auto nimkipTiles = level::getSurroundings(this->getGridLoc(),this->nimkipCommunication);
+	for(int i = 0; i < nimkipTiles.size(); i++)
 	{
-		if(visibleTiles[i].type  == NIMKIP)
+		if(nimkipTiles[i].type  == NIMKIP)
 		{
 			//if that one needs help then stop checking others
-			if(helpNimkip(visibleTiles[i]))
+			if(helpNimkip(nimkipTiles[i]))
 				return;
 		}
 	}
@@ -206,6 +208,7 @@ bool Nimkip::helpNimkip(GridLoc nimkip)
 	NimkipInfo info = level::getNimkipInfo(nimkip);
 	if(info.needHelp)
 	{
+		this->target = info.target;
 		this->task = info.task;
 		this->destination = info.goal;
 		this->needHelp = info.needHelp;

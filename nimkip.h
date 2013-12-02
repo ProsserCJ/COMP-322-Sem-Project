@@ -19,7 +19,7 @@ using std::vector;
 class Nimkip : public Lifeform
 {
 public:
-	Nimkip(): target(GridLoc()), task(IDLE), homeBase(GridLoc(0,0)), secondaryTarget(GridLoc()){}
+	Nimkip(): target(GridLoc()), task(IDLE), homeBase(GridLoc(0,0)), secondaryTarget(GridLoc()), nimkipCommunication(2), needHelp(false) {}
 
 	//Getters
 	//returns a struct of their status info like needing help and their destination and task
@@ -63,6 +63,7 @@ protected:
 	GridLoc destination;
 	//the location it should take things it picks up
 	GridLoc homeBase;
+	int nimkipCommunication;
 
 };
 
