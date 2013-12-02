@@ -41,8 +41,6 @@ public:
 
 	//void Broblub::setSpotted(){ setCurrentFrame(BRO_SPOTTED); }
 
-	
-
 private:
 	void die();
 

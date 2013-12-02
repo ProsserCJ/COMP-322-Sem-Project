@@ -15,7 +15,7 @@
 using namespace moverNS;
 
 void Broblub::attack(GridLoc& enemy){
-	level::runAttack(this, pos); 
+	level::runAttack(this, enemy); 
 }
 
 void Broblub::attack(int x, int y){
