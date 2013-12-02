@@ -24,6 +24,10 @@ public:
 	int getCarrierStrength()				 {return carrierStrength;}
 	int getWeight()							 {return weight;}
 
+	//setters
+	void setWeight(int w) {weight = w;}
+	void setMultipleCarriers(bool t) {multipleCarriers = t;}
+
 	//Other
 	void changeCarrierStrength(int strength) {carrierStrength+=strength;}
 
@@ -42,7 +46,7 @@ private:
 
 class Food: public Carriable{
 public:
-	Food() {this->setImage(F);}
+	Food() {this->setImage(F);setWeight(10);setMultipleCarriers(true);}
 	virtual void addMove(){return;};
 private:
 	int points;

@@ -113,7 +113,10 @@ GridLoc Nimkip::goTowardsGoal()
 		if(!this->getHolding())
 		{
 			level::transferObject(this,target);
-			getHeldObject()->changeCarrierStrength(this->getStrength());
+			if(getHeldObject()!=0)
+				getHeldObject()->changeCarrierStrength(this->getStrength());
+			else
+				break;
 		}
 		else
 		{//if they can't pick it up then they need help
@@ -475,7 +478,6 @@ void YellowKip::move(GridLoc& p) {
 //working on new movement method
 //doesn't work with obstacle correction
 //shows UI is working though
-//also currently cannot click tiles outside of original view, that is bad
 void RedKip::move(GridLoc& p) {  
 	GridLoc curPos = getGridLoc();
 	VECTOR2 dirVec = VECTOR2((float)(p.x - curPos.x),(float)(p.y - curPos.y));

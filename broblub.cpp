@@ -30,6 +30,9 @@ void Broblub::move(GridLoc& p) {
 	GridLoc curPos = getGridLoc();
 	VECTOR2 dirVec = VECTOR2((float)(p.x - curPos.x),(float)(p.y - curPos.y));
 
+	int gridH = level::getGridHeight();
+	int gridW = level::getGridWidth();
+
     surroundings = level::getSurroundings(curPos,1);
 
 	visibleTiles = level::getSurroundings(curPos,getSightRadius());
@@ -38,7 +41,7 @@ void Broblub::move(GridLoc& p) {
 	if(dirVec.x==0)
 	{
 		//go south if possible
-		if(dirVec.y>0)
+		if(dirVec.y>0 && curPos.y < gridH)
 		{
 			if(level::getTileType(GridLoc(curPos.x,curPos.y+1)) == EMPTY)
 			{
@@ -46,7 +49,7 @@ void Broblub::move(GridLoc& p) {
 				return;
 			}
 		}
-		else if(dirVec.y<0)//go north if possible
+		else if(dirVec.y<0 && curPos.y > 0)//go north if possible
 		{
 			if(level::getTileType(GridLoc(curPos.x,curPos.y-1)) == EMPTY)
 			{
@@ -57,7 +60,7 @@ void Broblub::move(GridLoc& p) {
 	}
 	else if(dirVec.x>0)//go east, north east, or south east
 	{
-		if(dirVec.y>0)//go south east if possible
+		if(dirVec.y>0 && curPos.x < gridW && curPos.y < gridH)//go south east if possible
 		{
 			if(level::getTileType(GridLoc(curPos.x+1,curPos.y+1)) == EMPTY)
 			{
@@ -65,7 +68,7 @@ void Broblub::move(GridLoc& p) {
 				return;
 			}
 		}
-		else if(dirVec.y<0)//go north east if possible
+		else if(dirVec.y<0 && curPos.x < gridW && curPos.y > 0)//go north east if possible
 		{
 			if(level::getTileType(GridLoc(curPos.x+1,curPos.y-1)) == EMPTY)
 			{
@@ -73,7 +76,7 @@ void Broblub::move(GridLoc& p) {
 				return;
 			}
 		}
-		else if(dirVec.y==0)//go east
+		else if(dirVec.y==0 && curPos.x < gridW)//go east
 		{
 			if(level::getTileType(GridLoc(curPos.x+1,curPos.y)) == EMPTY)
 			{
@@ -84,7 +87,7 @@ void Broblub::move(GridLoc& p) {
 	}
 	else if(dirVec.x<0)//go west, norht west, or south west
 	{
-		if(dirVec.y>0)//go south west if possible
+		if(dirVec.y>0 && curPos.x>0 && curPos.y < gridH)//go south west if possible
 		{
 			if(level::getTileType(GridLoc(curPos.x-1,curPos.y+1)) == EMPTY)
 			{
@@ -92,7 +95,7 @@ void Broblub::move(GridLoc& p) {
 				return;
 			}
 		}
-		else if(dirVec.y<0)//go north west if possible
+		else if(dirVec.y<0 && curPos.x>0 && curPos.y>0)//go north west if possible
 		{
 			if(level::getTileType(GridLoc(curPos.x-1,curPos.y-1)) == EMPTY)
 			{
@@ -100,7 +103,7 @@ void Broblub::move(GridLoc& p) {
 				return;
 			}
 		}
-		else if(dirVec.y==0)//go west
+		else if(dirVec.y==0 && curPos.x>0)//go west
 		{
 			if(level::getTileType(GridLoc(curPos.x-1,curPos.y)) == EMPTY)
 			{
@@ -181,8 +184,10 @@ void Broblub::chooseAction()
 {
 	visibleTiles = level::getSurroundings(pos,getSightRadius());
 
+	//here?
 	surroundings = level::getSurroundings(pos,1);
-	
+	//^^^^^^^
+	int stuff=9;
 	for(int i = 0; i < surroundings.size(); i++)
 	{
 		if(surroundings[i].type==NIMKIP)

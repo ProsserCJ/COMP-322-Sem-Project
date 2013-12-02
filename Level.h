@@ -69,6 +69,8 @@ public:
 	static void collectCoin(GridLoc coinLocation);
 	static Surroundings getSurroundings(GridLoc currentLocation);
 	static void getUserInput();
+	static int getGridHeight();
+	static int getGridWidth();
 
 	bool isRunning(){return !paused;}
 	void pause(){paused = true; hud.setCurrentFrame(0); grid.clearInput();}
@@ -94,8 +96,10 @@ private:
 	int score;
 	int numEnemies, startKips, maxKips, mapSizeX, mapSizeY;
 
-	//basically only for display purposes
-	static vector<Object*> objects;
+	//vector of carriable items
+	static vector<Carriable*> carriableItems;
+	//vector of noncarriables ie obstacles and such
+	static vector<Object*> unCarriables;
 	//vector that contains both so that it can control both at once
 	static vector<Lifeform*> lifeForms;
 	
@@ -105,7 +109,7 @@ private:
 	//finds the lifeform pointer associated with a position
 	static Lifeform* identifyLifeForm(GridLoc pos);
 	//same thing but for an object
-	static Object* identifyObject(GridLoc pos);
+	static Carriable* identifyObject(GridLoc pos);
 
 	static NimkipInfo getNimkipInfo(GridLoc nimkip);
 
