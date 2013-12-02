@@ -57,6 +57,7 @@ void Nimkip::checkSurroundings()
 		{
 			attackTask = task;
 			task = ATTACK;
+			secondaryTarget = target;
 			target = visibleTiles[i];
 			return;
 		}
@@ -110,13 +111,17 @@ GridLoc Nimkip::goTowardsGoal()
 			move(destination);
 		break;
 	case LIFT:
+		//need to get item pointer sharing working.
 		if(!this->getHolding())
 		{
 			level::transferObject(this,target);
 			if(getHeldObject()!=0)
 				getHeldObject()->changeCarrierStrength(this->getStrength());
 			else
-				break;
+			{
+
+				return GridLoc();
+			}
 		}
 		else
 		{//if they can't pick it up then they need help
@@ -146,6 +151,7 @@ GridLoc Nimkip::goTowardsGoal()
 	case ATTACK:
 		attack(target);
 		task = attackTask;//puts their task back to normal
+		target = secondaryTarget;//puts their target back to normal if they had another target
 		break;
 	case CARRY:
 		this->setCarry();
@@ -171,7 +177,9 @@ GridLoc Nimkip::goTowardsGoal()
 					setScorePoints(getHeldObject()->getPoints());
 					this->getHeldObject()->setVisible(false);
 					this->getHeldObject()->setActive(false);
+					this->setHolding(false);
 				}
+				this->setHeldObject(0);
 			}
 		}
 		break;
@@ -193,18 +201,16 @@ void Nimkip::checkOthers()
 	}
 }
 
-//not sure why this is commented out
-//look into this later
 bool Nimkip::helpNimkip(GridLoc nimkip)
 {
-	/*NimkipInfo info = level::getNimkipInfo(nimkip);
+	NimkipInfo info = level::getNimkipInfo(nimkip);
 	if(info.needHelp)
 	{
 		this->task = info.task;
 		this->destination = info.goal;
 		this->needHelp = info.needHelp;
 		return true;
-	}*/
+	}
 	return false;
 }
 
@@ -490,6 +496,7 @@ void YellowKip::move(GridLoc& p) {
 //working on new movement method
 //doesn't work with obstacle correction
 //shows UI is working though
+//has extra stuff to try to move food objects with it but it doesn't quite do anything
 void RedKip::move(GridLoc& p) {  
 	GridLoc curPos = getGridLoc();
 	VECTOR2 dirVec = VECTOR2((float)(p.x - curPos.x),(float)(p.y - curPos.y));

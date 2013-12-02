@@ -71,6 +71,7 @@ public:
 	static void getUserInput();
 	static int getGridHeight();
 	static int getGridWidth();
+	static NimkipInfo getNimkipInfo(GridLoc nimkip);
 
 	bool isRunning(){return !paused;}
 	void pause(){paused = true; hud.setCurrentFrame(0); grid.clearInput();}
@@ -110,9 +111,6 @@ private:
 	static Lifeform* identifyLifeForm(GridLoc pos);
 	//same thing but for an object
 	static Carriable* identifyObject(GridLoc pos);
-
-	static NimkipInfo getNimkipInfo(GridLoc nimkip);
-
 };
 
 #endif

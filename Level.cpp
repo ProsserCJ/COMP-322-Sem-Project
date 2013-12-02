@@ -355,8 +355,9 @@ bool level::transferObject(Lifeform* receiver, GridLoc item)
 	//only works if the receiver is not already holding something
 	if(!receiver->getHolding())
 	{
-		receiver->setHeldObject(reinterpret_cast<Carriable*>(identifyObject(item)));
-		receiver->setHolding(true);
+		receiver->setHeldObject(identifyObject(item));
+		//if(receiver->getHeldObject()!=0)
+			receiver->setHolding(true);
 	}
 	else
 	{

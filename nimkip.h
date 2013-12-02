@@ -19,7 +19,7 @@ using std::vector;
 class Nimkip : public Lifeform
 {
 public:
-	Nimkip(): target(GridLoc()), task(IDLE), homeBase(GridLoc(0,0)){}
+	Nimkip(): target(GridLoc()), task(IDLE), homeBase(GridLoc(0,0)), secondaryTarget(GridLoc()){}
 
 	//Getters
 	//returns a struct of their status info like needing help and their destination and task
@@ -58,6 +58,8 @@ protected:
 	Task attackTask;//only when attacking
 	//position of what they are picking up or attacking
 	GridLoc target;
+	//target value to hold target when switching from picking something up to fighting and vice versa
+	GridLoc secondaryTarget;
 	GridLoc destination;
 	//the location it should take things it picks up
 	GridLoc homeBase;
