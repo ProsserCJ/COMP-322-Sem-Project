@@ -112,7 +112,6 @@ GridLoc Nimkip::goTowardsGoal()
 			move(destination);
 		break;
 	case LIFT:
-		//need to get item pointer sharing working.
 		if(!this->getHolding())
 		{
 			level::transferObject(this,target);
@@ -209,8 +208,19 @@ bool Nimkip::helpNimkip(GridLoc nimkip)
 	if(info.needHelp)
 	{
 		this->target = info.target;
-		this->task = info.task;
-		this->destination = info.goal;
+		this->task = WALK;
+		this->secondaryTask = info.task;
+		auto goalSurroundings = level::getSurroundings(info.target,1);
+		for(int i = 0; i < goalSurroundings.size(); i++)
+		{
+			if(goalSurroundings[i].type == EMPTY)
+			{
+				this->destination = goalSurroundings[i];
+				break;
+			}
+			//if they dont find an open space just go as close as possible
+			this->destination = info.goal;
+		}
 		this->needHelp = info.needHelp;
 		return true;
 	}
