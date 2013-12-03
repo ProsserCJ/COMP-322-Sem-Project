@@ -31,6 +31,7 @@
 #include "carriable.h"
 #include "grid.h"
 #include "base.h"
+#include "statue.h"
 
 #include <sstream>
 #include <vector>

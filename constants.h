@@ -61,6 +61,7 @@ const int RBROBLUB_COUNT = 20;
 const int BBROBLUB_COUNT = 20;
 const int COIN_COUNT = 60;
 const int FOOD_COUNT = 40;
+const int STATUE_COUNT = 5;
 const int OBSTACLE_COUNT = 300;
 const int MAX_WALL_SIZE = 3;
 
@@ -69,6 +70,10 @@ const int NIMKIP_FRIEND_SIGHT = 3;
 const int NIMKIP_ENEMY_SIGHT = 1;
 const int RED_ENEMY_SIGHT = 4;
 const int BLACK_ENEMY_SIGHT = 3;
+
+//max health
+const int NIMKIP_MAXHEALTH = 15;
+
 
 // graphic images
 
@@ -94,7 +99,7 @@ const enum {
 	NIMBASE=16, NIMCARRY=17, BNIN_SCORE=18,
 	RNIM_SCORE=19, YNIM_SCORE=20, BBRO=21, 
 	BBRO_HURT=22, BBRO_ATK=23, RBRO_SPOT=24, 
-	BBRO_SPOT=25
+	BBRO_SPOT=25, STAT=26
 };
 
 #endif

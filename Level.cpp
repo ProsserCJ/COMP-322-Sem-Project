@@ -186,6 +186,10 @@ void level::initialize(HWND hwnd)
 			unCarriables[i]->setCurrentFrame(NIMBASE);
 			grid.setType(unCarriables[i]->getGridLoc(),BASE);
 			break;
+		case S:
+			unCarriables[i]->setCurrentFrame(STAT);
+			grid.setType(unCarriables[i]->getGridLoc(),STATUE);
+			break;
 		}
 	}
 
@@ -330,6 +334,10 @@ void level::runTimeStep()
 			lifeForms[i]->setNormal();
 			if(lifeForms[i]->getHurtBoolean())
 				lifeForms[i]->setHurt();
+			if (lifeForms[i]->getHurtBoolean() && lifeForms[i]->getHealth() >= lifeForms[i]->getMaxHealth()*0.3){
+				lifeForms[i]->setNormal();
+				lifeForms[i]->setHurtBoolean(false);
+			}
 			grid.setType(lifeForms[i]->getGridLoc(),EMPTY);			
 			GridLoc newGridLoc = lifeForms[i]->takeTurn();
 			grid.setType(newGridLoc, lifeForms[i]->getImage());
@@ -467,6 +475,16 @@ void level::fillLevel()
 		   temp->setGridLoc(x,y);
 		   grid.setType(x,y,FOOD);
 		   carriableItems.push_back(reinterpret_cast<Carriable*>(temp));
+		   grid.setObject(temp);
+	   }
+
+	   for(int i=0; i<STATUE_COUNT; i++){
+		   Statue* temp = new Statue();
+		   int x = X.next(), y = Y.next();
+		   while(grid.getObject(x,y)){x = X.next(); y = Y.next();}
+		   temp->setGridLoc(x,y);
+		   grid.setType(x,y,STATUE);
+		   unCarriables.push_back(reinterpret_cast<Object*>(temp));
 		   grid.setObject(temp);
 	   }
 

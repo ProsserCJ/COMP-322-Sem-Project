@@ -239,6 +239,7 @@ public:
 		case F:  grid[g.x][g.y].setType(FOOD); break;
 		case O:  grid[g.x][g.y].setType(OBSTACLE); break;
 		case G:  grid[g.x][g.y].setType(GAP); break;
+		case S:  grid[g.x][g.y].setType(STATUE); break;
 		default: grid[g.x][g.y].setType(EMPTY); break;
 		}
 	}

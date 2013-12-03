@@ -40,6 +40,8 @@ char getSurroundingChar(Space value)
 		break;
 	case OVER:
 		return 'X';
+	case STATUE:
+		return 'S';
 		break;
 	}
 }
@@ -66,12 +68,26 @@ void Nimkip::checkSurroundings()
 	}
 }
 
+void Nimkip::heal()
+{
+	for(int i = 0; i < visibleTiles.size(); i++)
+	{
+		if(visibleTiles[i].type == STATUE)
+		{
+			//adds half of their health's distance from max
+			this->setHealth(getHealth()+(NIMKIP_MAXHEALTH-getHealth())/2);
+			return;
+		}
+	}
+}
+
 GridLoc Nimkip::takeTurn()
 {
 	if(this->getHealth()>0)
 	{
 		//getUserInput();//check to see if the use gave them something to do
 		checkSurroundings();
+		heal();
 		if(task != IDLE)//if they have a task do it
 		{
 			goTowardsGoal();
