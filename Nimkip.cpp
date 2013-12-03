@@ -297,213 +297,402 @@ void Nimkip::attack(GridLoc& p)
 }
 
 void YellowKip::move(GridLoc& p) { 
-       GridLoc curPos = getGridLoc();
-       VECTOR2 dirVec = VECTOR2((float)(p.x - curPos.x),(float)(p.y - curPos.y));
+	GridLoc curPos = getGridLoc();
+	VECTOR2 dirVec = VECTOR2((float)(p.x - curPos.x),(float)(p.y - curPos.y));
 
-              surroundings = level::getSurroundings(curPos);
-              Surroundings nSur, eSur, wSur, sSur;
-          if(surroundings.N != OVER) 
-                     nSur = level::getSurroundings(GridLoc(curPos.x,curPos.y - 1));
-          else {
-                     nSur.E = OVER;
-                     nSur.N = OVER;
-                     nSur.NE = OVER;
-                     nSur.NW = OVER;
-                     nSur.S = OVER;
-                     nSur.SE = OVER;
-                     nSur.SW = OVER;
-                     nSur.W = OVER;
-          }
-          if(surroundings.E != OVER) 
-                     eSur = level::getSurroundings(GridLoc(curPos.x + 1,curPos.y));
-          else {
-                     eSur.E = OVER;
-                     eSur.N = OVER;
-                     eSur.NE = OVER;
-                     eSur.NW = OVER;
-                     eSur.S = OVER;
-                     eSur.SE = OVER;
-                     eSur.SW = OVER;
-                     eSur.W = OVER;
-          }
-          if(surroundings.S != OVER)
-                     sSur = level::getSurroundings(GridLoc(curPos.x - 1,curPos.y + 1));
-          else {
-                     sSur.E = OVER;
-                     sSur.N = OVER;
-                     sSur.NE = OVER;
-                     sSur.NW = OVER;
-                     sSur.S = OVER;
-                     sSur.SE = OVER;
-                     sSur.SW = OVER;
-                     sSur.W = OVER;
-          }
-          if(surroundings.W != OVER)
-                     wSur = level::getSurroundings(GridLoc(curPos.x,curPos.y));
-          else {
-                     wSur.E = OVER;
-                     wSur.N = OVER;
-                     wSur.NE = OVER;
-                     wSur.NW = OVER;
-                     wSur.S = OVER;
-                     wSur.SE = OVER;
-                     wSur.SW = OVER;
-                     wSur.W = OVER;
-          }
+    surroundings = level::getSurroundings(curPos);
 
-       if((abs(dirVec.x) > abs(dirVec.y)) && (dirVec.x > 0)  && (dirVec.y > 0)) {//1st quadrant movement
-              if(surroundings.E == 6) {
-                     setDir(RIGHT);
-              } else if(eSur.E == 6) {
-                     setGridLoc(curPos.x + 2, curPos.y);
-              } else if(surroundings.S == 6) {
-                     setDir(DOWN);
-              } else if(sSur.S == 6) {
-                     setGridLoc(curPos.x, curPos.y + 2);
-              } else if(surroundings.N == 6) {
-                     setDir(UP);
-              } else if (nSur.N == 6) {
-                     setGridLoc(curPos.x, curPos.y - 2);
-              } else if(surroundings.W == 6) {
-                     setDir(LEFT);
-              } else if(wSur.W == 6) {
-                     setGridLoc(curPos.x - 2, curPos.y);
-              }
-              return;
-       } else if((abs(dirVec.x) < abs(dirVec.y)) && (dirVec.x > 0)  && (dirVec.y > 0)) {
-              if(surroundings.S == 6) {
-                     setDir(DOWN);
-              } else if(sSur.S == 6) {
-                     setGridLoc(curPos.x, curPos.y + 2);
-              } else if(surroundings.E == 6) {
-                     setDir(RIGHT);
-              } else if(eSur.E == 6) {
-                     setGridLoc(curPos.x + 2, curPos.y);
-              } else if(surroundings.W == 6) {
-                     setDir(LEFT);
-              } else if(wSur.W == 6) {
-                     setGridLoc(curPos.x - 2, curPos.y);
-              } else if(surroundings.N == 6) {
-                     setDir(UP);
-              } else if (nSur.N == 6) {
-                     setGridLoc(curPos.x, curPos.y - 2);
-              }
-              return;
-       } else if((abs(dirVec.x) > abs(dirVec.y)) && (dirVec.x < 0)  && (dirVec.y > 0)) {//2nd quadrant movement
-              if(surroundings.W == 6) {
-                     setDir(LEFT);
-              } else if(wSur.W == 6) {
-                     setGridLoc(curPos.x - 2, curPos.y);
-              } else if(surroundings.S == 6) {
-                     setDir(DOWN);
-              } else if(sSur.S == 6) {
-                     setGridLoc(curPos.x, curPos.y + 2);
-              } else if(surroundings.N == 6) {
-                     setDir(UP);
-              } else if (nSur.N == 6) {
-                     setGridLoc(curPos.x, curPos.y - 2);
-              } else if(surroundings.E == 6) {
-                     setDir(RIGHT);
-              } else if(eSur.E == 6) {
-                     setGridLoc(curPos.x + 2, curPos.y);
-              }
-              return;
-       } else if((abs(dirVec.x) < abs(dirVec.y)) && (dirVec.x < 0)  && (dirVec.y > 0)) {
-              if(surroundings.S == 6) {
-                     setDir(DOWN);
-              } else if(sSur.S == 6) {
-                     setGridLoc(curPos.x, curPos.y + 2);
-              } else if(surroundings.W == 6) {
-                     setDir(LEFT);
-              } else if(wSur.W == 6) {
-                     setGridLoc(curPos.x - 2, curPos.y);
-              } else if(surroundings.E == 6) {
-                     setDir(RIGHT);
-              } else if(eSur.E == 6) {
-                     setGridLoc(curPos.x + 2, curPos.y);
-              } else if(surroundings.N == 6) {
-                     setDir(UP);
-              } else if (nSur.N == 6) {
-                     setGridLoc(curPos.x, curPos.y - 2);
-              }
-              return;
-       } else if((abs(dirVec.x) > abs(dirVec.y)) && (dirVec.x < 0) && (dirVec.y < 0)) {//3rd quadrant movement
-              if(surroundings.W == 6) {
-                     setDir(LEFT);
-              } else if(wSur.W == 6) {
-                     setGridLoc(curPos.x - 2, curPos.y);
-              } else if(surroundings.N == 6) {
-                     setDir(UP);
-              } else if (nSur.N == 6) {
-                     setGridLoc(curPos.x, curPos.y - 2);
-              } else if(surroundings.S == 6) {
-                     setDir(DOWN);
-              } else if(sSur.S == 6) {
-                     setGridLoc(curPos.x, curPos.y + 2);
-              } else if(surroundings.E == 6) {
-                     setDir(RIGHT);
-              } else if(eSur.E == 6) {
-                     setGridLoc(curPos.x + 2, curPos.y);
-              }
-              return;
-       } else if((abs(dirVec.x) < abs(dirVec.y)) && (dirVec.x < 0) && (dirVec.y < 0)) {
-              if(surroundings.N == 6) {
-                     setDir(UP);
-              } else if (nSur.N == 6) {
-                     setGridLoc(curPos.x, curPos.y - 2);
-              } else if(surroundings.W == 6) {
-                     setDir(LEFT);
-              } else if(wSur.W == 6) {
-                     setGridLoc(curPos.x - 2, curPos.y);
-              } else if(surroundings.E == 6) {
-                     setDir(RIGHT);
-              } else if(eSur.E == 6) {
-                     setGridLoc(curPos.x + 2, curPos.y);
-              } else if(surroundings.S == 6) {
-                     setDir(DOWN);
-              } else if(sSur.S == 6) {
-                     setGridLoc(curPos.x, curPos.y + 2);
-              }
-              return;
-       } else if((abs(dirVec.x) > abs(dirVec.y)) && (dirVec.x > 0) && (dirVec.y < 0)) {//4th quadrant movement
-              if(surroundings.E == 6) {
-                     setDir(RIGHT);
-              } else if(eSur.E == 6) {
-                     setGridLoc(curPos.x + 2, curPos.y);
-              } else if(surroundings.N == 6) {
-                     setDir(UP);
-              } else if (nSur.N == 6) {
-                     setGridLoc(curPos.x, curPos.y - 2);
-              } else if(surroundings.S == 6) {
-                     setDir(DOWN);
-              } else if(sSur.S == 6) {
-                     setGridLoc(curPos.x, curPos.y + 2);
-              } else if(surroundings.W == 6) {
-                     setDir(LEFT);
-              } else if(wSur.W == 6) {
-                     setGridLoc(curPos.x - 2, curPos.y);
-              }
-              return;
-       } else if((abs(dirVec.x) < abs(dirVec.y)) && (dirVec.x > 0) && (dirVec.y < 0)) {
-              if(surroundings.N == 6) {
-                     setDir(UP);
-              } else if (nSur.N == 6) {
-                     setGridLoc(curPos.x, curPos.y - 2);
-              } else if(surroundings.E == 6) {
-                     setDir(RIGHT);
-              } else if(eSur.E == 6) {
-                     setGridLoc(curPos.x + 2, curPos.y);
-              } else if(surroundings.W == 6) {
-                     setDir(LEFT);
-              } else if(wSur.W == 6) {
-                     setGridLoc(curPos.x - 2, curPos.y);
-              } else if(surroundings.S == 6) {
-                     setDir(DOWN);
-              } else if(sSur.S == 6) {
-                     setGridLoc(curPos.x, curPos.y + 2);
-              }
-              return;
-       }
+	visibleTiles = level::getSurroundings(curPos,getSightRadius());
+
+	//used to get the direction chosen and move the nimkip and objects they hold
+	moverNS::DIR chosenDirection;
+
+	//go north or south
+	if(dirVec.x==0)
+	{
+		//go south if possible
+		if(dirVec.y>0)
+		{
+			if(level::getTileType(GridLoc(curPos.x,curPos.y+1)) == EMPTY)
+			{
+				chosenDirection=DOWN;
+				setDir(chosenDirection);
+				if(getHeldObject())
+					getHeldObject()->setDir(chosenDirection);
+				return;
+			}
+			if(level::getTileType(GridLoc(curPos.x,curPos.y+1)) == COIN)
+			{
+				level::collectCoin(GridLoc(curPos.x,curPos.y+1));
+				setScored(true);
+				chosenDirection=DOWN;
+				setDir(chosenDirection);
+				if(getHeldObject())
+					getHeldObject()->setDir(chosenDirection);
+				return;
+			}
+		}
+		else if(dirVec.y<0)//go north if possible
+		{
+			if(level::getTileType(GridLoc(curPos.x,curPos.y-1)) == EMPTY)
+			{
+				chosenDirection=UP;
+				setDir(chosenDirection);
+				if(getHeldObject())
+					getHeldObject()->setDir(chosenDirection);
+				return;
+			}
+			if(level::getTileType(GridLoc(curPos.x,curPos.y-1)) == COIN)
+			{
+				level::collectCoin(GridLoc(curPos.x,curPos.y-1));
+				setScored(true);
+				chosenDirection=UP;
+				setDir(chosenDirection);
+				if(getHeldObject())
+					getHeldObject()->setDir(chosenDirection);
+				return;
+			}
+		}
+	}
+	else if(dirVec.x>0)//go east, north east, or south east
+	{
+		if(dirVec.y>0)//go south east if possible
+		{
+			if(level::getTileType(GridLoc(curPos.x+1,curPos.y+1)) == EMPTY)
+			{
+				chosenDirection=DOWN_RIGHT;
+				setDir(chosenDirection);
+				if(getHeldObject())
+					getHeldObject()->setDir(chosenDirection);
+				return;
+			}
+			if(level::getTileType(GridLoc(curPos.x+1,curPos.y+1)) == COIN)
+			{
+				level::collectCoin(GridLoc(curPos.x+1,curPos.y+1));
+				setScored(true);
+				chosenDirection=DOWN_RIGHT;
+				setDir(chosenDirection);
+				if(getHeldObject())
+					getHeldObject()->setDir(chosenDirection);
+				return;
+			}
+		}
+		else if(dirVec.y<0)//go north east if possible
+		{
+			if(level::getTileType(GridLoc(curPos.x+1,curPos.y-1)) == EMPTY)
+			{
+				chosenDirection=UP_RIGHT;
+				setDir(chosenDirection);
+				if(getHeldObject())
+					getHeldObject()->setDir(chosenDirection);
+				return;
+			}
+			if(level::getTileType(GridLoc(curPos.x+1,curPos.y-1)) == COIN)
+			{
+				level::collectCoin(GridLoc(curPos.x+1,curPos.y-1));
+				setScored(true);
+				chosenDirection=UP_RIGHT;
+				setDir(chosenDirection);
+				if(getHeldObject())
+					getHeldObject()->setDir(chosenDirection);
+				return;
+			}
+		}
+		else if(dirVec.y==0)//go east
+		{
+			if(level::getTileType(GridLoc(curPos.x+1,curPos.y)) == EMPTY)
+			{
+				chosenDirection=RIGHT;
+				setDir(chosenDirection);
+				if(getHeldObject())
+					getHeldObject()->setDir(chosenDirection);
+				return;
+			}
+			if(level::getTileType(GridLoc(curPos.x+1,curPos.y)) == COIN)
+			{
+				level::collectCoin(GridLoc(curPos.x+1,curPos.y));
+				setScored(true);
+				chosenDirection=RIGHT;
+				setDir(chosenDirection);
+				if(getHeldObject())
+					getHeldObject()->setDir(chosenDirection);
+				return;
+			}
+		}
+	}
+	else if(dirVec.x<0)//go west, north west, or south west
+	{
+		if(dirVec.y>0)//go south west if possible
+		{
+			if(level::getTileType(GridLoc(curPos.x-1,curPos.y+1)) == EMPTY)
+			{
+				chosenDirection=DOWN_LEFT;
+				setDir(chosenDirection);
+				if(getHeldObject())
+					getHeldObject()->setDir(chosenDirection);
+				return;
+			}
+			if(level::getTileType(GridLoc(curPos.x-1,curPos.y+1)) == COIN)
+			{
+				level::collectCoin(GridLoc(curPos.x-1,curPos.y+1));
+				setScored(true);
+				chosenDirection=DOWN_LEFT;
+				setDir(chosenDirection);
+				if(getHeldObject())
+					getHeldObject()->setDir(chosenDirection);
+				return;
+			}
+		}
+		else if(dirVec.y<0)//go north west if possible
+		{
+			if(level::getTileType(GridLoc(curPos.x-1,curPos.y-1)) == EMPTY)
+			{
+				chosenDirection=UP_LEFT;
+				setDir(chosenDirection);
+				if(getHeldObject())
+					getHeldObject()->setDir(chosenDirection);
+				return;
+			}
+			if(level::getTileType(GridLoc(curPos.x-1,curPos.y-1)) == COIN)
+			{
+				level::collectCoin(GridLoc(curPos.x-1,curPos.y-1));
+				setScored(true);
+				chosenDirection=UP_LEFT;
+				setDir(chosenDirection);
+				if(getHeldObject())
+					getHeldObject()->setDir(chosenDirection);
+				return;
+			}
+		}
+		else if(dirVec.y==0)//go west
+		{
+			if(level::getTileType(GridLoc(curPos.x-1,curPos.y)) == EMPTY)
+			{
+				chosenDirection=LEFT;
+				setDir(chosenDirection);
+				if(getHeldObject())
+					getHeldObject()->setDir(chosenDirection);
+				return;
+			}
+			if(level::getTileType(GridLoc(curPos.x-1,curPos.y)) == COIN)
+			{
+				level::collectCoin(GridLoc(curPos.x-1,curPos.y));
+				setScored(true);
+				chosenDirection=LEFT;
+				setDir(chosenDirection);
+				if(getHeldObject())
+					getHeldObject()->setDir(chosenDirection);
+				return;
+			}
+		}
+	}
+       //GridLoc curPos = getGridLoc();
+       //VECTOR2 dirVec = VECTOR2((float)(p.x - curPos.x),(float)(p.y - curPos.y));
+
+       //       surroundings = level::getSurroundings(curPos);
+       //       Surroundings nSur, eSur, wSur, sSur;
+       //   if(surroundings.N != OVER) 
+       //              nSur = level::getSurroundings(GridLoc(curPos.x,curPos.y - 1));
+       //   else {
+       //              nSur.E = OVER;
+       //              nSur.N = OVER;
+       //              nSur.NE = OVER;
+       //              nSur.NW = OVER;
+       //              nSur.S = OVER;
+       //              nSur.SE = OVER;
+       //              nSur.SW = OVER;
+       //              nSur.W = OVER;
+       //   }
+       //   if(surroundings.E != OVER) 
+       //              eSur = level::getSurroundings(GridLoc(curPos.x + 1,curPos.y));
+       //   else {
+       //              eSur.E = OVER;
+       //              eSur.N = OVER;
+       //              eSur.NE = OVER;
+       //              eSur.NW = OVER;
+       //              eSur.S = OVER;
+       //              eSur.SE = OVER;
+       //              eSur.SW = OVER;
+       //              eSur.W = OVER;
+       //   }
+       //   if(surroundings.S != OVER)
+       //              sSur = level::getSurroundings(GridLoc(curPos.x - 1,curPos.y + 1));
+       //   else {
+       //              sSur.E = OVER;
+       //              sSur.N = OVER;
+       //              sSur.NE = OVER;
+       //              sSur.NW = OVER;
+       //              sSur.S = OVER;
+       //              sSur.SE = OVER;
+       //              sSur.SW = OVER;
+       //              sSur.W = OVER;
+       //   }
+       //   if(surroundings.W != OVER)
+       //              wSur = level::getSurroundings(GridLoc(curPos.x,curPos.y));
+       //   else {
+       //              wSur.E = OVER;
+       //              wSur.N = OVER;
+       //              wSur.NE = OVER;
+       //              wSur.NW = OVER;
+       //              wSur.S = OVER;
+       //              wSur.SE = OVER;
+       //              wSur.SW = OVER;
+       //              wSur.W = OVER;
+       //   }
+
+       //if((abs(dirVec.x) > abs(dirVec.y)) && (dirVec.x > 0)  && (dirVec.y > 0)) {//1st quadrant movement
+       //       if(surroundings.E == 6) {
+       //              setDir(RIGHT);
+       //       } else if(eSur.E == 6) {
+       //              setGridLoc(curPos.x + 2, curPos.y);
+       //       } else if(surroundings.S == 6) {
+       //              setDir(DOWN);
+       //       } else if(sSur.S == 6) {
+       //              setGridLoc(curPos.x, curPos.y + 2);
+       //       } else if(surroundings.N == 6) {
+       //              setDir(UP);
+       //       } else if (nSur.N == 6) {
+       //              setGridLoc(curPos.x, curPos.y - 2);
+       //       } else if(surroundings.W == 6) {
+       //              setDir(LEFT);
+       //       } else if(wSur.W == 6) {
+       //              setGridLoc(curPos.x - 2, curPos.y);
+       //       }
+       //       return;
+       //} else if((abs(dirVec.x) < abs(dirVec.y)) && (dirVec.x > 0)  && (dirVec.y > 0)) {
+       //       if(surroundings.S == 6) {
+       //              setDir(DOWN);
+       //       } else if(sSur.S == 6) {
+       //              setGridLoc(curPos.x, curPos.y + 2);
+       //       } else if(surroundings.E == 6) {
+       //              setDir(RIGHT);
+       //       } else if(eSur.E == 6) {
+       //              setGridLoc(curPos.x + 2, curPos.y);
+       //       } else if(surroundings.W == 6) {
+       //              setDir(LEFT);
+       //       } else if(wSur.W == 6) {
+       //              setGridLoc(curPos.x - 2, curPos.y);
+       //       } else if(surroundings.N == 6) {
+       //              setDir(UP);
+       //       } else if (nSur.N == 6) {
+       //              setGridLoc(curPos.x, curPos.y - 2);
+       //       }
+       //       return;
+       //} else if((abs(dirVec.x) > abs(dirVec.y)) && (dirVec.x < 0)  && (dirVec.y > 0)) {//2nd quadrant movement
+       //       if(surroundings.W == 6) {
+       //              setDir(LEFT);
+       //       } else if(wSur.W == 6) {
+       //              setGridLoc(curPos.x - 2, curPos.y);
+       //       } else if(surroundings.S == 6) {
+       //              setDir(DOWN);
+       //       } else if(sSur.S == 6) {
+       //              setGridLoc(curPos.x, curPos.y + 2);
+       //       } else if(surroundings.N == 6) {
+       //              setDir(UP);
+       //       } else if (nSur.N == 6) {
+       //              setGridLoc(curPos.x, curPos.y - 2);
+       //       } else if(surroundings.E == 6) {
+       //              setDir(RIGHT);
+       //       } else if(eSur.E == 6) {
+       //              setGridLoc(curPos.x + 2, curPos.y);
+       //       }
+       //       return;
+       //} else if((abs(dirVec.x) < abs(dirVec.y)) && (dirVec.x < 0)  && (dirVec.y > 0)) {
+       //       if(surroundings.S == 6) {
+       //              setDir(DOWN);
+       //       } else if(sSur.S == 6) {
+       //              setGridLoc(curPos.x, curPos.y + 2);
+       //       } else if(surroundings.W == 6) {
+       //              setDir(LEFT);
+       //       } else if(wSur.W == 6) {
+       //              setGridLoc(curPos.x - 2, curPos.y);
+       //       } else if(surroundings.E == 6) {
+       //              setDir(RIGHT);
+       //       } else if(eSur.E == 6) {
+       //              setGridLoc(curPos.x + 2, curPos.y);
+       //       } else if(surroundings.N == 6) {
+       //              setDir(UP);
+       //       } else if (nSur.N == 6) {
+       //              setGridLoc(curPos.x, curPos.y - 2);
+       //       }
+       //       return;
+       //} else if((abs(dirVec.x) > abs(dirVec.y)) && (dirVec.x < 0) && (dirVec.y < 0)) {//3rd quadrant movement
+       //       if(surroundings.W == 6) {
+       //              setDir(LEFT);
+       //       } else if(wSur.W == 6) {
+       //              setGridLoc(curPos.x - 2, curPos.y);
+       //       } else if(surroundings.N == 6) {
+       //              setDir(UP);
+       //       } else if (nSur.N == 6) {
+       //              setGridLoc(curPos.x, curPos.y - 2);
+       //       } else if(surroundings.S == 6) {
+       //              setDir(DOWN);
+       //       } else if(sSur.S == 6) {
+       //              setGridLoc(curPos.x, curPos.y + 2);
+       //       } else if(surroundings.E == 6) {
+       //              setDir(RIGHT);
+       //       } else if(eSur.E == 6) {
+       //              setGridLoc(curPos.x + 2, curPos.y);
+       //       }
+       //       return;
+       //} else if((abs(dirVec.x) < abs(dirVec.y)) && (dirVec.x < 0) && (dirVec.y < 0)) {
+       //       if(surroundings.N == 6) {
+       //              setDir(UP);
+       //       } else if (nSur.N == 6) {
+       //              setGridLoc(curPos.x, curPos.y - 2);
+       //       } else if(surroundings.W == 6) {
+       //              setDir(LEFT);
+       //       } else if(wSur.W == 6) {
+       //              setGridLoc(curPos.x - 2, curPos.y);
+       //       } else if(surroundings.E == 6) {
+       //              setDir(RIGHT);
+       //       } else if(eSur.E == 6) {
+       //              setGridLoc(curPos.x + 2, curPos.y);
+       //       } else if(surroundings.S == 6) {
+       //              setDir(DOWN);
+       //       } else if(sSur.S == 6) {
+       //              setGridLoc(curPos.x, curPos.y + 2);
+       //       }
+       //       return;
+       //} else if((abs(dirVec.x) > abs(dirVec.y)) && (dirVec.x > 0) && (dirVec.y < 0)) {//4th quadrant movement
+       //       if(surroundings.E == 6) {
+       //              setDir(RIGHT);
+       //       } else if(eSur.E == 6) {
+       //              setGridLoc(curPos.x + 2, curPos.y);
+       //       } else if(surroundings.N == 6) {
+       //              setDir(UP);
+       //       } else if (nSur.N == 6) {
+       //              setGridLoc(curPos.x, curPos.y - 2);
+       //       } else if(surroundings.S == 6) {
+       //              setDir(DOWN);
+       //       } else if(sSur.S == 6) {
+       //              setGridLoc(curPos.x, curPos.y + 2);
+       //       } else if(surroundings.W == 6) {
+       //              setDir(LEFT);
+       //       } else if(wSur.W == 6) {
+       //              setGridLoc(curPos.x - 2, curPos.y);
+       //       }
+       //       return;
+       //} else if((abs(dirVec.x) < abs(dirVec.y)) && (dirVec.x > 0) && (dirVec.y < 0)) {
+       //       if(surroundings.N == 6) {
+       //              setDir(UP);
+       //       } else if (nSur.N == 6) {
+       //              setGridLoc(curPos.x, curPos.y - 2);
+       //       } else if(surroundings.E == 6) {
+       //              setDir(RIGHT);
+       //       } else if(eSur.E == 6) {
+       //              setGridLoc(curPos.x + 2, curPos.y);
+       //       } else if(surroundings.W == 6) {
+       //              setDir(LEFT);
+       //       } else if(wSur.W == 6) {
+       //              setGridLoc(curPos.x - 2, curPos.y);
+       //       } else if(surroundings.S == 6) {
+       //              setDir(DOWN);
+       //       } else if(sSur.S == 6) {
+       //              setGridLoc(curPos.x, curPos.y + 2);
+       //       }
+       //       return;
+       //}
 }
 
 //working on new movement method
@@ -703,100 +892,289 @@ void RedKip::move(GridLoc& p) {
 }
 
 void BlueKip::move(GridLoc& p) {  
-       GridLoc curPos = getGridLoc();
-       VECTOR2 dirVec = VECTOR2((float)(p.x - curPos.x),(float)(p.y - curPos.y));
+	GridLoc curPos = getGridLoc();
+	VECTOR2 dirVec = VECTOR2((float)(p.x - curPos.x),(float)(p.y - curPos.y));
 
-       surroundings = level::getSurroundings(curPos);
+    surroundings = level::getSurroundings(curPos);
 
-       if((abs(dirVec.x) > abs(dirVec.y)) && (dirVec.x > 0)  && (dirVec.y > 0)) {//1st quadrant movement
-              if(surroundings.E == 6) {
-                     setDir(RIGHT);
-              } else if(surroundings.S == 6) {
-                     setDir(DOWN);
-              } else if(surroundings.N == 6) {
-                     setDir(UP);
-              } else if(surroundings.W == 6) {
-                     setDir(LEFT);
-              }
-              return;
-       } else if((abs(dirVec.x) < abs(dirVec.y)) && (dirVec.x > 0)  && (dirVec.y > 0)) {
-              if(surroundings.S == 6) {
-                     setDir(DOWN);
-              } else if(surroundings.E == 6) {
-                     setDir(RIGHT);
-              } else if(surroundings.W == 6) {
-                     setDir(LEFT);
-              } else if(surroundings.N == 6) {
-                     setDir(UP);
-              }
-              return;
-       } else if((abs(dirVec.x) > abs(dirVec.y)) && (dirVec.x < 0)  && (dirVec.y > 0)) {//2nd quadrant movement
-              if(surroundings.W == 6) {
-                     setDir(LEFT);
-              } else if(surroundings.S == 6) {
-                     setDir(DOWN);
-              } else if(surroundings.N == 6) {
-                     setDir(UP);
-              } else if(surroundings.E == 6) {
-                     setDir(RIGHT);
-              }
-              return;
-       } else if((abs(dirVec.x) < abs(dirVec.y)) && (dirVec.x < 0)  && (dirVec.y > 0)) {
-              if(surroundings.S == 6) {
-                     setDir(DOWN);
-              } else if(surroundings.W == 6) {
-                     setDir(LEFT);
-              } else if(surroundings.E == 6) {
-                     setDir(RIGHT);
-              } else if(surroundings.N == 6) {
-                     setDir(UP);
-              }
-              return;
-       } else if((abs(dirVec.x) > abs(dirVec.y)) && (dirVec.x < 0) && (dirVec.y < 0)) {//3rd quadrant movement
-              if(surroundings.W == 6) {
-                     setDir(LEFT);
-              } else if(surroundings.N == 6) {
-                     setDir(UP);
-              } else if(surroundings.S == 6) {
-                     setDir(DOWN);
-              } else if(surroundings.E == 6) {
-                     setDir(RIGHT);
-              }
-              return;
-       } else if((abs(dirVec.x) < abs(dirVec.y)) && (dirVec.x < 0) && (dirVec.y < 0)) {
-              if(surroundings.N == 6) {
-                     setDir(UP);
-              } else if(surroundings.W == 6) {
-                     setDir(LEFT);
-              } else if(surroundings.E == 6) {
-                     setDir(RIGHT);
-              } else if(surroundings.S == 6) {
-                     setDir(DOWN);
-              }
-              return;
-       } else if((abs(dirVec.x) > abs(dirVec.y)) && (dirVec.x > 0) && (dirVec.y < 0)) {//4th quadrant movement
-              if(surroundings.E == 6) {
-                     setDir(RIGHT);
-              } else if(surroundings.N == 6) {
-                     setDir(UP);
-              } else if(surroundings.S == 6) {
-                     setDir(DOWN);
-              } else if(surroundings.W == 6) {
-                     setDir(LEFT);
-              }
-              return;
-       } else if((abs(dirVec.x) < abs(dirVec.y)) && (dirVec.x > 0) && (dirVec.y < 0)) {
-              if(surroundings.N == 6) {
-                     setDir(UP);
-              } else if(surroundings.E == 6) {
-                     setDir(RIGHT);
-              } else if(surroundings.W == 6) {
-                     setDir(LEFT);
-              } else if(surroundings.S == 6) {
-                     setDir(DOWN);
-              }
-              return;
-       }
+	visibleTiles = level::getSurroundings(curPos,getSightRadius());
+
+	//used to get the direction chosen and move the nimkip and objects they hold
+	moverNS::DIR chosenDirection;
+
+	//go north or south
+	if(dirVec.x==0)
+	{
+		//go south if possible
+		if(dirVec.y>0)
+		{
+			if(level::getTileType(GridLoc(curPos.x,curPos.y+1)) == EMPTY)
+			{
+				chosenDirection=DOWN;
+				setDir(chosenDirection);
+				if(getHeldObject())
+					getHeldObject()->setDir(chosenDirection);
+				return;
+			}
+			if(level::getTileType(GridLoc(curPos.x,curPos.y+1)) == COIN)
+			{
+				level::collectCoin(GridLoc(curPos.x,curPos.y+1));
+				setScored(true);
+				chosenDirection=DOWN;
+				setDir(chosenDirection);
+				if(getHeldObject())
+					getHeldObject()->setDir(chosenDirection);
+				return;
+			}
+		}
+		else if(dirVec.y<0)//go north if possible
+		{
+			if(level::getTileType(GridLoc(curPos.x,curPos.y-1)) == EMPTY)
+			{
+				chosenDirection=UP;
+				setDir(chosenDirection);
+				if(getHeldObject())
+					getHeldObject()->setDir(chosenDirection);
+				return;
+			}
+			if(level::getTileType(GridLoc(curPos.x,curPos.y-1)) == COIN)
+			{
+				level::collectCoin(GridLoc(curPos.x,curPos.y-1));
+				setScored(true);
+				chosenDirection=UP;
+				setDir(chosenDirection);
+				if(getHeldObject())
+					getHeldObject()->setDir(chosenDirection);
+				return;
+			}
+		}
+	}
+	else if(dirVec.x>0)//go east, north east, or south east
+	{
+		if(dirVec.y>0)//go south east if possible
+		{
+			if(level::getTileType(GridLoc(curPos.x+1,curPos.y+1)) == EMPTY)
+			{
+				chosenDirection=DOWN_RIGHT;
+				setDir(chosenDirection);
+				if(getHeldObject())
+					getHeldObject()->setDir(chosenDirection);
+				return;
+			}
+			if(level::getTileType(GridLoc(curPos.x+1,curPos.y+1)) == COIN)
+			{
+				level::collectCoin(GridLoc(curPos.x+1,curPos.y+1));
+				setScored(true);
+				chosenDirection=DOWN_RIGHT;
+				setDir(chosenDirection);
+				if(getHeldObject())
+					getHeldObject()->setDir(chosenDirection);
+				return;
+			}
+		}
+		else if(dirVec.y<0)//go north east if possible
+		{
+			if(level::getTileType(GridLoc(curPos.x+1,curPos.y-1)) == EMPTY)
+			{
+				chosenDirection=UP_RIGHT;
+				setDir(chosenDirection);
+				if(getHeldObject())
+					getHeldObject()->setDir(chosenDirection);
+				return;
+			}
+			if(level::getTileType(GridLoc(curPos.x+1,curPos.y-1)) == COIN)
+			{
+				level::collectCoin(GridLoc(curPos.x+1,curPos.y-1));
+				setScored(true);
+				chosenDirection=UP_RIGHT;
+				setDir(chosenDirection);
+				if(getHeldObject())
+					getHeldObject()->setDir(chosenDirection);
+				return;
+			}
+		}
+		else if(dirVec.y==0)//go east
+		{
+			if(level::getTileType(GridLoc(curPos.x+1,curPos.y)) == EMPTY)
+			{
+				chosenDirection=RIGHT;
+				setDir(chosenDirection);
+				if(getHeldObject())
+					getHeldObject()->setDir(chosenDirection);
+				return;
+			}
+			if(level::getTileType(GridLoc(curPos.x+1,curPos.y)) == COIN)
+			{
+				level::collectCoin(GridLoc(curPos.x+1,curPos.y));
+				setScored(true);
+				chosenDirection=RIGHT;
+				setDir(chosenDirection);
+				if(getHeldObject())
+					getHeldObject()->setDir(chosenDirection);
+				return;
+			}
+		}
+	}
+	else if(dirVec.x<0)//go west, north west, or south west
+	{
+		if(dirVec.y>0)//go south west if possible
+		{
+			if(level::getTileType(GridLoc(curPos.x-1,curPos.y+1)) == EMPTY)
+			{
+				chosenDirection=DOWN_LEFT;
+				setDir(chosenDirection);
+				if(getHeldObject())
+					getHeldObject()->setDir(chosenDirection);
+				return;
+			}
+			if(level::getTileType(GridLoc(curPos.x-1,curPos.y+1)) == COIN)
+			{
+				level::collectCoin(GridLoc(curPos.x-1,curPos.y+1));
+				setScored(true);
+				chosenDirection=DOWN_LEFT;
+				setDir(chosenDirection);
+				if(getHeldObject())
+					getHeldObject()->setDir(chosenDirection);
+				return;
+			}
+		}
+		else if(dirVec.y<0)//go north west if possible
+		{
+			if(level::getTileType(GridLoc(curPos.x-1,curPos.y-1)) == EMPTY)
+			{
+				chosenDirection=UP_LEFT;
+				setDir(chosenDirection);
+				if(getHeldObject())
+					getHeldObject()->setDir(chosenDirection);
+				return;
+			}
+			if(level::getTileType(GridLoc(curPos.x-1,curPos.y-1)) == COIN)
+			{
+				level::collectCoin(GridLoc(curPos.x-1,curPos.y-1));
+				setScored(true);
+				chosenDirection=UP_LEFT;
+				setDir(chosenDirection);
+				if(getHeldObject())
+					getHeldObject()->setDir(chosenDirection);
+				return;
+			}
+		}
+		else if(dirVec.y==0)//go west
+		{
+			if(level::getTileType(GridLoc(curPos.x-1,curPos.y)) == EMPTY)
+			{
+				chosenDirection=LEFT;
+				setDir(chosenDirection);
+				if(getHeldObject())
+					getHeldObject()->setDir(chosenDirection);
+				return;
+			}
+			if(level::getTileType(GridLoc(curPos.x-1,curPos.y)) == COIN)
+			{
+				level::collectCoin(GridLoc(curPos.x-1,curPos.y));
+				setScored(true);
+				chosenDirection=LEFT;
+				setDir(chosenDirection);
+				if(getHeldObject())
+					getHeldObject()->setDir(chosenDirection);
+				return;
+			}
+		}
+	}
+       //GridLoc curPos = getGridLoc();
+       //VECTOR2 dirVec = VECTOR2((float)(p.x - curPos.x),(float)(p.y - curPos.y));
+
+       //surroundings = level::getSurroundings(curPos);
+
+       //if((abs(dirVec.x) > abs(dirVec.y)) && (dirVec.x > 0)  && (dirVec.y > 0)) {//1st quadrant movement
+       //       if(surroundings.E == 6) {
+       //              setDir(RIGHT);
+       //       } else if(surroundings.S == 6) {
+       //              setDir(DOWN);
+       //       } else if(surroundings.N == 6) {
+       //              setDir(UP);
+       //       } else if(surroundings.W == 6) {
+       //              setDir(LEFT);
+       //       }
+       //       return;
+       //} else if((abs(dirVec.x) < abs(dirVec.y)) && (dirVec.x > 0)  && (dirVec.y > 0)) {
+       //       if(surroundings.S == 6) {
+       //              setDir(DOWN);
+       //       } else if(surroundings.E == 6) {
+       //              setDir(RIGHT);
+       //       } else if(surroundings.W == 6) {
+       //              setDir(LEFT);
+       //       } else if(surroundings.N == 6) {
+       //              setDir(UP);
+       //       }
+       //       return;
+       //} else if((abs(dirVec.x) > abs(dirVec.y)) && (dirVec.x < 0)  && (dirVec.y > 0)) {//2nd quadrant movement
+       //       if(surroundings.W == 6) {
+       //              setDir(LEFT);
+       //       } else if(surroundings.S == 6) {
+       //              setDir(DOWN);
+       //       } else if(surroundings.N == 6) {
+       //              setDir(UP);
+       //       } else if(surroundings.E == 6) {
+       //              setDir(RIGHT);
+       //       }
+       //       return;
+       //} else if((abs(dirVec.x) < abs(dirVec.y)) && (dirVec.x < 0)  && (dirVec.y > 0)) {
+       //       if(surroundings.S == 6) {
+       //              setDir(DOWN);
+       //       } else if(surroundings.W == 6) {
+       //              setDir(LEFT);
+       //       } else if(surroundings.E == 6) {
+       //              setDir(RIGHT);
+       //       } else if(surroundings.N == 6) {
+       //              setDir(UP);
+       //       }
+       //       return;
+       //} else if((abs(dirVec.x) > abs(dirVec.y)) && (dirVec.x < 0) && (dirVec.y < 0)) {//3rd quadrant movement
+       //       if(surroundings.W == 6) {
+       //              setDir(LEFT);
+       //       } else if(surroundings.N == 6) {
+       //              setDir(UP);
+       //       } else if(surroundings.S == 6) {
+       //              setDir(DOWN);
+       //       } else if(surroundings.E == 6) {
+       //              setDir(RIGHT);
+       //       }
+       //       return;
+       //} else if((abs(dirVec.x) < abs(dirVec.y)) && (dirVec.x < 0) && (dirVec.y < 0)) {
+       //       if(surroundings.N == 6) {
+       //              setDir(UP);
+       //       } else if(surroundings.W == 6) {
+       //              setDir(LEFT);
+       //       } else if(surroundings.E == 6) {
+       //              setDir(RIGHT);
+       //       } else if(surroundings.S == 6) {
+       //              setDir(DOWN);
+       //       }
+       //       return;
+       //} else if((abs(dirVec.x) > abs(dirVec.y)) && (dirVec.x > 0) && (dirVec.y < 0)) {//4th quadrant movement
+       //       if(surroundings.E == 6) {
+       //              setDir(RIGHT);
+       //       } else if(surroundings.N == 6) {
+       //              setDir(UP);
+       //       } else if(surroundings.S == 6) {
+       //              setDir(DOWN);
+       //       } else if(surroundings.W == 6) {
+       //              setDir(LEFT);
+       //       }
+       //       return;
+       //} else if((abs(dirVec.x) < abs(dirVec.y)) && (dirVec.x > 0) && (dirVec.y < 0)) {
+       //       if(surroundings.N == 6) {
+       //              setDir(UP);
+       //       } else if(surroundings.E == 6) {
+       //              setDir(RIGHT);
+       //       } else if(surroundings.W == 6) {
+       //              setDir(LEFT);
+       //       } else if(surroundings.S == 6) {
+       //              setDir(DOWN);
+       //       }
+       //       return;
+       //}
 }
 
 void RedKip::setAtk(){ setCurrentFrame(RNIM_ATK); } 
