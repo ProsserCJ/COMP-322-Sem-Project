@@ -746,6 +746,110 @@ void RedKip::move(GridLoc& p) {
 	//used to get the direction chosen and move the nimkip and objects they hold
 	moverNS::DIR chosenDirection;
 
+	/////////////////////////////////////////////////////////////////////////////////////////////////
+	//new Move function using ternary direction choices and obstacle avoidance
+	
+	int dirVal;
+	int a,b,c,d;
+	
+	if(dirVec.x < 0)
+		a = -1;
+	else if(dirVec.x > 0)
+		a = 1;
+	else
+		a = 0;
+
+	if(-dirVec.y < 0)
+		b = -1;
+	else if(-dirVec.y > 0)
+		b = 1;
+	else
+		b = 0;
+	
+	c = a;
+	if(c < 0) c = 2;
+	d = b;
+	if(d < 0) d = 2;
+
+	dirVal = 3*c + d;   //Convert ternary value to decimal
+
+	switch(dirVal) {    //Reassigning to match enum direction values
+	case 0: dirVal = 8; break;
+	case 1: dirVal = 2; break;
+	case 2: dirVal = 3; break;
+	case 3: dirVal = 1; break;
+	case 4: dirVal = 5; break;
+	case 5: dirVal = 7; break;
+	case 6: dirVal = 0; break;
+	case 7: dirVal = 4; break;
+	case 8: dirVal = 6; break;
+	}
+
+	if(a == 0 && b == 0)
+		return;
+
+	if(level::getTileType(GridLoc(curPos.x + a,curPos.y - b)) == EMPTY || level::getTileType(GridLoc(curPos.x + a,curPos.y - b)) == COIN) {
+		if(level::getTileType(GridLoc(curPos.x + a,curPos.y - b)) == COIN) {
+			level::collectCoin(GridLoc(curPos.x + a,curPos.y - b));
+			setScored(true);
+		}
+		chosenDirection = (moverNS::DIR) dirVal;
+		setDir(chosenDirection);
+		if(getHeldObject())
+			getHeldObject()->setDir(chosenDirection);
+		return;
+	} else {//Obstacle Avoidance
+		if((a + b) % 2 != 0) { //Cardinal directions
+			if(a == 0) {
+				a = 1*(dirVec.x/abs(dirVec.x));
+				b = 0;
+			} else {
+				a = 0;
+				b = 1*(dirVec.y/abs(dirVec.y));
+			}
+		} else { //Non-cardinal directions
+			//if((a + b) == 0)
+
+			//Incomplete... Still working on it
+
+		}
+
+		c = a;
+		if(c < 0) c = 2;
+		d = b;
+		if(d < 0) d = 2;
+
+		dirVal = 3*c + d;
+
+		switch(dirVal) {
+		case 0: dirVal = 8; break;
+		case 1: dirVal = 2; break;
+		case 2: dirVal = 3; break;
+		case 3: dirVal = 1; break;
+		case 4: dirVal = 5; break;
+		case 5: dirVal = 7; break;
+		case 6: dirVal = 0; break;
+		case 7: dirVal = 4; break;
+		case 8: dirVal = 6; break;
+		}
+
+		if(level::getTileType(GridLoc(curPos.x + a,curPos.y - b)) == EMPTY || level::getTileType(GridLoc(curPos.x + a,curPos.y - b)) == COIN) {
+			if(level::getTileType(GridLoc(curPos.x + a,curPos.y - b)) == COIN) {
+				level::collectCoin(GridLoc(curPos.x + a,curPos.y - b));
+				setScored(true);
+			}
+			chosenDirection = (moverNS::DIR) dirVal;
+			setDir(chosenDirection);
+			if(getHeldObject())
+				getHeldObject()->setDir(chosenDirection);
+		return;
+		}
+	}
+	
+	
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	/*
 	//go north or south
 	if(dirVec.x==0)
 	{
@@ -770,6 +874,8 @@ void RedKip::move(GridLoc& p) {
 					getHeldObject()->setDir(chosenDirection);
 				return;
 			}
+
+
 		}
 		else if(dirVec.y<0)//go north if possible
 		{
@@ -924,7 +1030,7 @@ void RedKip::move(GridLoc& p) {
 				return;
 			}
 		}
-	}
+	}*/
 }
 
 void BlueKip::move(GridLoc& p) {  

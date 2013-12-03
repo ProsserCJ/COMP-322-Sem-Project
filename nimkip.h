@@ -15,6 +15,8 @@
 #include "level.h"
 #include "constants.h"
 #include <vector>
+#include <cmath>
+
 using std::vector;
 
 class Nimkip : public Lifeform
