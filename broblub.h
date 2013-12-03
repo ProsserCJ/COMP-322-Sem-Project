@@ -12,6 +12,7 @@
 #define __BROBLUB_H
 
 #include "Lifeform.h"
+#include "constants.h"
 #include "level.h"
 #include <vector>
 using std::vector;
@@ -57,7 +58,7 @@ protected:
 class RedBroblub : public Broblub
 {
 public:
-	RedBroblub() : Broblub() {image = RB; setHealth(30); setMaxHealth(30); setAttackStrength(2);setSightRadius(2);}
+	RedBroblub() : Broblub() {image = RB; setHealth(30); setMaxHealth(30); setAttackStrength(2);setSightRadius(RED_ENEMY_SIGHT);}
 
 	//Actions
 	void moveRandom(vector<GridLoc> temp);
@@ -79,7 +80,7 @@ class BlackBroblub : public Broblub
 public:
 	enum PatternDirection {UP, LEFT, RIGHT, DOWN};
 
-	BlackBroblub() : Broblub() {image = BB; setHealth(40);setMaxHealth(40);setAttackStrength(3);setSightRadius(2);}
+	BlackBroblub() : Broblub() {image = BB; setHealth(40);setMaxHealth(40);setAttackStrength(3);setSightRadius(BLACK_ENEMY_SIGHT);}
 
 	//Actions
 	void chooseAction();

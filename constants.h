@@ -64,6 +64,11 @@ const int FOOD_COUNT = 40;
 const int OBSTACLE_COUNT = 300;
 const int MAX_WALL_SIZE = 3;
 
+//sight radius's
+const int NIMKIP_FRIEND_SIGHT = 3;
+const int NIMKIP_ENEMY_SIGHT = 1;
+const int RED_ENEMY_SIGHT = 4;
+const int BLACK_ENEMY_SIGHT = 3;
 
 // graphic images
 

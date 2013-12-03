@@ -369,15 +369,20 @@ bool level::transferObject(Lifeform* receiver, GridLoc item)
 }
 
 //takes the attacker and the location of the target, and runs the attack
-void level::runAttack(Lifeform* attacker, GridLoc target)
+bool level::runAttack(Lifeform* attacker, GridLoc target)
 {
 	Lifeform* targetLifeForm = identifyLifeForm(target);
 	if (attacker->isNormal()) attacker->setAtk(); 	
 	targetLifeForm->subHealth(attacker->getAttackStrength());
-	if (!targetLifeForm->getHurtBoolean() && targetLifeForm->getHealth() < targetLifeForm->getMaxHealth()*0.1){
+	if (!targetLifeForm->getHurtBoolean() && targetLifeForm->getHealth() < targetLifeForm->getMaxHealth()*0.3){
 		targetLifeForm->setHurt();
 		targetLifeForm->setHurtBoolean(true);
 	}
+	if(targetLifeForm->getHealth()<=0)
+	{
+		return true;
+	}
+	return false;
 }
 
 //fills level with all necessary starting objects

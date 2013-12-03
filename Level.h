@@ -63,7 +63,7 @@ public:
 	void gameOver();	
 	void runTimeStep();	
 	static bool transferObject(Lifeform* receiver, GridLoc item);
-	static void runAttack(Lifeform* attacker, GridLoc target);	
+	static bool runAttack(Lifeform* attacker, GridLoc target);	//returns true if target is completely destroyed
 	static vector<GridLoc> getSurroundings(GridLoc currentLocation, int sightRadius);
 	static Space getTileType(GridLoc tile);
 	static void collectCoin(GridLoc coinLocation);

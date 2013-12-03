@@ -13,13 +13,14 @@
 
 #include "Lifeform.h"
 #include "level.h"
+#include "constants.h"
 #include <vector>
 using std::vector;
 
 class Nimkip : public Lifeform
 {
 public:
-	Nimkip(): target(GridLoc()), task(IDLE), homeBase(GridLoc(0,0)), secondaryTarget(GridLoc()), nimkipCommunication(3), needHelp(false) {}
+	Nimkip(): target(GridLoc()), task(IDLE), homeBase(GridLoc(0,0)), secondaryTarget(GridLoc()), nimkipCommunication(NIMKIP_FRIEND_SIGHT), needHelp(false) {setSightRadius(NIMKIP_ENEMY_SIGHT);}
 
 	//Getters
 	//returns a struct of their status info like needing help and their destination and task
@@ -36,7 +37,7 @@ public:
 	virtual void move(int x, int y) {}	
 
 	//Other Actions
-	void attack(GridLoc& p);
+	bool attack(GridLoc& p);//returns whether or not the attack killed the target entirely
 	void checkSurroundings();
 	GridLoc takeTurn();
 	GridLoc goTowardsGoal();
@@ -64,7 +65,6 @@ protected:
 	//the location it should take things it picks up
 	GridLoc homeBase;
 	int nimkipCommunication;
-
 };
 
 class RedKip : public Nimkip
