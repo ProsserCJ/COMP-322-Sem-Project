@@ -41,7 +41,7 @@
 const char CLASS_NAME[] = "Nimkips";
 const char GAME_TITLE[] = "Nimkips";
 const bool FULLSCREEN = false;              // windowed or fullscreen
-const UINT GAME_WIDTH =  900;   // width of game in pixels
+const UINT GAME_WIDTH =  900;					// width of game in pixels
 const UINT GAME_HEIGHT = 800;               // height of game in pixels
 
 // game
@@ -61,7 +61,8 @@ const int RBROBLUB_COUNT = 20;
 const int BBROBLUB_COUNT = 20;
 const int COIN_COUNT = 60;
 const int FOOD_COUNT = 40;
-const int OBSTACLE_COUNT = 70;
+const int OBSTACLE_COUNT = 300;
+const int MAX_WALL_SIZE = 3;
 
 
 // graphic images

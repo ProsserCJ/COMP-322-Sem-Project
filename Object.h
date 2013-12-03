@@ -20,7 +20,7 @@ enum textureType {RN,BN,YN,RB,BB,C,F,O,G,BS};
 
 class Object: public Entity{
 public:
-	Object(): Entity()				{pos.x = getX()/GRID_SIZE; pos.y = getY()/GRID_SIZE;}
+	Object(): Entity()				{pos.x = getX()/GRID_SIZE*getScale(); pos.y = getY()/GRID_SIZE*getScale();}
 
 	//Getters
 	int getXCoord()					{return pos.x;}
@@ -29,8 +29,8 @@ public:
 	textureType getImage()			{return image;}
 
 	//Setters
-	void setGridLoc(int x, int y)	{setX(x*GRID_SIZE); setY(y*GRID_SIZE); pos = GridLoc(x,y);}
-	void setGridLoc(GridLoc& p)		{setX(pos.x*GRID_SIZE); setY(pos.y*GRID_SIZE); pos = GridLoc(p.x,p.y);}
+	void setGridLoc(int x, int y)	{setX(x*GRID_SIZE*getScale()); setY(y*GRID_SIZE*getScale()); pos = GridLoc(x,y);}
+	void setGridLoc(GridLoc& p)		{setX(pos.x*GRID_SIZE*getScale()); setY(pos.y*GRID_SIZE*getScale()); pos = GridLoc(p.x,p.y);}
 	void setPosRaw(int x, int y)	{pos = GridLoc(x,y);}	
 	void setImage(textureType i)	{image = i;}
 
