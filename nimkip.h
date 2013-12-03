@@ -37,7 +37,7 @@ public:
 	virtual void move(int x, int y) {}	
 
 	//Other Actions
-	void attack(GridLoc& p);
+	bool attack(GridLoc& p);//returns whether or not the attack killed the target entirely
 	void checkSurroundings();
 	GridLoc takeTurn();
 	GridLoc goTowardsGoal();

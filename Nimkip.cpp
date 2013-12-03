@@ -53,10 +53,12 @@ void Nimkip::checkSurroundings()
 
 	for(int i = 0; i < visibleTiles.size(); i++)
 	{
-		if(visibleTiles[i].type == BROBLUB)
+		//only set to attack if they aren't already attacking
+		if(visibleTiles[i].type == BROBLUB && task != ATTACK)
 		{
 			attackTask = task;
 			task = ATTACK;
+			//saving old target is necessary in the event that they are switching from picking up something to fighting.
 			secondaryTarget = target;
 			target = visibleTiles[i];
 			return;
@@ -104,6 +106,8 @@ GridLoc Nimkip::goTowardsGoal()
 	switch(this->task)
 	{
 	case WALK:
+		if(needHelp)
+			needHelp = false;
 		if(pos.x==destination.x && pos.y==destination.y)
 		{
 			task=secondaryTask;
@@ -149,9 +153,12 @@ GridLoc Nimkip::goTowardsGoal()
 		}
 		break;
 	case ATTACK:
-		attack(target);
-		task = attackTask;//puts their task back to normal
-		target = secondaryTarget;//puts their target back to normal if they had another target
+		needHelp = true;
+		if(attack(target))//if the enemy is dead then they can go back to their old goal
+		{
+			task = attackTask;//puts their task back to normal
+			target = secondaryTarget;//puts their target back to normal if they had another target
+		}
 		break;
 	case CARRY:
 		this->setCarry();
@@ -221,7 +228,6 @@ bool Nimkip::helpNimkip(GridLoc nimkip)
 			//if they dont find an open space just go as close as possible
 			this->destination = info.goal;
 		}
-		this->needHelp = info.needHelp;
 		return true;
 	}
 	return false;
@@ -291,9 +297,9 @@ void Nimkip::getUserInput()
     }
 }
 
-void Nimkip::attack(GridLoc& p)
+bool Nimkip::attack(GridLoc& p)
 {
-	level::runAttack(this, target);
+	return level::runAttack(this, target);
 }
 
 void YellowKip::move(GridLoc& p) { 
