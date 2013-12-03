@@ -78,6 +78,8 @@ GridLoc Nimkip::takeTurn()
 		}
 		else
 		{
+			if(needHelp)
+				needHelp = false;
 			checkOthers();//see if there is something to do
 			if(task != IDLE)//do it if there is
 			{
@@ -114,6 +116,14 @@ GridLoc Nimkip::goTowardsGoal()
 		}
 		else
 			move(destination);
+		//check if anyone needs help
+		//only stop for fights if they have another assigned task
+		/*if(secondaryTask != IDLE)
+		{
+			checkOthers(true);
+		}
+		else
+			checkOthers();*/
 		break;
 	case LIFT:
 		if(!this->getHolding())
@@ -158,6 +168,12 @@ GridLoc Nimkip::goTowardsGoal()
 		{
 			task = attackTask;//puts their task back to normal
 			target = secondaryTarget;//puts their target back to normal if they had another target
+			needHelp = false;
+			if(helping)
+			{
+				helping = false;
+				destination = this->helpDestination;
+			}
 		}
 		break;
 	case CARRY:
@@ -194,7 +210,7 @@ GridLoc Nimkip::goTowardsGoal()
 	return GridLoc();
 }
 
-void Nimkip::checkOthers()
+void Nimkip::checkOthers(bool fightsOnly)
 {
 	GridLoc loc;
 	auto nimkipTiles = level::getSurroundings(this->getGridLoc(),this->nimkipCommunication);
@@ -203,17 +219,29 @@ void Nimkip::checkOthers()
 		if(nimkipTiles[i].type  == NIMKIP)
 		{
 			//if that one needs help then stop checking others
-			if(helpNimkip(nimkipTiles[i]))
+			if(helpNimkip(nimkipTiles[i],fightsOnly))
 				return;
 		}
 	}
+	//if they were on their way to help but the help is no longer necessary
+	if(helping)
+	{
+		helping = false;
+		secondaryTask = IDLE;
+		target = secondaryTarget;
+		destination = helpDestination;
+	}
 }
 
-bool Nimkip::helpNimkip(GridLoc nimkip)
+bool Nimkip::helpNimkip(GridLoc nimkip, bool fightsOnly)
 {
 	NimkipInfo info = level::getNimkipInfo(nimkip);
+	//makes it if they only want to help fight they only stop for fights
+	if(fightsOnly && info.task != ATTACK)
+		return false;
 	if(info.needHelp)
 	{
+		this->secondaryTarget = target;
 		this->target = info.target;
 		this->task = WALK;
 		this->secondaryTask = info.task;
@@ -226,8 +254,10 @@ bool Nimkip::helpNimkip(GridLoc nimkip)
 				break;
 			}
 			//if they dont find an open space just go as close as possible
+			this->helpDestination = this->destination;
 			this->destination = info.goal;
 		}
+		helping = true;
 		return true;
 	}
 	return false;
