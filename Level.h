@@ -96,7 +96,7 @@ private:
 	int frameCount;
 	int turns;
 	int score;
-	int numEnemies, startKips, maxKips, mapSizeX, mapSizeY;
+	int numEnemies, numKips, maxKips, mapSizeX, mapSizeY;
 
 	//vector of carriable items
 	static vector<Carriable*> carriableItems;

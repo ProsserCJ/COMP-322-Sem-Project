@@ -29,7 +29,7 @@ level::level()
 	gameFont = new TextDX();
 	rgen = Random(0,9);
 	this->numEnemies = 5;
-	this->startKips = 10;
+	this->numKips = 10;
 	this->mapSizeX = 50;
 	this->mapSizeY = 50;
 	this->maxKips = 20;
@@ -284,7 +284,7 @@ void level::render()
 	hud.draw();
 	gameFont->setFontColor(SETCOLOR_ARGB(255,0,0,0));
 	ss.str(std::string());
-	ss << "Turn  " << turns << "\nScore " << score;
+	ss << "Turn  " << turns << "\nScore " << score << "\nKips " << numKips;
 	gameFont->print(ss.str(), 830, 410);
 
     graphics->spriteEnd();                  // end drawing sprites
@@ -346,6 +346,7 @@ void level::runTimeStep()
 			if(!lifeForms[i]->getActive())//if they are dead tell the level map
 			{
 				grid.setType(lifeForms[i]->getGridLoc(),EMPTY);	
+				if (lifeForms[i]->getImage() <= YN) numKips--;
 			}
 			//check if they scored
 			if(lifeForms[i]->getScored())

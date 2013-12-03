@@ -256,11 +256,11 @@ public:
 		float scale = background->getScale();
 		if (X < SCROLL_DETECT_OFFSET*scale && center.x/scale > (GAME_WIDTH-HUD_WIDTH)/2) 
 			diff.x += SCROLL_SPEED*frameTime;
-		if (X > GAME_WIDTH - HUD_WIDTH - SCROLL_DETECT_OFFSET*scale && X < GAME_WIDTH - HUD_WIDTH && center.x/scale < ((width+width%2)*GRID_SIZE)/2) 
+		if (X > GAME_WIDTH - HUD_WIDTH - SCROLL_DETECT_OFFSET*scale && X < GAME_WIDTH - HUD_WIDTH && center.x < ((width+width%2)*GRID_SIZE*scale)) 
 			diff.x -= SCROLL_SPEED*frameTime;
 		if (Y < SCROLL_DETECT_OFFSET*scale && center.y/scale > GAME_HEIGHT/2) 
 			diff.y += SCROLL_SPEED*frameTime;
-		if (Y > GAME_HEIGHT - SCROLL_DETECT_OFFSET*scale && center.y/scale < ((height+height%2)*GRID_SIZE)/2) 
+		if (Y > GAME_HEIGHT - SCROLL_DETECT_OFFSET*scale && center.y/scale < ((height+height%2)*GRID_SIZE)) 
 			diff.y -= SCROLL_SPEED*frameTime;
 		
 		if (diff == VECTOR2(0,0)) return false;
