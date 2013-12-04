@@ -17,7 +17,20 @@ void Horde::disband() {
 	for(int i = 0; i < hordeList.size(); i++) {
 		hordeList[i]->setHolding(false);
 	}
-	
+
+	int sight = 0;
+	while(!hordeList.empty()) {
+		sight++;
+		visibleTiles = level::getSurroundings(getGridLoc(),sight); //getSightRadius()? -- unsure of use for horde
+		for(int i = 0; i < visibleTiles.size(); i++) {
+			hordeList[0]->setGridLoc(visibleTiles[i]);
+			dropMember(0);
+			if(hordeList.empty())
+				break;
+		}
+	}
+
+	/* //Unneed with new surroundings function
 	checkSurroundings();
 	Surroundings sur = surroundings;
 	findEmptyAndDrop(sur);
@@ -41,13 +54,27 @@ void Horde::disband() {
 	findEmptyAndDrop(sur);
 
 	sur = level::getSurroundings(GridLoc(pos.x + 1,pos.y - 1));
-	findEmptyAndDrop(sur);
+	findEmptyAndDrop(sur);*/
 }
 
 void Horde::findEmptyAndDrop(Surroundings sur) {
+	//No longer in use
 	if(hordeList.empty())
 			return;
 
+	int sight = 0;
+	while(!hordeList.empty()) {
+		sight++;
+		visibleTiles = level::getSurroundings(getGridLoc(),sight); //getSightRadius()? -- unsure of use for horde
+		for(int i = 0; i < visibleTiles.size(); i++) {
+			hordeList[0]->setGridLoc(visibleTiles[i]);
+			dropMember(0);
+			if(hordeList.empty())
+				break;
+		}
+	}
+
+	/*
 	int i = 0;
 	if(sur.E == 6) {
 		hordeList[i]->setGridLoc(pos.x + 1, pos.y);
@@ -97,7 +124,7 @@ void Horde::findEmptyAndDrop(Surroundings sur) {
 		if(hordeList.empty())
 			return;
 		i++;
-	}
+	}*/
 }
 
 void Horde::addMember(Lifeform* l) {
@@ -112,14 +139,13 @@ void Horde::subHealth(int diff) {
 	int i = rand()%hordeList.size();
 	hordeList[i]->subHealth(diff);
 
-	if(hordeList[i] <= 0)
+	if(hordeList[i]->getHealth() <= 0) {
+		hordeList[i]->die();
 		dropMember(i);
-
+	}
 }
 
 void Horde::dropMember(int i) {
-	hordeList[i]->die();
-
 	int x = 0;
 	vector<Lifeform*>::iterator it;
 	for(it = hordeList.begin(); it != hordeList.end(); it++) {
@@ -128,12 +154,10 @@ void Horde::dropMember(int i) {
 			break;
 	}
 
-	hordeList[i]->die();
 	hordeNum--;
 	totalStrength -= hordeList[i]->getStrength();
 	hordeList.erase(it);
 }
-
 
 GridLoc Horde::takeTurn() {
 	//user input?

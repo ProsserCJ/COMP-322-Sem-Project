@@ -29,6 +29,7 @@ protected:
 	int totalStrength;
 	Carriable * hordeObject;
 	Surroundings surroundings;
+	vector<GridLoc> visibleTiles;
 
 	GridLoc homeBase;
 	GridLoc destination;
