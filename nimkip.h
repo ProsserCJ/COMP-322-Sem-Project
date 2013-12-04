@@ -44,7 +44,9 @@ public:
 	void heal();
 	GridLoc takeTurn();
 	GridLoc goTowardsGoal();
-	void setCarry()					{setCurrentFrame(NIMCARRY);}
+	void setCarryFood()					{setCurrentFrame(NIMCARRY_FOOD);}
+	void setCarryCandy()				{setCurrentFrame(NIMCARRY_CANDY);}
+	//void setCarryCoin()					{setCurrentFrame(NIMCARRY_COIN);}
 
 private:
 

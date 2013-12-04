@@ -19,11 +19,14 @@ public:
 	Carriable(bool multiple)				 {multipleCarriers = multiple; carrierStrength = 0;}
 	Carriable()								 {multipleCarriers = false;}
 	
+	enum Type {CHICK,CAND,COI};
+
 	//Getters
 	bool getMultipleCarriers()				 {return multipleCarriers;}	
 	int getCarrierStrength()				 {return carrierStrength;}
 	int getWeight()							 {return weight;}
 	int getPoints()							 {return points;}
+	virtual Type getType() = 0;
 
 	//setters
 	void setPoints(int p) {points = p;}
@@ -33,23 +36,43 @@ public:
 	//Other
 	void changeCarrierStrength(int strength) {carrierStrength+=strength;}
 
+	
+
 protected:
 	int points;
 	int weight;
 	bool multipleCarriers;
 	int carrierStrength;
+	Type type;
 };
 
 class Coin: public Carriable{
 public:
-	Coin() {this->setImage(C);setPoints(50);}
+	Coin() {this->setImage(C);setPoints(50);type=COI;}
+	Type getType() {return type;};
 private:
 };
 
 class Food: public Carriable{
 public:
-	Food() : Carriable(true) {this->setImage(F);setWeight(10);setMultipleCarriers(true);setPoints(200);}
+	Food() : Carriable(true) {}
 	virtual void addMove(){return;};
+private:
+};
+
+class Chicken: public Food{
+public:
+	Chicken() {this->setImage(CH);setWeight(10);setMultipleCarriers(true);setPoints(200);type=CHICK;}
+	virtual void addMove(){return;};
+	Type getType() {return type;};
+private:
+};
+
+class CandyCane: public Food{
+	public:
+	CandyCane() {this->setImage(CC);setWeight(5);setMultipleCarriers(true);setPoints(800);type=CAND;} //not sure what to set the weight/score to
+	virtual void addMove(){return;};
+	Type getType() {return type;};
 private:
 };
 

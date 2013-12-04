@@ -162,7 +162,7 @@ public:
 						 grid[x][y].toggle();
 					 }
 					 break;
-				 case FOOD:
+				 case CHICKEN:
 					 grid[x][y].toggle();
 					 if(nimkipSelected && !goalSelected)//if the user selected a nimkip then let them click elsewhere
 					 {	 
@@ -236,7 +236,8 @@ public:
 		case YN: grid[g.x][g.y].setType(NIMKIP); break;
 		case RB:
 		case BB:  grid[g.x][g.y].setType(BROBLUB); break;
-		case F:  grid[g.x][g.y].setType(FOOD); break;
+		case CH:  grid[g.x][g.y].setType(CHICK); break;
+		case CC:  grid[g.x][g.y].setType(CANDYCANE); break;
 		case O:  grid[g.x][g.y].setType(OBSTACLE); break;
 		case G:  grid[g.x][g.y].setType(GAP); break;
 		case S:  grid[g.x][g.y].setType(STATUE); break;

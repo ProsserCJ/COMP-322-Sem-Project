@@ -26,8 +26,11 @@ char getSurroundingChar(Space value)
 	case COIN:
 		return 'C';
 		break;
-	case FOOD:
-		return 'F';
+	case CHICK:
+		return 'CH';
+		break;
+	case CANDY:
+		return 'CC';
 		break;
 	case OBSTACLE:
 		return 'O';
@@ -67,6 +70,7 @@ void Nimkip::checkSurroundings()
 				target = visibleTiles[i];
 				return;
 			}
+
 		}
 	}
 }
@@ -164,7 +168,13 @@ GridLoc Nimkip::goTowardsGoal()
 		//if the combined strength is enough to pick it up say they don't need help and set them to carry it
 		if(getHeldObject()->getWeight() <= getHeldObject()->getCarrierStrength())
 		{
-			this->setCarry();
+			//different hoard images
+			/*if(getHeldObject()->getType()==Carriable::COI)
+				this->setCarryCoin();*/
+			if(getHeldObject()->getType()==Carriable::CAND)
+				this->setCarryCandy();
+			if(getHeldObject()->getType()==Carriable::CHICK)
+				this->setCarryFood();
 			needHelp = false;
 			task = CARRY;
 			getHeldObject()->setVisible(false);
@@ -199,9 +209,16 @@ GridLoc Nimkip::goTowardsGoal()
 			task = WALK;
 			destination = homeBase;
 		}
+
 		break;
 	case CARRY:
-		this->setCarry();
+		//different hoard images
+		/*if(getHeldObject()->getType()==Carriable::COI)
+			this->setCarryCoin();*/
+		if(getHeldObject()->getType()==Carriable::CAND)
+			this->setCarryCandy();
+		if(getHeldObject()->getType()==Carriable::CHICK)
+			this->setCarryFood();
 		//if the object becomes too heavy, ie another nimkip dies then they have to stop moving
 		if(getHeldObject()->getCarrierStrength()<getHeldObject()->getWeight())
 		{

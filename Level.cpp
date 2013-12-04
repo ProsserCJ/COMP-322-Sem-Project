@@ -141,9 +141,13 @@ void level::initialize(HWND hwnd)
 			carriableItems[i]->setCurrentFrame(MONEY);
 			grid.setType(carriableItems[i]->getGridLoc(),COIN);
 			break;
-		case F:
+		case CH:
 			carriableItems[i]->setCurrentFrame(CHICKEN);
-			grid.setType(carriableItems[i]->getGridLoc(),FOOD);
+			grid.setType(carriableItems[i]->getGridLoc(),CHICK);
+			break;
+		case CC:
+			carriableItems[i]->setCurrentFrame(CANDY);
+			grid.setType(carriableItems[i]->getGridLoc(),CANDYCANE);
 			break;
 		case O:
 			carriableItems[i]->setCurrentFrame(ROCK);
@@ -170,9 +174,9 @@ void level::initialize(HWND hwnd)
 			unCarriables[i]->setCurrentFrame(MONEY);
 			grid.setType(unCarriables[i]->getGridLoc(),COIN);
 			break;
-		case F:
+		case CH:
 			unCarriables[i]->setCurrentFrame(CHICKEN);
-			grid.setType(unCarriables[i]->getGridLoc(),FOOD);
+			grid.setType(unCarriables[i]->getGridLoc(),CHICK);
 			break;
 		case O:
 			unCarriables[i]->setCurrentFrame(ROCK);
@@ -334,6 +338,7 @@ void level::runTimeStep()
 			lifeForms[i]->setNormal();
 			if(lifeForms[i]->getHurtBoolean())
 				lifeForms[i]->setHurt();
+			//for after they're healed by statue
 			if (lifeForms[i]->getHurtBoolean() && lifeForms[i]->getHealth() >= lifeForms[i]->getMaxHealth()*0.3){
 				lifeForms[i]->setNormal();
 				lifeForms[i]->setHurtBoolean(false);
@@ -473,11 +478,21 @@ void level::fillLevel()
 	   }
 
 	   for(int i=0; i<FOOD_COUNT; i++){
-		   Food* temp = new Food();
+		   Chicken* temp = new Chicken();
 		   int x = X.next(), y = Y.next();
 		   while(grid.getObject(x,y)){x = X.next(); y = Y.next();}
 		   temp->setGridLoc(x,y);
-		   grid.setType(x,y,FOOD);
+		   grid.setType(x,y,CHICK);
+		   carriableItems.push_back(reinterpret_cast<Carriable*>(temp));
+		   grid.setObject(temp);
+	   }
+
+	   for(int i=0; i<CANDY_COUNT; i++){
+		   CandyCane* temp = new CandyCane();
+		   int x = X.next(), y = Y.next();
+		   while(grid.getObject(x,y)){x = X.next(); y = Y.next();}
+		   temp->setGridLoc(x,y);
+		   grid.setType(x,y,CANDYCANE);
 		   carriableItems.push_back(reinterpret_cast<Carriable*>(temp));
 		   grid.setObject(temp);
 	   }

@@ -16,7 +16,7 @@
 #include "importantTypes.h"
 
 //for nimkips of every color, broblub, coin, food, object, and gap respectively
-enum textureType {RN,BN,YN,RB,BB,C,F,O,G,BS,S};
+enum textureType {RN,BN,YN,RB,BB,C,CH,CC,O,G,BS,S};
 
 class Object: public Entity{
 public:
