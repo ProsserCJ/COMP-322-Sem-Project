@@ -126,9 +126,6 @@ void Horde::dropMember(int i) {
 		x++;
 		if(x == i)
 			break;
-
-		//Should work... Maybe risky
-		//Tries to match iterator type to int index for erasing the correct lifeform* from the vector
 	}
 
 	hordeList[i]->die();
@@ -172,6 +169,8 @@ void Horde::moveNormal(GridLoc& p) {
 
     surroundings = level::getSurroundings(curPos);
 
+
+	/*
     if((abs(dirVec.x) > abs(dirVec.y)) && (dirVec.x > 0)  && (dirVec.y > 0)) {//1st quadrant movement
 			if(surroundings.E == 2) {
                     setDir(RIGHT);					
@@ -333,7 +332,7 @@ void Horde::moveNormal(GridLoc& p) {
                     setDir(DOWN);
             }
             return;
-    }
+    }*/
 	return;
 }
 

@@ -866,10 +866,10 @@ void RedKip::move(GridLoc& p) {
 				b = 1*(dirVec.y/abs(dirVec.y));
 			}
 		} else { //Non-cardinal directions
-			//if((a + b) == 0)
-
-			//Incomplete... Still working on it
-
+			if(abs(dirVec.x) > abs(dirVec.y))
+				a = 0;
+			else
+				b = 0;
 		}
 
 		c = a;
@@ -1102,6 +1102,107 @@ void BlueKip::move(GridLoc& p) {
 	//used to get the direction chosen and move the nimkip and objects they hold
 	moverNS::DIR chosenDirection;
 
+	/////////////////////////////////////////////////////////////////////////////////////////////////
+	//new Move function using ternary direction choices and obstacle avoidance
+	
+	int dirVal;
+	int a,b,c,d;
+	
+	if(dirVec.x < 0)
+		a = -1;
+	else if(dirVec.x > 0)
+		a = 1;
+	else
+		a = 0;
+
+	if(-dirVec.y < 0)
+		b = -1;
+	else if(-dirVec.y > 0)
+		b = 1;
+	else
+		b = 0;
+	
+	c = a;
+	if(c < 0) c = 2;
+	d = b;
+	if(d < 0) d = 2;
+
+	dirVal = 3*c + d;   //Convert ternary value to decimal
+
+	switch(dirVal) {    //Reassigning to match enum direction values
+	case 0: dirVal = 8; break;
+	case 1: dirVal = 2; break;
+	case 2: dirVal = 3; break;
+	case 3: dirVal = 1; break;
+	case 4: dirVal = 5; break;
+	case 5: dirVal = 7; break;
+	case 6: dirVal = 0; break;
+	case 7: dirVal = 4; break;
+	case 8: dirVal = 6; break;
+	}
+
+	if(a == 0 && b == 0)
+		return;
+
+	if(level::getTileType(GridLoc(curPos.x + a,curPos.y - b)) == EMPTY || level::getTileType(GridLoc(curPos.x + a,curPos.y - b)) == COIN) {
+		if(level::getTileType(GridLoc(curPos.x + a,curPos.y - b)) == COIN) {
+			level::collectCoin(GridLoc(curPos.x + a,curPos.y - b));
+			setScored(true);
+		}
+		chosenDirection = (moverNS::DIR) dirVal;
+		setDir(chosenDirection);
+		if(getHeldObject())
+			getHeldObject()->setDir(chosenDirection);
+		return;
+	} else {//Obstacle Avoidance
+		if((a + b) % 2 != 0) { //Cardinal directions
+			if(a == 0) {
+				a = 1*(dirVec.x/abs(dirVec.x));
+				b = 0;
+			} else {
+				a = 0;
+				b = 1*(dirVec.y/abs(dirVec.y));
+			}
+		} else { //Non-cardinal directions
+			if(abs(dirVec.x) > abs(dirVec.y))
+				a = 0;
+			else
+				b = 0;
+		}
+
+		c = a;
+		if(c < 0) c = 2;
+		d = b;
+		if(d < 0) d = 2;
+
+		dirVal = 3*c + d;
+
+		switch(dirVal) {
+		case 0: dirVal = 8; break;
+		case 1: dirVal = 2; break;
+		case 2: dirVal = 3; break;
+		case 3: dirVal = 1; break;
+		case 4: dirVal = 5; break;
+		case 5: dirVal = 7; break;
+		case 6: dirVal = 0; break;
+		case 7: dirVal = 4; break;
+		case 8: dirVal = 6; break;
+		}
+
+		if(level::getTileType(GridLoc(curPos.x + a,curPos.y - b)) == EMPTY || level::getTileType(GridLoc(curPos.x + a,curPos.y - b)) == COIN) {
+			if(level::getTileType(GridLoc(curPos.x + a,curPos.y - b)) == COIN) {
+				level::collectCoin(GridLoc(curPos.x + a,curPos.y - b));
+				setScored(true);
+			}
+			chosenDirection = (moverNS::DIR) dirVal;
+			setDir(chosenDirection);
+			if(getHeldObject())
+				getHeldObject()->setDir(chosenDirection);
+		return;
+		}
+	}
+
+	/*
 	//go north or south
 	if(dirVec.x==0)
 	{
@@ -1280,101 +1381,103 @@ void BlueKip::move(GridLoc& p) {
 				return;
 			}
 		}
-	}
-       //GridLoc curPos = getGridLoc();
-       //VECTOR2 dirVec = VECTOR2((float)(p.x - curPos.x),(float)(p.y - curPos.y));
+	}*/
 
-       //surroundings = level::getSurroundings(curPos);
+	/*
+       GridLoc curPos = getGridLoc();
+       VECTOR2 dirVec = VECTOR2((float)(p.x - curPos.x),(float)(p.y - curPos.y));
 
-       //if((abs(dirVec.x) > abs(dirVec.y)) && (dirVec.x > 0)  && (dirVec.y > 0)) {//1st quadrant movement
-       //       if(surroundings.E == 6) {
-       //              setDir(RIGHT);
-       //       } else if(surroundings.S == 6) {
-       //              setDir(DOWN);
-       //       } else if(surroundings.N == 6) {
-       //              setDir(UP);
-       //       } else if(surroundings.W == 6) {
-       //              setDir(LEFT);
-       //       }
-       //       return;
-       //} else if((abs(dirVec.x) < abs(dirVec.y)) && (dirVec.x > 0)  && (dirVec.y > 0)) {
-       //       if(surroundings.S == 6) {
-       //              setDir(DOWN);
-       //       } else if(surroundings.E == 6) {
-       //              setDir(RIGHT);
-       //       } else if(surroundings.W == 6) {
-       //              setDir(LEFT);
-       //       } else if(surroundings.N == 6) {
-       //              setDir(UP);
-       //       }
-       //       return;
-       //} else if((abs(dirVec.x) > abs(dirVec.y)) && (dirVec.x < 0)  && (dirVec.y > 0)) {//2nd quadrant movement
-       //       if(surroundings.W == 6) {
-       //              setDir(LEFT);
-       //       } else if(surroundings.S == 6) {
-       //              setDir(DOWN);
-       //       } else if(surroundings.N == 6) {
-       //              setDir(UP);
-       //       } else if(surroundings.E == 6) {
-       //              setDir(RIGHT);
-       //       }
-       //       return;
-       //} else if((abs(dirVec.x) < abs(dirVec.y)) && (dirVec.x < 0)  && (dirVec.y > 0)) {
-       //       if(surroundings.S == 6) {
-       //              setDir(DOWN);
-       //       } else if(surroundings.W == 6) {
-       //              setDir(LEFT);
-       //       } else if(surroundings.E == 6) {
-       //              setDir(RIGHT);
-       //       } else if(surroundings.N == 6) {
-       //              setDir(UP);
-       //       }
-       //       return;
-       //} else if((abs(dirVec.x) > abs(dirVec.y)) && (dirVec.x < 0) && (dirVec.y < 0)) {//3rd quadrant movement
-       //       if(surroundings.W == 6) {
-       //              setDir(LEFT);
-       //       } else if(surroundings.N == 6) {
-       //              setDir(UP);
-       //       } else if(surroundings.S == 6) {
-       //              setDir(DOWN);
-       //       } else if(surroundings.E == 6) {
-       //              setDir(RIGHT);
-       //       }
-       //       return;
-       //} else if((abs(dirVec.x) < abs(dirVec.y)) && (dirVec.x < 0) && (dirVec.y < 0)) {
-       //       if(surroundings.N == 6) {
-       //              setDir(UP);
-       //       } else if(surroundings.W == 6) {
-       //              setDir(LEFT);
-       //       } else if(surroundings.E == 6) {
-       //              setDir(RIGHT);
-       //       } else if(surroundings.S == 6) {
-       //              setDir(DOWN);
-       //       }
-       //       return;
-       //} else if((abs(dirVec.x) > abs(dirVec.y)) && (dirVec.x > 0) && (dirVec.y < 0)) {//4th quadrant movement
-       //       if(surroundings.E == 6) {
-       //              setDir(RIGHT);
-       //       } else if(surroundings.N == 6) {
-       //              setDir(UP);
-       //       } else if(surroundings.S == 6) {
-       //              setDir(DOWN);
-       //       } else if(surroundings.W == 6) {
-       //              setDir(LEFT);
-       //       }
-       //       return;
-       //} else if((abs(dirVec.x) < abs(dirVec.y)) && (dirVec.x > 0) && (dirVec.y < 0)) {
-       //       if(surroundings.N == 6) {
-       //              setDir(UP);
-       //       } else if(surroundings.E == 6) {
-       //              setDir(RIGHT);
-       //       } else if(surroundings.W == 6) {
-       //              setDir(LEFT);
-       //       } else if(surroundings.S == 6) {
-       //              setDir(DOWN);
-       //       }
-       //       return;
-       //}
+       surroundings = level::getSurroundings(curPos);
+
+       if((abs(dirVec.x) > abs(dirVec.y)) && (dirVec.x > 0)  && (dirVec.y > 0)) {//1st quadrant movement
+              if(surroundings.E == 6) {
+                     setDir(RIGHT);
+              } else if(surroundings.S == 6) {
+                     setDir(DOWN);
+              } else if(surroundings.N == 6) {
+                     setDir(UP);
+              } else if(surroundings.W == 6) {
+                     setDir(LEFT);
+              }
+              return;
+       } else if((abs(dirVec.x) < abs(dirVec.y)) && (dirVec.x > 0)  && (dirVec.y > 0)) {
+              if(surroundings.S == 6) {
+                     setDir(DOWN);
+              } else if(surroundings.E == 6) {
+                     setDir(RIGHT);
+              } else if(surroundings.W == 6) {
+                     setDir(LEFT);
+              } else if(surroundings.N == 6) {
+                     setDir(UP);
+              }
+              return;
+       } else if((abs(dirVec.x) > abs(dirVec.y)) && (dirVec.x < 0)  && (dirVec.y > 0)) {//2nd quadrant movement
+              if(surroundings.W == 6) {
+                     setDir(LEFT);
+              } else if(surroundings.S == 6) {
+                     setDir(DOWN);
+              } else if(surroundings.N == 6) {
+                     setDir(UP);
+              } else if(surroundings.E == 6) {
+                     setDir(RIGHT);
+              }
+              return;
+       } else if((abs(dirVec.x) < abs(dirVec.y)) && (dirVec.x < 0)  && (dirVec.y > 0)) {
+              if(surroundings.S == 6) {
+                     setDir(DOWN);
+              } else if(surroundings.W == 6) {
+                     setDir(LEFT);
+              } else if(surroundings.E == 6) {
+                     setDir(RIGHT);
+              } else if(surroundings.N == 6) {
+                     setDir(UP);
+              }
+              return;
+       } else if((abs(dirVec.x) > abs(dirVec.y)) && (dirVec.x < 0) && (dirVec.y < 0)) {//3rd quadrant movement
+              if(surroundings.W == 6) {
+                     setDir(LEFT);
+              } else if(surroundings.N == 6) {
+                     setDir(UP);
+              } else if(surroundings.S == 6) {
+                     setDir(DOWN);
+              } else if(surroundings.E == 6) {
+                     setDir(RIGHT);
+              }
+              return;
+       } else if((abs(dirVec.x) < abs(dirVec.y)) && (dirVec.x < 0) && (dirVec.y < 0)) {
+              if(surroundings.N == 6) {
+                     setDir(UP);
+              } else if(surroundings.W == 6) {
+                     setDir(LEFT);
+              } else if(surroundings.E == 6) {
+                     setDir(RIGHT);
+              } else if(surroundings.S == 6) {
+                     setDir(DOWN);
+              }
+              return;
+       } else if((abs(dirVec.x) > abs(dirVec.y)) && (dirVec.x > 0) && (dirVec.y < 0)) {//4th quadrant movement
+              if(surroundings.E == 6) {
+                     setDir(RIGHT);
+              } else if(surroundings.N == 6) {
+                     setDir(UP);
+              } else if(surroundings.S == 6) {
+                     setDir(DOWN);
+              } else if(surroundings.W == 6) {
+                     setDir(LEFT);
+              }
+              return;
+       } else if((abs(dirVec.x) < abs(dirVec.y)) && (dirVec.x > 0) && (dirVec.y < 0)) {
+              if(surroundings.N == 6) {
+                     setDir(UP);
+              } else if(surroundings.E == 6) {
+                     setDir(RIGHT);
+              } else if(surroundings.W == 6) {
+                     setDir(LEFT);
+              } else if(surroundings.S == 6) {
+                     setDir(DOWN);
+              }
+              return;
+       }*/
 }
 
 void RedKip::setAtk(){ setCurrentFrame(RNIM_ATK); } 
