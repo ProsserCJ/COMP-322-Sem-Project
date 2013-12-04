@@ -29,7 +29,7 @@ level::level()
 	gameFont = new TextDX();
 	rgen = Random(0,9);
 	this->numEnemies = 5;
-	this->numKips = 10;
+	this->numKips = RNIMKIP_COUNT + BNIMKIP_COUNT + YNIMKIP_COUNT;
 	this->mapSizeX = 50;
 	this->mapSizeY = 50;
 	this->maxKips = 20;
