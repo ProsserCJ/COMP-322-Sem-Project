@@ -193,7 +193,151 @@ void Horde::moveNormal(GridLoc& p) {
 
     surroundings = level::getSurroundings(curPos);
 
+	//used to get the direction chosen and move the nimkip and objects they hold
+	moverNS::DIR chosenDirection;
 
+	/////////////////////////////////////////////////////////////////////////////////////////////////
+	//new Move function using ternary direction choices and obstacle avoidance
+	
+	int dirVal;
+	int a,b,c,d;
+	
+	if(dirVec.x < 0)
+		a = -1;
+	else if(dirVec.x > 0)
+		a = 1;
+	else
+		a = 0;
+
+	if(-dirVec.y < 0)
+		b = -1;
+	else if(-dirVec.y > 0)
+		b = 1;
+	else
+		b = 0;
+	
+	c = a;
+	if(c < 0) c = 2;
+	d = b;
+	if(d < 0) d = 2;
+
+	dirVal = 3*c + d;   //Convert ternary value to decimal
+
+	switch(dirVal) {    //Reassigning to match enum direction values
+	case 0: dirVal = 8; break;
+	case 1: dirVal = 2; break;
+	case 2: dirVal = 3; break;
+	case 3: dirVal = 1; break;
+	case 4: dirVal = 5; break;
+	case 5: dirVal = 7; break;
+	case 6: dirVal = 0; break;
+	case 7: dirVal = 4; break;
+	case 8: dirVal = 6; break;
+	}
+
+	if(a == 0 && b == 0)
+		return;
+
+	chosenDirection = (moverNS::DIR) dirVal;
+
+	bool yes = true;
+
+	if(yes && dirVal!=this->getPrevDir() && level::getTileType(GridLoc(curPos.x + a,curPos.y - b)) == EMPTY || level::getTileType(GridLoc(curPos.x + a,curPos.y - b)) == COIN) {
+		this->setPrevDir(-1);//set their previous direction to nothin useful
+		//make all directions available
+		for(int i = 0; i < 8; i++)
+		{
+			availableDirections[i]=true;
+		}
+		if(level::getTileType(GridLoc(curPos.x + a,curPos.y - b)) == COIN) {
+			level::collectCoin(GridLoc(curPos.x + a,curPos.y - b));
+			setScored(true);
+		}
+		setDir(chosenDirection);
+		if(getHeldObject())
+			getHeldObject()->setDir(chosenDirection);
+		return;
+	}
+	else
+	{
+		availableDirections[dirVal]=false;
+		this->setPrevDir(dirVal);
+		switch(chosenDirection)
+		{
+		case LEFT:
+			if(availableDirections[UP_LEFT] && surroundings.NW==EMPTY)
+				setDir(UP_LEFT);
+			else if(availableDirections[DOWN_LEFT] &&surroundings.SW==EMPTY)
+				setDir(DOWN_LEFT);
+			else if(availableDirections[UP] &&surroundings.N==EMPTY)
+				setDir(UP);
+			else if(availableDirections[DOWN] &&surroundings.S==EMPTY)
+				setDir(DOWN);
+		case RIGHT:
+			if(availableDirections[UP_RIGHT] &&surroundings.NE==EMPTY)
+				setDir(UP_RIGHT);
+			else if(availableDirections[DOWN_RIGHT] &&surroundings.SE==EMPTY)
+				setDir(DOWN_RIGHT);
+			else if(availableDirections[UP] &&surroundings.N==EMPTY)
+				setDir(UP);
+			else if(availableDirections[DOWN] &&surroundings.S==EMPTY)
+				setDir(DOWN);
+		case UP:
+			if(availableDirections[UP_LEFT] &&surroundings.NW==EMPTY)
+				setDir(UP_LEFT);
+			else if(availableDirections[UP_RIGHT] && surroundings.NE==EMPTY)
+				setDir(UP_RIGHT);
+			else if(availableDirections[RIGHT] &&surroundings.E==EMPTY)
+				setDir(RIGHT);
+			else if(availableDirections[LEFT] &&surroundings.W==EMPTY)
+				setDir(LEFT);
+		case DOWN:
+			if(availableDirections[DOWN_LEFT] &&surroundings.SW==EMPTY)
+				setDir(DOWN_LEFT);
+			else if(availableDirections[DOWN_RIGHT] &&surroundings.SE==EMPTY)
+				setDir(DOWN_RIGHT);
+			else if(availableDirections[RIGHT] &&surroundings.E==EMPTY)
+				setDir(RIGHT);
+			else if(availableDirections[LEFT] &&surroundings.W==EMPTY)
+				setDir(LEFT);
+		case UP_RIGHT:
+			if(availableDirections[UP] &&surroundings.N==EMPTY)
+				setDir(UP);
+			else if(availableDirections[RIGHT] &&surroundings.E==EMPTY)
+				setDir(RIGHT);
+			else if(availableDirections[UP_LEFT] &&surroundings.NW==EMPTY)
+				setDir(UP_LEFT);
+			else if(availableDirections[DOWN_RIGHT] &&surroundings.SE==EMPTY)
+				setDir(DOWN_RIGHT);
+		case DOWN_RIGHT:
+			if(availableDirections[DOWN] &&surroundings.S==EMPTY)
+				setDir(DOWN);
+			else if(availableDirections[RIGHT] &&surroundings.E==EMPTY)
+				setDir(RIGHT);
+			else if(availableDirections[DOWN_LEFT] &&surroundings.SW==EMPTY)
+				setDir(DOWN_LEFT);
+			else if(availableDirections[UP_RIGHT] &&surroundings.NE==EMPTY)
+				setDir(UP_RIGHT);
+		case UP_LEFT:
+			if(availableDirections[UP] &&surroundings.N==EMPTY)
+				setDir(UP);
+			else if(availableDirections[LEFT] &&surroundings.W==EMPTY)
+				setDir(LEFT);
+			else if(availableDirections[UP_RIGHT] &&surroundings.NE==EMPTY)
+				setDir(UP_RIGHT);
+			else if(availableDirections[DOWN_LEFT] &&surroundings.SW==EMPTY)
+				setDir(DOWN_LEFT);
+		case DOWN_LEFT:
+			if(availableDirections[DOWN] &&surroundings.S==EMPTY)
+				setDir(DOWN);
+			else if(availableDirections[LEFT] &&surroundings.W==EMPTY)
+				setDir(LEFT);
+			else if(availableDirections[DOWN_RIGHT] &&surroundings.SE==EMPTY)
+				setDir(DOWN_RIGHT);
+			else if(availableDirections[UP_LEFT] &&surroundings.NW==EMPTY)
+				setDir(UP_LEFT);
+		}
+	}
 	/*
     if((abs(dirVec.x) > abs(dirVec.y)) && (dirVec.x > 0)  && (dirVec.y > 0)) {//1st quadrant movement
 			if(surroundings.E == 2) {
