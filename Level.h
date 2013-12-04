@@ -97,6 +97,7 @@ private:
 	int turns;
 	int score;
 	int numEnemies, numKips, maxKips, mapSizeX, mapSizeY;
+	int foodCollected;
 
 	//vector of carriable items
 	static vector<Carriable*> carriableItems;

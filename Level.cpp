@@ -35,8 +35,8 @@ level::level()
 	this->maxKips = 20;
 	frameCount = 0;
 	turns = 0;
+	foodCollected = 0;
 	score=0;
-	
 	debug.open("debug.txt");
 }
 
@@ -203,7 +203,7 @@ void level::initialize(HWND hwnd)
 	gameFont->setFontColor(SETCOLOR_ARGB(255,0,0,0));
 
 	pause();
-	
+	audio->playCue(MUSIC);
     return;
 }
 
@@ -362,6 +362,12 @@ void level::runTimeStep()
 			if(lifeForms[i]->getScored())
 			{
 				score+=lifeForms[i]->getScoredPoints();
+				//simple cheat way to check if they collected food just assume that food will be more than 100 points
+				//I dont feel like making other functions to check it for real.
+				if(lifeForms[i]->getScoredPoints()>100)
+				{
+					foodCollected++;
+				}
 				lifeForms[i]->setScored(false);
 			}
 		}
@@ -410,8 +416,8 @@ bool level::runAttack(Lifeform* attacker, GridLoc target)
 void level::fillLevel()
 {
        Base* b = new Base();      
-       b->setGridLoc(0,0);	  
-       grid.setType(0,0,BASE);
+       b->setGridLoc(10,0);	  
+       grid.setType(10,0,BASE);
        unCarriables.push_back(reinterpret_cast<Object*>(b));
 	   grid.setObject(b);
 

@@ -67,8 +67,13 @@ const int OBSTACLE_COUNT = 300;
 const int MAX_WALL_SIZE = 3;
 
 //audio
-const char WAVE_BANK[] = "";
-const char SOUND_BANK[] = "";
+//const char WAVE_BANK[] = "";
+//const char SOUND_BANK[] = "";
+const char WAVE_BANK[] = "audio\\win\\Wave Bank.xwb";
+const char SOUND_BANK[] = "audio\\win\\Sound Bank.xsb";
+
+//cues
+const char MUSIC[] = "04 All of Us";
 
 //sight radius's
 const int NIMKIP_FRIEND_SIGHT = 3;
