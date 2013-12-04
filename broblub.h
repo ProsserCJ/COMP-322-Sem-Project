@@ -48,6 +48,7 @@ private:
 protected:
 	vector<GridLoc> visibleTiles;
 	vector<GridLoc> surroundings;
+	Surroundings obstacleAvoidanceSurroundings;
 	//Surroundings surroundings;
 	GridLoc target;
 	GridLoc destination;

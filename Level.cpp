@@ -349,7 +349,7 @@ void level::runTimeStep()
 			//make sure their supposed new position is not wrong
 			//kind of a quick and dirty fix to stop things from accidentily breaking
 			//I suspect the issue is in the move function somewhere
-			if(newGridLoc.x>0 && newGridLoc.x < grid.getWidth() && newGridLoc.y>0 && newGridLoc.y < grid.getHeight())
+			//if(newGridLoc.x>0 && newGridLoc.x < grid.getWidth() && newGridLoc.y>0 && newGridLoc.y < grid.getHeight())
 				grid.setType(newGridLoc, lifeForms[i]->getImage());
 			
 			

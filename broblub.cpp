@@ -30,92 +30,159 @@ void Broblub::move(GridLoc& p) {
 	GridLoc curPos = getGridLoc();
 	VECTOR2 dirVec = VECTOR2((float)(p.x - curPos.x),(float)(p.y - curPos.y));
 
-	int gridH = level::getGridHeight();
-	int gridW = level::getGridWidth();
-
-    surroundings = level::getSurroundings(curPos,1);
+    obstacleAvoidanceSurroundings = level::getSurroundings(curPos);
 
 	visibleTiles = level::getSurroundings(curPos,getSightRadius());
 
-	//go north or south
-	if(dirVec.x==0)
-	{
-		//go south if possible
-		if(dirVec.y>0 && curPos.y < gridH)
-		{
-			if(level::getTileType(GridLoc(curPos.x,curPos.y+1)) == EMPTY)
-			{
-				setDir(moverNS::DOWN);
-				return;
-			}
-		}
-		else if(dirVec.y<0 && curPos.y > 0)//go north if possible
-		{
-			if(level::getTileType(GridLoc(curPos.x,curPos.y-1)) == EMPTY)
-			{
-				setDir(moverNS::UP);
-				return;
-			}
-		}
-	}
-	else if(dirVec.x>0)//go east, north east, or south east
-	{
-		if(dirVec.y>0 && curPos.x < gridW && curPos.y < gridH)//go south east if possible
-		{
-			if(level::getTileType(GridLoc(curPos.x+1,curPos.y+1)) == EMPTY)
-			{
-				setDir(DOWN_RIGHT);
-				return;
-			}
-		}
-		else if(dirVec.y<0 && curPos.x < gridW && curPos.y > 0)//go north east if possible
-		{
-			if(level::getTileType(GridLoc(curPos.x+1,curPos.y-1)) == EMPTY)
-			{
-				setDir(UP_RIGHT);
-				return;
-			}
-		}
-		else if(dirVec.y==0 && curPos.x < gridW)//go east
-		{
-			if(level::getTileType(GridLoc(curPos.x+1,curPos.y)) == EMPTY)
-			{
-				setDir(moverNS::RIGHT);
-				return;
-			}
-		}
-	}
-	else if(dirVec.x<0)//go west, norht west, or south west
-	{
-		if(dirVec.y>0 && curPos.x>0 && curPos.y < gridH)//go south west if possible
-		{
-			if(level::getTileType(GridLoc(curPos.x-1,curPos.y+1)) == EMPTY)
-			{
-				setDir(DOWN_LEFT);
-				return;
-			}
-		}
-		else if(dirVec.y<0 && curPos.x>0 && curPos.y>0)//go north west if possible
-		{
-			if(level::getTileType(GridLoc(curPos.x-1,curPos.y-1)) == EMPTY)
-			{
-				setDir(UP_LEFT);
-				return;
-			}
-		}
-		else if(dirVec.y==0 && curPos.x>0)//go west
-		{
-			if(level::getTileType(GridLoc(curPos.x-1,curPos.y)) == EMPTY)
-			{
-				setDir(moverNS::LEFT);
-				return;
-			}
-		}
-	}
+	//used to get the direction chosen and move the nimkip and objects they hold
+	moverNS::DIR chosenDirection;
+
+	/////////////////////////////////////////////////////////////////////////////////////////////////
+	//new Move function using ternary direction choices and obstacle avoidance
+	
+	int dirVal;
+	int a,b,c,d;
+	
+	if(dirVec.x < 0)
+		a = -1;
+	else if(dirVec.x > 0)
+		a = 1;
+	else
+		a = 0;
+
+	if(-dirVec.y < 0)
+		b = -1;
+	else if(-dirVec.y > 0)
+		b = 1;
+	else
+		b = 0;
+	
+	c = a;
+	if(c < 0) c = 2;
+	d = b;
+	if(d < 0) d = 2;
+
+	dirVal = 3*c + d;   //Convert ternary value to decimal
+
+	switch(dirVal) {    //Reassigning to match enum direction values
+	case 0: dirVal = 8; break;
+	case 1: dirVal = 2; break;
+	case 2: dirVal = 3; break;
+	case 3: dirVal = 1; break;
+	case 4: dirVal = 5; break;
+	case 5: dirVal = 7; break;
+	case 6: dirVal = 0; break;
+	case 7: dirVal = 4; break;
+	case 8: dirVal = 6; break;
 	}
 
+	if(a == 0 && b == 0)
+		return;
+
+	chosenDirection = (moverNS::DIR) dirVal;
+
+	bool yes = true;
+
+	if(yes && dirVal!=this->getPrevDir() && level::getTileType(GridLoc(curPos.x + a,curPos.y - b)) == EMPTY) {
+		this->setPrevDir(-1);//set their previous direction to nothin useful
+		//make all directions available
+		for(int i = 0; i < 8; i++)
+		{
+			availableDirections[i]=true;
+		}
+		if(level::getTileType(GridLoc(curPos.x + a,curPos.y - b)) == COIN) {
+			level::collectCoin(GridLoc(curPos.x + a,curPos.y - b));
+			setScored(true);
+		}
+		setDir(chosenDirection);
+		if(getHeldObject())
+			getHeldObject()->setDir(chosenDirection);
+		return;
+	}
+	else
+	{
+		availableDirections[dirVal]=false;
+		this->setPrevDir(dirVal);
+		switch(chosenDirection)
+		{
+		case LEFT:
+			if(availableDirections[UP_LEFT] && obstacleAvoidanceSurroundings.NW==EMPTY)
+				setDir(UP_LEFT);
+			else if(availableDirections[DOWN_LEFT] &&obstacleAvoidanceSurroundings.SW==EMPTY)
+				setDir(DOWN_LEFT);
+			else if(availableDirections[UP] &&obstacleAvoidanceSurroundings.N==EMPTY)
+				setDir(UP);
+			else if(availableDirections[DOWN] &&obstacleAvoidanceSurroundings.S==EMPTY)
+				setDir(DOWN);
+		case RIGHT:
+			if(availableDirections[UP_RIGHT] &&obstacleAvoidanceSurroundings.NE==EMPTY)
+				setDir(UP_RIGHT);
+			else if(availableDirections[DOWN_RIGHT] &&obstacleAvoidanceSurroundings.SE==EMPTY)
+				setDir(DOWN_RIGHT);
+			else if(availableDirections[UP] &&obstacleAvoidanceSurroundings.N==EMPTY)
+				setDir(UP);
+			else if(availableDirections[DOWN] &&obstacleAvoidanceSurroundings.S==EMPTY)
+				setDir(DOWN);
+		case UP:
+			if(availableDirections[UP_LEFT] &&obstacleAvoidanceSurroundings.NW==EMPTY)
+				setDir(UP_LEFT);
+			else if(availableDirections[UP_RIGHT] && obstacleAvoidanceSurroundings.NE==EMPTY)
+				setDir(UP_RIGHT);
+			else if(availableDirections[RIGHT] &&obstacleAvoidanceSurroundings.E==EMPTY)
+				setDir(RIGHT);
+			else if(availableDirections[LEFT] &&obstacleAvoidanceSurroundings.W==EMPTY)
+				setDir(LEFT);
+		case DOWN:
+			if(availableDirections[DOWN_LEFT] &&obstacleAvoidanceSurroundings.SW==EMPTY)
+				setDir(DOWN_LEFT);
+			else if(availableDirections[DOWN_RIGHT] &&obstacleAvoidanceSurroundings.SE==EMPTY)
+				setDir(DOWN_RIGHT);
+			else if(availableDirections[RIGHT] &&obstacleAvoidanceSurroundings.E==EMPTY)
+				setDir(RIGHT);
+			else if(availableDirections[LEFT] &&obstacleAvoidanceSurroundings.W==EMPTY)
+				setDir(LEFT);
+		case UP_RIGHT:
+			if(availableDirections[UP] &&obstacleAvoidanceSurroundings.N==EMPTY)
+				setDir(UP);
+			else if(availableDirections[RIGHT] &&obstacleAvoidanceSurroundings.E==EMPTY)
+				setDir(RIGHT);
+			else if(availableDirections[UP_LEFT] &&obstacleAvoidanceSurroundings.NW==EMPTY)
+				setDir(UP_LEFT);
+			else if(availableDirections[DOWN_RIGHT] &&obstacleAvoidanceSurroundings.SE==EMPTY)
+				setDir(DOWN_RIGHT);
+		case DOWN_RIGHT:
+			if(availableDirections[DOWN] &&obstacleAvoidanceSurroundings.S==EMPTY)
+				setDir(DOWN);
+			else if(availableDirections[RIGHT] &&obstacleAvoidanceSurroundings.E==EMPTY)
+				setDir(RIGHT);
+			else if(availableDirections[DOWN_LEFT] &&obstacleAvoidanceSurroundings.SW==EMPTY)
+				setDir(DOWN_LEFT);
+			else if(availableDirections[UP_RIGHT] &&obstacleAvoidanceSurroundings.NE==EMPTY)
+				setDir(UP_RIGHT);
+		case UP_LEFT:
+			if(availableDirections[UP] &&obstacleAvoidanceSurroundings.N==EMPTY)
+				setDir(UP);
+			else if(availableDirections[LEFT] &&obstacleAvoidanceSurroundings.W==EMPTY)
+				setDir(LEFT);
+			else if(availableDirections[UP_RIGHT] &&obstacleAvoidanceSurroundings.NE==EMPTY)
+				setDir(UP_RIGHT);
+			else if(availableDirections[DOWN_LEFT] &&obstacleAvoidanceSurroundings.SW==EMPTY)
+				setDir(DOWN_LEFT);
+		case DOWN_LEFT:
+			if(availableDirections[DOWN] &&obstacleAvoidanceSurroundings.S==EMPTY)
+				setDir(DOWN);
+			else if(availableDirections[LEFT] &&obstacleAvoidanceSurroundings.W==EMPTY)
+				setDir(LEFT);
+			else if(availableDirections[DOWN_RIGHT] &&obstacleAvoidanceSurroundings.SE==EMPTY)
+				setDir(DOWN_RIGHT);
+			else if(availableDirections[UP_LEFT] &&obstacleAvoidanceSurroundings.NW==EMPTY)
+				setDir(UP_LEFT);
+		}
+	}
+}
+
 void Broblub::move(int x, int y){
-	this->setGridLoc(x,y);
+	move(GridLoc(x,y));
 }
 
 GridLoc Broblub::takeTurn(){
