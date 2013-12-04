@@ -411,6 +411,7 @@ void level::fillLevel()
 		   int x = X.next(), y = Y.next();
 		   while(grid.getObject(x,y)){x = X.next(); y = Y.next();}
 		   temp->setGridLoc(x,y);
+		   temp->setDestination(GridLoc(x,y));
 		   grid.setType(x,y,NIMKIP);
 		   lifeForms.push_back(reinterpret_cast<Lifeform*>(temp));
 		   grid.setObject(temp);
@@ -421,6 +422,7 @@ void level::fillLevel()
 		    int x = X.next(), y = Y.next();
 		   while(grid.getObject(x,y)){x = X.next(); y = Y.next();}
 		   temp->setGridLoc(x,y);
+		   temp->setDestination(GridLoc(x,y));
 		   grid.setType(x,y,NIMKIP);
 		   lifeForms.push_back(reinterpret_cast<Lifeform*>(temp));
 		   grid.setObject(temp);
@@ -431,6 +433,7 @@ void level::fillLevel()
 		   int x = X.next(), y = Y.next();
 		   while(grid.getObject(x,y)){x = X.next(); y = Y.next();}
 		   temp->setGridLoc(x,y);
+		   temp->setDestination(GridLoc(x,y));
 		   grid.setType(x,y,NIMKIP);
 		   lifeForms.push_back(reinterpret_cast<Lifeform*>(temp));
 		   grid.setObject(temp);

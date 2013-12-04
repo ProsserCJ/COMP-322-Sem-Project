@@ -53,17 +53,20 @@ void Nimkip::checkSurroundings()
 	//used for outdated methods
 	surroundings = level::getSurroundings(getGridLoc());
 
-	for(int i = 0; i < visibleTiles.size(); i++)
+	if(!this->getHurtBoolean())
 	{
-		//only set to attack if they aren't already attacking
-		if(visibleTiles[i].type == BROBLUB && task != ATTACK)
+		for(int i = 0; i < visibleTiles.size(); i++)
 		{
-			attackTask = task;
-			task = ATTACK;
-			//saving old target is necessary in the event that they are switching from picking up something to fighting.
-			secondaryTarget = target;
-			target = visibleTiles[i];
-			return;
+			//only set to attack if they aren't already attacking
+			if(visibleTiles[i].type == BROBLUB && task != ATTACK)
+			{
+				attackTask = task;
+				task = ATTACK;
+				//saving old target is necessary in the event that they are switching from picking up something to fighting.
+				secondaryTarget = target;
+				target = visibleTiles[i];
+				return;
+			}
 		}
 	}
 }
@@ -134,12 +137,12 @@ GridLoc Nimkip::goTowardsGoal()
 			move(destination);
 		//check if anyone needs help
 		//only stop for fights if they have another assigned task
-		/*if(secondaryTask != IDLE)
+		if(secondaryTask != IDLE)
 		{
 			checkOthers(true);
 		}
 		else
-			checkOthers();*/
+			checkOthers();
 		break;
 	case LIFT:
 		if(!this->getHolding())
@@ -190,6 +193,11 @@ GridLoc Nimkip::goTowardsGoal()
 				helping = false;
 				destination = this->helpDestination;
 			}
+		}
+		if(this->getHurtBoolean())
+		{
+			task = WALK;
+			destination = homeBase;
 		}
 		break;
 	case CARRY:
