@@ -345,7 +345,12 @@ void level::runTimeStep()
 			}
 			grid.setType(lifeForms[i]->getGridLoc(),EMPTY);			
 			GridLoc newGridLoc = lifeForms[i]->takeTurn();
-			grid.setType(newGridLoc, lifeForms[i]->getImage());
+
+			//make sure their supposed new position is not wrong
+			//kind of a quick and dirty fix to stop things from accidentily breaking
+			//I suspect the issue is in the move function somewhere
+			if(newGridLoc.x>0 && newGridLoc.x < grid.getWidth() && newGridLoc.y>0 && newGridLoc.y < grid.getHeight())
+				grid.setType(newGridLoc, lifeForms[i]->getImage());
 			
 			
 			if(!lifeForms[i]->getActive())//if they are dead tell the level map
@@ -386,6 +391,8 @@ bool level::transferObject(Lifeform* receiver, GridLoc item)
 bool level::runAttack(Lifeform* attacker, GridLoc target)
 {
 	Lifeform* targetLifeForm = identifyLifeForm(target);
+	if(targetLifeForm == 0)
+		return true;
 	if (attacker->isNormal()) attacker->setAtk(); 	
 	targetLifeForm->subHealth(attacker->getAttackStrength());
 	if (!targetLifeForm->getHurtBoolean() && targetLifeForm->getHealth() < targetLifeForm->getMaxHealth()*0.3){

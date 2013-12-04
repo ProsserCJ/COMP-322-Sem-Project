@@ -66,6 +66,10 @@ const int STATUE_COUNT = 5;
 const int OBSTACLE_COUNT = 300;
 const int MAX_WALL_SIZE = 3;
 
+//audio
+const char WAVE_BANK[] = "";
+const char SOUND_BANK[] = "";
+
 //sight radius's
 const int NIMKIP_FRIEND_SIGHT = 3;
 const int NIMKIP_ENEMY_SIGHT = 1;

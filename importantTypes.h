@@ -33,6 +33,7 @@ struct NimkipInfo
 	GridLoc location;
 	GridLoc target;
 	Task task;
+	Task sTask;
 	GridLoc goal;
 };
 

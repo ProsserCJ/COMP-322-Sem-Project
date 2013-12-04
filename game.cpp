@@ -1,16 +1,7 @@
-/* 
- Group #: 3 
- Members: Chris Prosser, Jacob Gearhart, Kory Kappel, 
- Course: COMP 322, Advanced Programming 
- Date: 28 October 2013 
- Description: This file is inherited from the skeleton
- provided by Charles Kelly.
-*/ 
-
 // Programming 2D Games
 // Copyright (c) 2011 by: 
 // Charles Kelly
-// Chapter 6 game.cpp v1.0
+// Chapter 7 game.cpp v1.0
 
 #include "game.h"
 
@@ -24,7 +15,8 @@ Game::Game()
     input = new Input();        // initialize keyboard input immediately
     // additional initialization is handled in later call to input->initialize()
     paused = false;             // game is not paused
-    graphics = NULL;	
+    graphics = NULL;
+    audio = NULL;
     initialized = false;
 }
 
@@ -115,6 +107,20 @@ void Game::initialize(HWND hw)
 
     // initialize input, do not capture mouse
     input->initialize(hwnd, false);             // throws GameError
+
+
+    // init sound system
+    audio = new Audio();
+    if (*WAVE_BANK != '\0' && *SOUND_BANK != '\0')  // if sound files defined
+    {
+        if( FAILED( hr = audio->initialize() ) )
+        {
+            if( hr == HRESULT_FROM_WIN32( ERROR_FILE_NOT_FOUND ) )
+                throw(GameError(gameErrorNS::FATAL_ERROR, "Failed to initialize sound system because media file not found."));
+            else
+                throw(GameError(gameErrorNS::FATAL_ERROR, "Failed to initialize sound system."));
+        }
+    }
 
     // attempt to set up high resolution timer
     if(QueryPerformanceFrequency(&timerFreq) == false)
@@ -224,6 +230,8 @@ void Game::run(HWND hwnd)
     renderGame();                   // draw all game items
     input->readControllers();       // read state of controllers
 
+    audio->run();                       // perform periodic sound engine tasks
+
     // if Alt+Enter toggle fullscreen/window
     if (input->isKeyDown(ALT_KEY) && input->wasKeyPressed(ENTER_KEY))
         setDisplayMode(graphicsNS::TOGGLE); // toggle fullscreen/window
@@ -256,6 +264,7 @@ void Game::resetAll()
 void Game::deleteAll()
 {
     releaseAll();               // call onLostDevice() for every graphics item
+    SAFE_DELETE(audio);
     SAFE_DELETE(graphics);
     SAFE_DELETE(input);
     initialized = false;

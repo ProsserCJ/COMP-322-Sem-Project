@@ -123,6 +123,7 @@ NimkipInfo Nimkip::getInfo()
 	info.goal = this->destination;
 	info.target = this->target;
 	info.task = this->task;
+	info.sTask = this->secondaryTask;
 	return info;
 }
 
@@ -141,12 +142,15 @@ GridLoc Nimkip::goTowardsGoal()
 			move(destination);
 		//check if anyone needs help
 		//only stop for fights if they have another assigned task
-		if(secondaryTask != IDLE)
+		if(!this->getHurtBoolean())
 		{
-			checkOthers(true);
+			if(secondaryTask != IDLE)
+			{
+				checkOthers(true);
+			}
+			else
+				checkOthers();
 		}
-		else
-			checkOthers();
 		break;
 	case LIFT:
 		if(!this->getHolding())
@@ -206,8 +210,19 @@ GridLoc Nimkip::goTowardsGoal()
 		}
 		if(this->getHurtBoolean())
 		{
+			secondaryTask = ATTACK;
 			task = WALK;
-			destination = homeBase;
+			auto baseSurroundings = level::getSurroundings(homeBase,3);
+			for(int i = 0; i < baseSurroundings.size(); i++)
+			{
+				if(baseSurroundings[i].type==EMPTY)
+				{
+					destination = baseSurroundings[i];
+					break;
+				}
+				else
+					destination = homeBase;
+			}
 		}
 
 		break;
@@ -268,8 +283,8 @@ void Nimkip::checkOthers(bool fightsOnly)
 	if(helping)
 	{
 		helping = false;
-		secondaryTask = IDLE;
-		target = secondaryTarget;
+		secondaryTask = attackTask;
+		target = this->secondaryTarget;
 		destination = helpDestination;
 	}
 }
@@ -280,11 +295,13 @@ bool Nimkip::helpNimkip(GridLoc nimkip, bool fightsOnly)
 	//makes it if they only want to help fight they only stop for fights
 	if(fightsOnly && info.task != ATTACK)
 		return false;
-	if(info.needHelp)
+	if(info.needHelp && (info.sTask!=IDLE || info.task!=IDLE))
 	{
 		this->secondaryTarget = target;
 		this->target = info.target;
 		this->task = WALK;
+		//saves their actual task to be switched to after the fight
+		this->attackTask = this->secondaryTask;
 		this->secondaryTask = info.task;
 		auto goalSurroundings = level::getSurroundings(info.target,1);
 		for(int i = 0; i < goalSurroundings.size(); i++)
@@ -295,9 +312,9 @@ bool Nimkip::helpNimkip(GridLoc nimkip, bool fightsOnly)
 				break;
 			}
 			//if they dont find an open space just go as close as possible
-			this->helpDestination = this->destination;
 			this->destination = info.goal;
 		}
+		this->helpDestination = this->destination;
 		helping = true;
 		return true;
 	}
