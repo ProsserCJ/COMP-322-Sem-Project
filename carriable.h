@@ -70,7 +70,7 @@ private:
 
 class CandyCane: public Food{
 	public:
-	CandyCane() {this->setImage(CC);setWeight(5);setMultipleCarriers(true);setPoints(800);type=CAND;} //not sure what to set the weight/score to
+	CandyCane() {this->setImage(CC);setWeight(25);setMultipleCarriers(true);setPoints(800);type=CAND;} //not sure what to set the weight/score to
 	virtual void addMove(){return;};
 	Type getType() {return type;};
 private:

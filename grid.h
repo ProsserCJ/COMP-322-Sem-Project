@@ -162,7 +162,8 @@ public:
 						 grid[x][y].toggle();
 					 }
 					 break;
-				 case CHICKEN:
+				 case CANDYCANE:
+				 case CHICK:
 					 grid[x][y].toggle();
 					 if(nimkipSelected && !goalSelected)//if the user selected a nimkip then let them click elsewhere
 					 {	 
