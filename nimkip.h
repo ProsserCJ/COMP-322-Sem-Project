@@ -35,8 +35,8 @@ public:
 	void setTarget(GridLoc t)		{target = t;}
 
 	//Polymorphic functions
-	virtual void move(GridLoc& p)	{}	
-	virtual void move(int x, int y) {}	
+	virtual void move(GridLoc& p);	
+	virtual void move(int x, int y) {move(GridLoc(x,y));}	
 
 	//Other Actions
 	bool attack(GridLoc& p);//returns whether or not the attack killed the target entirely
@@ -78,10 +78,6 @@ class RedKip : public Nimkip
 {
 public:
 	RedKip() : Nimkip() {image = RN; this->setHealth(15);setMaxHealth(NIMKIP_MAXHEALTH);this->setAttackStrength(10); this->setStrength(5);}
-
-	//Actions
-	void move(int x, int y)			{move(GridLoc(x,y));}
-	void move(GridLoc& p);
 	
 	//Polymorphic functions
 	virtual void setNormal();
@@ -96,10 +92,6 @@ class YellowKip : public Nimkip
 public:
 	YellowKip() : Nimkip() {image = YN; this->setHealth(10);setMaxHealth(NIMKIP_MAXHEALTH);this->setAttackStrength(5);this->setStrength(5);}
 	
-	//Actions
-	void move(int x, int y)			{move(GridLoc(x,y));}
-	void move(GridLoc& p);
-	
 	//Polymorphic functions
 	virtual void setNormal();
 	virtual void setHurt();
@@ -112,10 +104,6 @@ class BlueKip : public Nimkip
 {
 public:
 	BlueKip() : Nimkip() {image = BN; this->setHealth(10);setMaxHealth(NIMKIP_MAXHEALTH); this->setAttackStrength(5); this->setStrength(10);}
-	
-	//Actions
-	void move(int x, int y)			{move(GridLoc(x,y));}
-	void move(GridLoc& p);
 	
 	//Polymorphic functions
 	virtual void setNormal();
