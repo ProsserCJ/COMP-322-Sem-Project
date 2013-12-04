@@ -1,16 +1,7 @@
-/* 
- Group #: 3 
- Members: Chris Prosser, Jacob Gearhart, Kory Kappel, 
- Course: COMP 322, Advanced Programming 
- Date: 28 October 2013 
- Description: This file is inherited from the skeleton
- provided by Charles Kelly.
-*/ 
-
 // Programming 2D Games
 // Copyright (c) 2011 by: 
 // Charles Kelly
-// Chapter 6 entity.cpp v1.3
+// entity.cpp v1.3
 
 #include "entity.h"
 
@@ -48,7 +39,8 @@ Entity::Entity() : Image()
 bool Entity::initialize(Game *gamePtr, int width, int height, int ncols,
                             TextureManager *textureM)
 {
-    input = gamePtr->getInput();                // the input system	
+    input = gamePtr->getInput();                // the input system
+    audio = gamePtr->getAudio();                // the audio system
     return(Image::initialize(gamePtr->getGraphics(), width, height, ncols, textureM));
 }
 
@@ -453,4 +445,30 @@ void Entity::gravityForce(Entity *ent, float frameTime)
     gravityV *= force * frameTime;
     // Add gravity vector to moving velocity vector to change direction
     velocity += gravityV;
+}
+
+void Entity::newBounce(VECTOR2 &collisionVector, Entity &ent)
+{
+	VECTOR2 Vdiff = ent.getVelocity() - velocity;
+    VECTOR2 cUV = collisionVector;              // collision unit vector
+    Graphics::Vector2Normalize(&cUV);
+
+	//have to change cUV so it is rotated correctly
+	cUV *= cos(ent.getSpriteInfo().angle);
+
+    float cUVdotVdiff = Graphics::Vector2Dot(&cUV, &Vdiff);
+    float massRatio = 2.0f;
+    if (getMass() != 0)
+        massRatio *= (ent.getMass() / (getMass() + ent.getMass()));
+
+    // If entities are already moving apart then bounce must
+    // have been previously called and they are still colliding.
+    // Move entities apart along collisionVector
+    if(cUVdotVdiff > 0)
+    {
+        setX((getX() - cUV.x * massRatio));
+        setY((getY() - cUV.y * massRatio));
+    }
+    else 
+        deltaV += ((massRatio * cUVdotVdiff) * cUV);
 }

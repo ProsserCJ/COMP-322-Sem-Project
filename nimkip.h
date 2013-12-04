@@ -90,7 +90,7 @@ public:
 class YellowKip : public Nimkip
 {
 public:
-	YellowKip() : Nimkip() {image = YN; this->setHealth(10);setMaxHealth(NIMKIP_MAXHEALTH);this->setAttackStrength(5);this->setStrength(5);}
+	YellowKip() : Nimkip() {image = YN; this->setHealth(20);setMaxHealth(NIMKIP_MAXHEALTH);this->setAttackStrength(3);this->setStrength(5);}
 	
 	//Polymorphic functions
 	virtual void setNormal();

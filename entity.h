@@ -1,16 +1,7 @@
-/* 
- Group #: 3 
- Members: Chris Prosser, Jacob Gearhart, Kory Kappel, Andrew Miller
- Course: COMP 322, Advanced Programming 
- Date: 28 October 2013 
- Description: This file is inherited from the skeleton
- provided by Charles Kelly.
-*/ 
-
 // Programming 2D Games
 // Copyright (c) 2011 by: 
 // Charles Kelly
-// Chapter 6 entity.h v1.0
+// entity.h v1.0
 
 #ifndef _ENTITY_H               // Prevent multiple definitions if this 
 #define _ENTITY_H               // file is included in more than one place
@@ -19,6 +10,8 @@
 #include "image.h"
 #include "input.h"
 #include "game.h"
+#include <fstream>
+#include <cmath>
 
 namespace entityNS
 {
@@ -48,7 +41,7 @@ class Entity : public Image
     float   rr;             // Radius squared variable
     float   force;          // Force of gravity
     float   gravity;        // gravitational constant of the game universe
-    Input   *input;         // pointer to the input system	
+    Input   *input;         // pointer to the input system
     HRESULT hr;             // standard return type
     bool    active;         // only active entities may collide
     bool    rotatedBoxReady;    // true when rotated collision box is ready
@@ -77,10 +70,11 @@ class Entity : public Image
     bool collideCornerCircle(VECTOR2 corner, Entity &ent, VECTOR2 &collisionVector);
 
   public:
+	  Audio   *audio;         // pointer to audio system
     // Constructor
     Entity();
     // Destructor
-    virtual ~Entity() {}
+	virtual ~Entity() {}
 
     ////////////////////////////////////////
     //           Get functions            //
@@ -184,6 +178,8 @@ class Entity : public Image
 
     // Entity bounces after collision with other Entity
     void bounce(VECTOR2 &collisionVector, Entity &ent);
+
+	void newBounce(VECTOR2 &collisionVector, Entity &ent);
 
     // Adds the gravitational force to the velocity vector of this entity
     void gravityForce(Entity *other, float frameTime);
