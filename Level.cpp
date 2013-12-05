@@ -275,7 +275,7 @@ void level::update()
 		audio->stopCue(CANDYSOUND);
 		audio->stopCue(ATTACKSOUND);
 	}
-	if(numEnemies == 0) {
+	if(!endGame && numEnemies == 0) {
 		endGame = true;
 		win = true;
 		audio->playCue(WINSOUND);
@@ -462,7 +462,7 @@ bool level::runAttack(Lifeform* attacker, GridLoc target)
 		targetLifeForm->setHurt();
 		targetLifeForm->setHurtBoolean(true);
 	}
-	if(targetLifeForm->getHealth()<=0)
+	if(targetLifeForm->getHealth()<=0 && targetLifeForm->getActive())
 	{
 		if(target.type == BROBLUB)
 			level::numEnemies--;
