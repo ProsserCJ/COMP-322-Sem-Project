@@ -278,7 +278,7 @@ void level::update()
 		audio->stopCue(CANDYSOUND);
 		audio->stopCue(ATTACKSOUND);
 	}
-	if(numEnemies == 0) {
+	if(!endGame && numEnemies == 0) {
 		endGame = true;
 		win = true;
 		audio->playCue(WINSOUND);
