@@ -11,7 +11,7 @@
 #ifndef _NIMKIP_H
 #define _NIMKIP_H
 
-#include "lifeform.h"
+#include "Lifeform.h"
 #include "level.h"
 #include "constants.h"
 #include <vector>

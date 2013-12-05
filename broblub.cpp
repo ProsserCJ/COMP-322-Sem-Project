@@ -372,7 +372,6 @@ void Broblub::die()
 {
 	setActive(false);
 	setVisible(false);
-	level::numEnemies--;
 }
 
 

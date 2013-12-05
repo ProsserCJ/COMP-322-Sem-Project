@@ -28,8 +28,7 @@
 #include "random.h"
 #include "broblub.h"
 #include "nimkip.h"
-#include "horde.h"
-//#include "carriable.h"
+#include "carriable.h"
 #include "grid.h"
 #include "base.h"
 #include "statue.h"
@@ -79,7 +78,7 @@ public:
 	void pause(){paused = true; hud.setCurrentFrame(0); grid.clearInput();}
 	void unpause(){paused = false;}
 	TextDX* getFont() {return gameFont;}
-	static int numEnemies;
+
 private:
     // game items
     TextureManager gridTexture;   // grid texture
@@ -100,7 +99,7 @@ private:
 	int score;
 	int numKips, maxKips, mapSizeX, mapSizeY;
 	int foodCollected;
-	
+	static int numEnemies;
 	
 	//end game stuff
 	bool win;
@@ -113,11 +112,7 @@ private:
 	static vector<Object*> unCarriables;
 	//vector that contains both so that it can control both at once
 	static vector<Lifeform*> lifeForms;
-
-	//vector that contains only horde lifeforms, is variable in length as lifeforms are created and disbanded
-	static vector<Horde*> hordeForms;
 	
-
 	//void createEmptyLevel();
 	void fillLevel();
 	
@@ -125,11 +120,6 @@ private:
 	static Lifeform* identifyLifeForm(GridLoc pos);
 	//same thing but for an object
 	static Carriable* identifyObject(GridLoc pos);
-
-	//Used by nimkip task function Lift
-	static void createHorde(GridLoc carPos, GridLoc lifeformPos, Carriable* car);
-	static void joinHorde(GridLoc hordePos, GridLoc lifeformPos, Horde* hordePtr); //unsure of Horde* variable
-	
 };
 
 #endif
