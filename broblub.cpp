@@ -214,19 +214,23 @@ void BlackBroblub::goTowardsGoal()
 		{
 			if(direction==UP) {
 				direction=LEFT;
-				destination = GridLoc(pos.x-3,pos.y);
+				if(pos.x-3>0)
+					destination = GridLoc(pos.x-3,pos.y);
 			}
 			else if(direction==LEFT) {
 				direction=DOWN;
-				destination = GridLoc(pos.x,pos.y+3);
+				if(pos.y+3<level::getGridHeight())
+					destination = GridLoc(pos.x,pos.y+3);
 			}
 			else if(direction==DOWN) {
 				direction=RIGHT;
-				destination = GridLoc(pos.x+3,pos.y);
+				if(pos.x+3<level::getGridWidth())
+					destination = GridLoc(pos.x+3,pos.y);
 			}
 			else if(direction==RIGHT) {
 				direction=UP;
-				destination = GridLoc(pos.x,pos.y-3);
+				if(pos.y-3>0)
+					destination = GridLoc(pos.x,pos.y-3);
 			}
 		}
 		move(destination); //requires working move function
