@@ -171,31 +171,6 @@ GridLoc Nimkip::goTowardsGoal()
 		}
 		break;
 	case LIFT:
-		//New lift code with horde functionality
-		if(!this->getHolding()) {
-			if(target.type == CANDY || target.type == CHICK) {
-				//Create horde - Call level function 
-				
-			} else if(target.type == HORDE) {
-				//Join horde - Call level function
-			}
-
-
-
-
-		} else {
-			//Request help in horde (?)
-
-
-		}
-
-
-
-
-
-
-
-		//Old lift code
 		if(!this->getHolding())
 		{
 			level::transferObject(this,target);
@@ -525,9 +500,6 @@ void Nimkip::move(GridLoc&p)
 	bool yes = true;
 
 	if(yes && dirVal!=this->getPrevDir() && level::getTileType(GridLoc(curPos.x + a,curPos.y - b)) == EMPTY || level::getTileType(GridLoc(curPos.x + a,curPos.y - b)) == COIN) {
-		//|| level::getTileType(GridLoc(curPos.x + a,curPos.y - b)) == CHICK || level::getTileType(GridLoc(curPos.x + a,curPos.y - b)) == CANDY
-		//|| level::getTileType(GridLoc(curPos.x + a,curPos.y - b)) == HORDE) {
-
 		this->setPrevDir(-1);//set their previous direction to nothin useful
 		//make all directions available
 		for(int i = 0; i < 8; i++)
