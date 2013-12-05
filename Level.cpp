@@ -28,11 +28,13 @@ level::level()
 {
 	gameFont = new TextDX();
 	rgen = Random(0,9);
-	this->numEnemies = 5;
 	this->numKips = RNIMKIP_COUNT + BNIMKIP_COUNT + YNIMKIP_COUNT;
 	this->mapSizeX = 50;
 	this->mapSizeY = 50;
 	this->maxKips = 20;
+	this->lose = false;
+	this->win = false;
+	this->endGame = false;
 	frameCount = 0;
 	turns = 0;
 	foodCollected = 0;
@@ -43,9 +45,11 @@ level::level()
 
 //creating static data
 Grid<Tile> level::grid;
+int level::numEnemies = RBROBLUB_COUNT + BBROBLUB_COUNT;
 vector<Lifeform*> level::lifeForms;
 vector<Carriable*> level::carriableItems;
 vector<Object*> level::unCarriables;
+
 
 //=============================================================================
 // Destructor
@@ -219,11 +223,7 @@ void level::initialize(HWND hwnd)
 	gameFont->setFontColor(SETCOLOR_ARGB(255,0,0,0));
 
 	//misc.
-	lose = false;
-	win = false;
-	endGame = false;
-	numEnemies = RBROBLUB_COUNT + BBROBLUB_COUNT;
-
+	
 	pause();
 	audio->playCue(MUSIC);
     return;
@@ -275,10 +275,15 @@ void level::update()
 		audio->stopCue(CANDYSOUND);
 		audio->stopCue(ATTACKSOUND);
 	}
-	/*if(numEnemies = 0) {
-
+	if(numEnemies == 0) {
+		endGame = true;
 		win = true;
-	}*/
+		audio->playCue(WINSOUND);
+		audio->stopCue(MUSIC);
+		audio->stopCue(COLLECT);
+		audio->stopCue(CANDYSOUND);
+		audio->stopCue(ATTACKSOUND);
+	}
 	if(!endGame && numKips == 0) {
 		lose = true;
 		endGame = true;
@@ -334,7 +339,7 @@ void level::render()
 	hud.draw();
 	gameFont->setFontColor(SETCOLOR_ARGB(255,0,0,0));
 	ss.str(std::string());
-	ss << "Turn  " << turns << "\nScore " << score << "\nKips " << numKips;
+	ss << "Turn  " << turns << "\nScore " << score << "\nKips " << numKips << "\n" << level::numEnemies;
 	gameFont->print(ss.str(), 830, 410);
 
 	if(win)
@@ -460,7 +465,7 @@ bool level::runAttack(Lifeform* attacker, GridLoc target)
 	if(targetLifeForm->getHealth()<=0)
 	{
 		if(target.type == BROBLUB)
-			//numEnemies-=1;
+			level::numEnemies--;
 		return true;
 	}
 	return false;

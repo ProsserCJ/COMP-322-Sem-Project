@@ -97,8 +97,9 @@ private:
 	int frameCount;
 	int turns;
 	int score;
-	int numEnemies, numKips, maxKips, mapSizeX, mapSizeY;
+	int numKips, maxKips, mapSizeX, mapSizeY;
 	int foodCollected;
+	static int numEnemies;
 	
 	//end game stuff
 	bool win;
@@ -109,6 +110,7 @@ private:
 	static vector<Carriable*> carriableItems;
 	//vector of noncarriables ie obstacles and such
 	static vector<Object*> unCarriables;
+	//vector that contains both so that it can control both at once
 	static vector<Lifeform*> lifeForms;
 	
 	//void createEmptyLevel();
