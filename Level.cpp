@@ -745,6 +745,7 @@ void level::getUserInput()
 		Nimkip* n = reinterpret_cast<Nimkip*>(l);
 		if(n)
 		{
+			n->setHelp(false);
 			n->setPTask(grid.getPTask());
 			n->setSTask(grid.getSTask());
 			n->setDestination(grid.getDestination());

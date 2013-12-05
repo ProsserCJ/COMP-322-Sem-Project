@@ -33,6 +33,7 @@ public:
 	void setSTask(Task t)			{secondaryTask = t;}
 	void setDestination(GridLoc g)	{destination = g;}
 	void setTarget(GridLoc t)		{target = t;}
+	void setHelp(bool h)			{needHelp = h;}
 
 	//Polymorphic functions
 	virtual void move(GridLoc& p);	

@@ -230,6 +230,7 @@ GridLoc Nimkip::goTowardsGoal()
 			{
 				helping = false;
 				destination = this->helpDestination;
+				task = WALK;
 			}
 		}
 		if(this->getHurtBoolean())
@@ -350,6 +351,7 @@ bool Nimkip::helpNimkip(GridLoc nimkip, bool fightsOnly)
 		this->attackTask = this->secondaryTask;
 		this->secondaryTask = info.task;
 		auto goalSurroundings = level::getSurroundings(info.target,1);
+		this->helpDestination = this->destination;
 		for(int i = 0; i < goalSurroundings.size(); i++)
 		{
 			if(goalSurroundings[i].type == EMPTY)
@@ -360,7 +362,7 @@ bool Nimkip::helpNimkip(GridLoc nimkip, bool fightsOnly)
 			//if they dont find an open space just go as close as possible
 			this->destination = info.goal;
 		}
-		this->helpDestination = this->destination;
+		
 		helping = true;
 		return true;
 	}
@@ -372,8 +374,8 @@ void Nimkip::die()
 	this->active = false;
 	this->visible = false;
 	//reduces the carrier strength
-	if(this->getHolding())
-		getHeldObject()->changeCarrierStrength(this->getStrength()*-1);
+	//if(this->getHolding())
+		//getHeldObject()->changeCarrierStrength(this->getStrength()*-1);
 }
 
 void Nimkip::getUserInput()
