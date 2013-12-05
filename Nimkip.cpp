@@ -257,6 +257,10 @@ GridLoc Nimkip::goTowardsGoal()
 					this->getHeldObject()->setVisible(false);
 					this->getHeldObject()->setActive(false);
 					this->setHolding(false);
+					//sounds
+					if(getHeldObject()->getType()==Carriable::CAND)
+						audio->playCue(CANDYSOUND);
+					else audio->playCue(COLLECT);
 				}
 				this->setHeldObject(0);
 			}
@@ -387,8 +391,10 @@ void Nimkip::getUserInput()
 
 bool Nimkip::attack(GridLoc& p)
 {
-	if(level::getTileType(p)==BROBLUB)
+	if(level::getTileType(p)==BROBLUB){
+		audio->playCue(ATTACKSOUND);
 		return level::runAttack(this, target);
+	}
 	else//returns true to make them stop trying to attack nothing or eachother
 		return true;
 }
@@ -461,6 +467,8 @@ void Nimkip::move(GridLoc&p)
 		if(level::getTileType(GridLoc(curPos.x + a,curPos.y - b)) == COIN) {
 			level::collectCoin(GridLoc(curPos.x + a,curPos.y - b));
 			setScored(true);
+			//sound
+			audio->playCue(COLLECT);
 		}
 		setDir(chosenDirection);
 		if(getHeldObject())

@@ -73,7 +73,13 @@ const char WAVE_BANK[] = "audio\\Win\\Wave Bank.xwb";
 const char SOUND_BANK[] = "audio\\Win\\Sound Bank.xsb";
 
 //cues
-const char MUSIC[] = "04 All of Us";
+const char MUSIC[] = "background2";
+const char COLLECT[] = "collect";
+const char ATTACKSOUND[] = "attack";
+const char CANDYSOUND[] = "candycane";
+const char WINSOUND[] = "win";
+const char LOSESOUND[] = "lose";
+
 
 //sight radii
 const int NIMKIP_FRIEND_SIGHT = 3;
