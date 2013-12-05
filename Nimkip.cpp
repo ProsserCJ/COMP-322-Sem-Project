@@ -192,8 +192,9 @@ GridLoc Nimkip::goTowardsGoal()
 		{
 			task = IDLE;
 			this->setNormal();
+			break;
 		}
-		if(getHeldObject()->getWeight() <= getHeldObject()->getCarrierStrength())
+		if(getHeldObject()!=0 && getHeldObject()->getWeight() <= getHeldObject()->getCarrierStrength())
 		{
 			//different hoard images
 			/*if(getHeldObject()->getType()==Carriable::COI)

@@ -119,6 +119,11 @@ public:
 			switch(grid[x][y].getType()){
 				 case NIMKIP: 
 					 grid[x][y].toggle();
+					 if(goalSelected)
+					 {
+						 grid[destination.x][destination.y].toggle();
+						 goalSelected = false;
+					 }
 					 if(grid[x][y].isSelected())
 					 {
 						nimkipSelected = true;
