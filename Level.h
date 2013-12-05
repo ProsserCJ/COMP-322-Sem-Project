@@ -109,7 +109,6 @@ private:
 	static vector<Carriable*> carriableItems;
 	//vector of noncarriables ie obstacles and such
 	static vector<Object*> unCarriables;
-	//vector that contains both so that it can control both at once
 	static vector<Lifeform*> lifeForms;
 	
 	//void createEmptyLevel();

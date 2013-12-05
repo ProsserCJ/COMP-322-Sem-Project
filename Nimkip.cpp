@@ -151,6 +151,24 @@ GridLoc Nimkip::goTowardsGoal()
 			else
 				checkOthers();
 		}
+		if(level::getTileType(destination)!=EMPTY)
+		{
+			int radius = 1;
+			auto newDestination = destination;
+			while(newDestination.x == destination.x && newDestination.y == destination.y)
+			{
+				auto temp = level::getSurroundings(destination,radius);
+				for(int i = 0; i < temp.size(); i++)
+				{
+					if(temp[i].type==EMPTY)
+					{
+						destination = temp[i];
+						break;
+					}
+				}
+				radius++;
+			}
+		}
 		break;
 	case LIFT:
 		if(!this->getHolding())
@@ -170,6 +188,11 @@ GridLoc Nimkip::goTowardsGoal()
 			this->setAtk();
 		}
 		//if the combined strength is enough to pick it up say they don't need help and set them to carry it
+		if(getHeldObject()==0 || !getHeldObject()->getActive())
+		{
+			task = IDLE;
+			this->setNormal();
+		}
 		if(getHeldObject()->getWeight() <= getHeldObject()->getCarrierStrength())
 		{
 			//different hoard images
@@ -263,6 +286,24 @@ GridLoc Nimkip::goTowardsGoal()
 					else audio->playCue(COLLECT);
 				}
 				this->setHeldObject(0);
+			}
+		}
+		if(level::getTileType(destination)!=EMPTY)
+		{
+			int radius = 1;
+			auto newDestination = destination;
+			while(newDestination.x == destination.x && newDestination.y == destination.y)
+			{
+				auto temp = level::getSurroundings(destination,radius);
+				for(int i = 0; i < temp.size(); i++)
+				{
+					if(temp[i].type==EMPTY)
+					{
+						destination = temp[i];
+						break;
+					}
+				}
+				radius++;
 			}
 		}
 		break;
