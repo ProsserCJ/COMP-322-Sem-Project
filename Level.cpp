@@ -339,7 +339,7 @@ void level::render()
 	hud.draw();
 	gameFont->setFontColor(SETCOLOR_ARGB(255,0,0,0));
 	ss.str(std::string());
-	ss << "Turn  " << turns << "\nScore " << score << "\nKips " << numKips << "\n" << level::numEnemies;
+	ss << "Turn  " << turns << "\nScore " << score << "\nKips " << numKips;
 	gameFont->print(ss.str(), 830, 410);
 
 	if(win)
