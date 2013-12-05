@@ -465,10 +465,10 @@ bool level::runAttack(Lifeform* attacker, GridLoc target)
 		targetLifeForm->setHurt();
 		targetLifeForm->setHurtBoolean(true);
 	}
-	if(targetLifeForm->getHealth()<=0)
+	if(targetLifeForm->getHealth()<=0 && targetLifeForm->getActive())
 	{
-		if(target.type == BROBLUB)
-			level::numEnemies--;
+		/*if(target.type == BROBLUB)
+			level::numEnemies--;*/
 		return true;
 	}
 	return false;

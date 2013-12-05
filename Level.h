@@ -79,7 +79,7 @@ public:
 	void pause(){paused = true; hud.setCurrentFrame(0); grid.clearInput();}
 	void unpause(){paused = false;}
 	TextDX* getFont() {return gameFont;}
-
+	static int numEnemies;
 private:
     // game items
     TextureManager gridTexture;   // grid texture
@@ -100,7 +100,7 @@ private:
 	int score;
 	int numKips, maxKips, mapSizeX, mapSizeY;
 	int foodCollected;
-	static int numEnemies;
+	
 	
 	//end game stuff
 	bool win;
