@@ -85,9 +85,10 @@ private:
 	TextureManager backgroundTexture; // orion texture;
     TextureManager gameTextures;    // game texture
 	TextureManager hudTexture;
+	TextureManager winScreenTexture, gameOverScreenTexture;
 	ofstream debug;
 	static Grid<Tile> grid;
-	Image	background;	
+	Image	background, winScreen, gameOverScreen;	
 	HUD		hud;
 	TextDX*	gameFont;
 	std::stringstream ss;
@@ -98,6 +99,11 @@ private:
 	int score;
 	int numEnemies, numKips, maxKips, mapSizeX, mapSizeY;
 	int foodCollected;
+	
+	//end game stuff
+	bool win;
+	bool lose;
+	bool endGame;
 
 	//vector of carriable items
 	static vector<Carriable*> carriableItems;

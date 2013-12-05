@@ -80,6 +80,14 @@ void level::initialize(HWND hwnd)
     // main game textures
     if (!gameTextures.initialize(graphics,TEXTURES_IMAGE))
         throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing game textures"));
+
+	// win screen textures
+    if (!winScreenTexture.initialize(graphics,WINSCREEN_IMAGE))
+        throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing win screen textures"));
+
+	// game over screen textures
+    if (!gameOverScreenTexture.initialize(graphics,GAMEOVER_IMAGE))
+        throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing game over screen textures"));
 	
 	// hud texture
     if (!hudTexture.initialize(graphics,HUD_IMAGE))
@@ -97,6 +105,14 @@ void level::initialize(HWND hwnd)
 	// grid 
 	if(!grid.initialize(this, mapSizeX, mapSizeY, 1, &gridTexture, &background))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing grid"));
+
+	// win screen 
+	if(!winScreen.initialize(graphics, 0, 0, 0, &winScreenTexture))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing win screen"));
+
+	// game over screen 
+	if(!gameOverScreen.initialize(graphics, 0, 0, 0, &gameOverScreenTexture))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing game over screen"));
 
 	
 	fillLevel();	
@@ -202,6 +218,12 @@ void level::initialize(HWND hwnd)
 	gameFont->initialize(graphics, 20, false, false, "Calibri");
 	gameFont->setFontColor(SETCOLOR_ARGB(255,0,0,0));
 
+	//misc.
+	lose = false;
+	win = false;
+	endGame = false;
+	numEnemies = RBROBLUB_COUNT + BBROBLUB_COUNT;
+
 	pause();
 	audio->playCue(MUSIC);
     return;
@@ -211,7 +233,7 @@ void level::initialize(HWND hwnd)
 // Update all game items
 //=============================================================================
 void level::update()
-{  		
+{  	
 	if(input->getMouseRButton()){
 		auto tiles = grid.getSelectedTiles();
 		for(auto it = tiles.begin(); it != tiles.end(); ++it){
@@ -242,6 +264,30 @@ void level::update()
 	//call zoom and scroll, and pause the action is either is taking place.
 	grid.scroll(frameTime);
 	if(grid.zoom(frameTime)) pause();
+
+
+	if(!endGame && score > 1000) {
+		endGame = true;
+		win = true;
+		audio->playCue(WINSOUND);
+		audio->stopCue(MUSIC);
+		audio->stopCue(COLLECT);
+		audio->stopCue(CANDYSOUND);
+		audio->stopCue(ATTACKSOUND);
+	}
+	/*if(numEnemies = 0) {
+
+		win = true;
+	}*/
+	if(!endGame && numKips == 0) {
+		lose = true;
+		endGame = true;
+		audio->playCue(LOSESOUND);
+		audio->stopCue(MUSIC);
+		audio->stopCue(COLLECT);
+		audio->stopCue(CANDYSOUND);
+		audio->stopCue(ATTACKSOUND);
+	}
 
 	
 	frameCount++;
@@ -290,6 +336,12 @@ void level::render()
 	ss.str(std::string());
 	ss << "Turn  " << turns << "\nScore " << score << "\nKips " << numKips;
 	gameFont->print(ss.str(), 830, 410);
+
+	if(win)
+		winScreen.draw();
+	if(lose)
+		gameOverScreen.draw();
+
 
     graphics->spriteEnd();                  // end drawing sprites
 }
@@ -400,13 +452,15 @@ bool level::runAttack(Lifeform* attacker, GridLoc target)
 	if(targetLifeForm == 0)
 		return true;
 	if (attacker->isNormal()) attacker->setAtk(); 	
-	targetLifeForm->subHealth(attacker->getAttackStrength());
+		targetLifeForm->subHealth(attacker->getAttackStrength());
 	if (!targetLifeForm->getHurtBoolean() && targetLifeForm->getHealth() < targetLifeForm->getMaxHealth()*0.3){
 		targetLifeForm->setHurt();
 		targetLifeForm->setHurtBoolean(true);
 	}
 	if(targetLifeForm->getHealth()<=0)
 	{
+		if(target.type == BROBLUB)
+			//numEnemies-=1;
 		return true;
 	}
 	return false;

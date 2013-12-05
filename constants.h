@@ -97,6 +97,8 @@ const char BACKGROUND_IMAGE[] = "pictures\\background.png";
 const char TEXTURES_IMAGE[] = "pictures\\textures.png";  // game textures. Bulborp image curtesy of Michael Peterson
 const char GRID_IMAGE[] = "pictures\\grid.png"; //game grid
 const char HUD_IMAGE[] = "pictures\\hud.png";
+const char WINSCREEN_IMAGE[] = "pictures\\Win Screen.png";
+const char GAMEOVER_IMAGE[] = "pictures\\Game Over.png";
 
 
 // key mappings
