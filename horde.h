@@ -3,6 +3,7 @@
 
 #include "level.h"
 #include "carriable.h"
+#include "lifeform.h"
 #include <vector>
 using std::vector;
 using namespace moverNS;
@@ -11,7 +12,14 @@ class Horde : public Lifeform {//Acts as a group, taking turns and moving all Ni
 public:
 	Horde(Carriable* c, Lifeform* l);
 	
-	GridLoc takeTurn();
+	virtual void die();
+	virtual GridLoc takeTurn();
+	virtual void setNormal();
+	virtual void setHurt();
+	virtual void setAtk();
+	virtual bool isNormal();
+	virtual bool isAtk();
+	virtual void draw();
 
 	void move(GridLoc& p);
 	void checkSurroundings();
@@ -33,6 +41,7 @@ protected:
 
 	GridLoc homeBase;
 	GridLoc destination;
+
 };
 
 #endif
