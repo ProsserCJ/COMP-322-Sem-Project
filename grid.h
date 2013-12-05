@@ -150,6 +150,11 @@ public:
 				 case COIN:
 				 case EMPTY:
 					 grid[x][y].toggle();
+					 if(goalSelected)
+					 {
+						 grid[destination.x][destination.y].toggle();
+						 goalSelected = false;
+					 }
 					 if(nimkipSelected && !goalSelected)//if the user selected a nimkip then let them click elsewhere
 					 {	 
 						 primaryTask = WALK;

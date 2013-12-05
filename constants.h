@@ -63,7 +63,7 @@ const int COIN_COUNT = 60;
 const int FOOD_COUNT = 40;
 const int CANDY_COUNT = 4;
 const int STATUE_COUNT = 5;
-const int OBSTACLE_COUNT = 300;
+const int OBSTACLE_COUNT = 200;
 const int MAX_WALL_SIZE = 3;
 
 //audio
