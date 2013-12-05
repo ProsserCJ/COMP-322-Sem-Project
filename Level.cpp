@@ -49,6 +49,9 @@ int level::numEnemies = RBROBLUB_COUNT + BBROBLUB_COUNT;
 vector<Lifeform*> level::lifeForms;
 vector<Carriable*> level::carriableItems;
 vector<Object*> level::unCarriables;
+vector<Horde*> level::hordeForms;
+
+
 
 
 //=============================================================================
@@ -773,4 +776,28 @@ int level::getGridHeight()
 int level::getGridWidth()
 {
 	return grid.getWidth();
+}
+
+void level::createHorde(GridLoc carPos, GridLoc lifeformPos, Carriable * car) {
+	//Create new Horde
+	Horde* ptr = new Horde(car, identifyLifeForm(lifeformPos));
+	hordeForms.push_back(ptr);
+	hordeForms.push_back(new Horde(car, identifyLifeForm(lifeformPos)));
+	
+	//Add to hordeList
+	
+
+
+
+	//Turns
+
+
+
+}
+
+void level::joinHorde(GridLoc hordePos, GridLoc lifeformPos, Horde * hordePtr) {
+	//Get horde
+
+
+
 }

@@ -777,3 +777,15 @@ void Horde::moveYellow(GridLoc& p) {
               return;
        }
 }
+
+//Implement later
+
+
+void Horde::die(){}
+void Horde::setNormal() {}
+void Horde::setHurt(){}
+void Horde::setAtk(){}
+bool Horde::isNormal(){return true;}
+bool Horde::isAtk(){return true;}
+//GridLoc Horde::takeTurn(){return GridLoc(0,0);}
+void Horde::draw(){}
